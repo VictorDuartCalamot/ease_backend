@@ -3,6 +3,13 @@
 # dependencies
 node_modules/
 package-lock.json
+
 #Env
 .env
 
+#Functions
+functions/node_modules/
+functions/package-lock.json
+
+#Firebase
+firebase/firebase_key.json
