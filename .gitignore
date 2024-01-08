@@ -10,6 +10,7 @@ package-lock.json
 #Functions
 functions/node_modules/
 functions/package-lock.json
+functions/ui-debug.log
 
 #Firebase
-firebase/firebase_key.json
+fb/firebase_key.json
