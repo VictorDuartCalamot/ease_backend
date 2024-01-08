@@ -1,18 +1,15 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const serviceAccount = require('../firebase/firebase_key.json');
+const express = require('express');
+const cors = require('cors');
+const app = express();  
+
+var serviceAccount = require("../fb/firebase_key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app', // replace with your database URL
+  databaseURL: "https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app"
 });
-
-const express = require('express');
-const cors = require('cors');   
-
-//Main app
-const app = express();
-app.use(cors({origin:true}));
 
 //Routes
 app.get("/",(req,res) => {

@@ -1,6 +1,6 @@
 import { Alert} from 'react-native';
 import {useState} from 'react';
-import { isPasswordValid, EmailExists } from './validationUtils'; // Adjust the path as needed
+import { isPasswordValid, EmailExists } from './functions/validationUtils'; // Adjust the path as needed
 //Firebase
 import { firebase,database } from '../../functions/firebaseConfig';
 import { admin } from '../../functions/firebaseAdmin';
