@@ -1,0 +1,1496 @@
+[debug] [2024-01-11T10:31:59.089Z] ----------------------------------------------------------------------
+[debug] [2024-01-11T10:31:59.091Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --only functions
+[debug] [2024-01-11T10:31:59.091Z] CLI Version:   12.9.1
+[debug] [2024-01-11T10:31:59.091Z] Platform:      win32
+[debug] [2024-01-11T10:31:59.091Z] Node Version:  v20.5.0
+[debug] [2024-01-11T10:31:59.092Z] Time:          Thu Jan 11 2024 11:31:59 GMT+0100 (hora estándar de Europa central)
+[debug] [2024-01-11T10:31:59.092Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-01-11T10:31:59.208Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-01-11T10:31:59.209Z] > authorizing via signed-in user (easemanagement.sl@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2024-01-11T10:31:59.217Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[warn] !  ui: Emulator UI unable to start on port 4000, starting on 4001 instead. {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI unable to start on port 4000, starting on 4001 instead."}}
+[debug] [2024-01-11T10:31:59.218Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4001},{"address":"::1","family":"IPv6","port":4001}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2024-01-11T10:31:59.233Z] [hub] writing locator at C:\Users\Victor\AppData\Local\Temp\hub-ease-8d84a.json
+[debug] [2024-01-11T10:31:59.275Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-01-11T10:31:59.276Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-01-11T10:31:59.276Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4001},{"address":"::1","family":"IPv6","port":4001}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, hosting, pubsub, storage\u001b[22m"}}
+[debug] [2024-01-11T10:31:59.278Z] defaultcredentials: writing to file C:\Users\Victor\AppData\Roaming\firebase\easemanagement_sl_gmail.com_application_default_credentials.json
+[debug] [2024-01-11T10:31:59.280Z] Setting GAC to C:\Users\Victor\AppData\Roaming\firebase\easemanagement_sl_gmail.com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\Victor\\AppData\\Roaming\\firebase\\easemanagement_sl_gmail.com_application_default_credentials.json"}}
+[debug] [2024-01-11T10:31:59.281Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ease-8d84a/adminSdkConfig [none]
+[debug] [2024-01-11T10:31:59.623Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ease-8d84a/adminSdkConfig 200
+[debug] [2024-01-11T10:31:59.623Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ease-8d84a/adminSdkConfig {"projectId":"ease-8d84a","databaseURL":"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"ease-8d84a.appspot.com"}
+[debug] [2024-01-11T10:31:59.635Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-01-11T10:31:59.635Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2024-01-11T10:31:59.635Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\Victor\\.cache\\firebase\\emulators\\ui-v1.11.7\\server\\server.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\Victor\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.11.7\\\\server\\\\server.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2024-01-11T10:31:59.753Z] Web / API server started at 127.0.0.1:4001
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4001\n"}}
+[debug] [2024-01-11T10:31:59.754Z] Web / API server started at ::1:4001
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4001\n"}}
+[info] i  functions: Watching "E:\Escritorio\ease_api\ease_backend\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"E:\\Escritorio\\ease_api\\ease_backend\\functions\" for Cloud Functions..."}}
+[debug] [2024-01-11T10:31:59.902Z] Validating nodejs source
+[debug] [2024-01-11T10:32:01.095Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:32:01.095Z] Building nodejs source
+[debug] [2024-01-11T10:32:01.095Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:32:01.097Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:32:01.102Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8093
+
+[debug] [2024-01-11T10:32:01.851Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[info] +  functions[us-central1-app]: http function initialized (http://127.0.0.1:5001/ease-8d84a/us-central1/app). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/ease-8d84a/us-central1/app)."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4001/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4001/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at 127.0.0.1:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2024-01-11T10:32:17.795Z] [work-queue] {"queuedWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T10:32:17.795Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T10:32:17.796Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T10:32:17.795Z"],"workRunningCount":1}
+[debug] [2024-01-11T10:32:17.796Z] Accepted request POST /ease-8d84a/us-central1/app/api/createUser --> us-central1-app
+[debug] [2024-01-11T10:32:17.798Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2024-01-11T10:32:17.798Z] [functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser"}}
+[debug] [2024-01-11T10:32:17.806Z] [worker-pool] addWorker(us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-app)"}}
+[debug] [2024-01-11T10:32:17.807Z] [worker-pool] Adding worker with key us-central1-app, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-app, total=1"}}
+[debug] [2024-01-11T10:32:18.874Z] [runtime-status] [9636] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T10:32:18.874Z] [runtime-status] [9636] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:32:18.875Z] [runtime-status] [9636] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2024-01-11T10:32:18.877Z] [runtime-status] [9636] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:32:19.078Z] [runtime-status] [9636] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Checked functions.config() {\"config\":{}}"}}
+[debug] [2024-01-11T10:32:19.078Z] [runtime-status] [9636] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}}"}}
+[debug] [2024-01-11T10:32:19.079Z] [runtime-status] [9636] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:32:19.081Z] [runtime-status] [9636] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T10:32:19.083Z] [runtime-status] [9636] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:32:19.083Z] [runtime-status] [9636] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2024-01-11T10:32:19.278Z] [runtime-status] [9636] initializeApp(DEFAULT) {"credential":{"implicit":false,"projectId":"ease-8d84a","privateKey":"-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\ngkCxWU/fnrmHDElMmj0hLw/7\n-----END PRIVATE KEY-----\n","clientEmail":"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com","httpClient":{"retry":{"maxRetries":4,"statusCodes":[503],"ioErrorCodes":["ECONNRESET","ETIMEDOUT"],"backOffFactor":0.5,"maxDelayInMillis":60000}}},"databaseURL":"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] initializeApp(DEFAULT) {\"credential\":{\"implicit\":false,\"projectId\":\"ease-8d84a\",\"privateKey\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\\ngkCxWU/fnrmHDElMmj0hLw/7\\n-----END PRIVATE KEY-----\\n\",\"clientEmail\":\"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com\",\"httpClient\":{\"retry\":{\"maxRetries\":4,\"statusCodes\":[503],\"ioErrorCodes\":[\"ECONNRESET\",\"ETIMEDOUT\"],\"backOffFactor\":0.5,\"maxDelayInMillis\":60000}}},\"databaseURL\":\"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app\"}"}}
+[warn] !  functions: The Cloud Firestore emulator is not running, so calls to Firestore will affect production. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"The Cloud Firestore emulator is not running, so calls to Firestore will affect production."}}
+[warn] !  functions: The Firebase Authentication emulator is not running, so calls to Firebase Authentication will affect production. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"The Firebase Authentication emulator is not running, so calls to Firebase Authentication will affect production."}}
+[debug] [2024-01-11T10:32:19.381Z] [runtime-status] [9636] Functions runtime initialized. {"cwd":"E:\\Escritorio\\ease_api\\ease_backend\\functions","node_version":"20.5.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Functions runtime initialized. {\"cwd\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\",\"node_version\":\"20.5.0\"}"}}
+[debug] [2024-01-11T10:32:19.382Z] [runtime-status] [9636] Listening to port: \\?\pipe\fire_emu_01025505f17e2eca {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [9636] Listening to port: \\\\?\\pipe\\fire_emu_01025505f17e2eca"}}
+[debug] [2024-01-11T10:32:19.405Z] [worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: IDLE"}}
+[debug] [2024-01-11T10:32:19.405Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2024-01-11T10:32:19.406Z] [worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: BUSY"}}
+[info] >  XusniKvVXzUQzUJxgC0GyZFUF3o2 {"user":"XusniKvVXzUQzUJxgC0GyZFUF3o2","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m XusniKvVXzUQzUJxgC0GyZFUF3o2"}}
+[info] >  Error checking the role user Error: Value for argument "documentPath" must point to a document, but was "role". Your path does not contain an even number of components. {"user":"Error checking the role user Error: Value for argument \"documentPath\" must point to a document, but was \"role\". Your path does not contain an even number of components.","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error checking the role user Error: Value for argument \"documentPath\" must point to a document, but was \"role\". Your path does not contain an even number of components."}}
+[info] >  Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] { {"user":"Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {"}}
+[info] >    code: 'invalid-argument', {"user":"  code: 'invalid-argument',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   code: 'invalid-argument',"}}
+[info] >    customData: undefined, {"user":"  customData: undefined,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   customData: undefined,"}}
+[info] >    toString: [Function (anonymous)] {"user":"  toString: [Function (anonymous)]","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   toString: [Function (anonymous)]"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[debug] [2024-01-11T10:32:20.184Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 778.7089ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 778.7089ms"}}
+[debug] [2024-01-11T10:32:20.185Z] [worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: IDLE"}}
+[debug] [2024-01-11T10:32:20.185Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2024-01-11T10:32:20.185Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2024-01-11T10:32:20.185Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T10:32:40.868Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:32:41.874Z] Validating nodejs source
+[debug] [2024-01-11T10:32:43.081Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:32:43.081Z] Building nodejs source
+[debug] [2024-01-11T10:32:43.082Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:32:43.083Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:32:43.087Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8413
+
+[debug] [2024-01-11T10:32:43.702Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:32:48.726Z] [worker-pool] Shutting down IDLE worker (us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-app)"}}
+[debug] [2024-01-11T10:32:48.726Z] [worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: FINISHING"}}
+[debug] [2024-01-11T10:32:48.734Z] [worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: exited"}}
+[debug] [2024-01-11T10:32:48.734Z] [worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d2cf0142-a593-4e41-8e57-83daf7f2bb09]: FINISHED"}}
+[debug] [2024-01-11T10:33:14.821Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:33:15.833Z] Validating nodejs source
+[debug] [2024-01-11T10:33:17.060Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:33:17.061Z] Building nodejs source
+[debug] [2024-01-11T10:33:17.061Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:33:17.062Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:33:17.066Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8315
+
+[debug] [2024-01-11T10:33:17.665Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:33:29.444Z] [work-queue] {"queuedWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T10:33:29.444Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T10:33:29.444Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T10:33:29.444Z"],"workRunningCount":1}
+[debug] [2024-01-11T10:33:29.444Z] Accepted request POST /ease-8d84a/us-central1/app/api/createUser --> us-central1-app
+[debug] [2024-01-11T10:33:29.446Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2024-01-11T10:33:29.446Z] [functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser"}}
+[debug] [2024-01-11T10:33:29.446Z] [worker-pool] Cleaned up workers for us-central1-app: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-app: 1 --> 0"}}
+[debug] [2024-01-11T10:33:29.451Z] [worker-pool] addWorker(us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-app)"}}
+[debug] [2024-01-11T10:33:29.452Z] [worker-pool] Adding worker with key us-central1-app, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-app, total=1"}}
+[debug] [2024-01-11T10:33:30.499Z] [runtime-status] [17452] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T10:33:30.500Z] [runtime-status] [17452] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:33:30.500Z] [runtime-status] [17452] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2024-01-11T10:33:30.501Z] [runtime-status] [17452] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:33:30.702Z] [runtime-status] [17452] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Checked functions.config() {\"config\":{}}"}}
+[debug] [2024-01-11T10:33:30.702Z] [runtime-status] [17452] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}}"}}
+[debug] [2024-01-11T10:33:30.703Z] [runtime-status] [17452] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:33:30.704Z] [runtime-status] [17452] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T10:33:30.705Z] [runtime-status] [17452] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:33:30.705Z] [runtime-status] [17452] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2024-01-11T10:33:30.893Z] [runtime-status] [17452] initializeApp(DEFAULT) {"credential":{"implicit":false,"projectId":"ease-8d84a","privateKey":"-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\ngkCxWU/fnrmHDElMmj0hLw/7\n-----END PRIVATE KEY-----\n","clientEmail":"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com","httpClient":{"retry":{"maxRetries":4,"statusCodes":[503],"ioErrorCodes":["ECONNRESET","ETIMEDOUT"],"backOffFactor":0.5,"maxDelayInMillis":60000}}},"databaseURL":"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] initializeApp(DEFAULT) {\"credential\":{\"implicit\":false,\"projectId\":\"ease-8d84a\",\"privateKey\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\\ngkCxWU/fnrmHDElMmj0hLw/7\\n-----END PRIVATE KEY-----\\n\",\"clientEmail\":\"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com\",\"httpClient\":{\"retry\":{\"maxRetries\":4,\"statusCodes\":[503],\"ioErrorCodes\":[\"ECONNRESET\",\"ETIMEDOUT\"],\"backOffFactor\":0.5,\"maxDelayInMillis\":60000}}},\"databaseURL\":\"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app\"}"}}
+[debug] [2024-01-11T10:33:31.003Z] [runtime-status] [17452] Functions runtime initialized. {"cwd":"E:\\Escritorio\\ease_api\\ease_backend\\functions","node_version":"20.5.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Functions runtime initialized. {\"cwd\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\",\"node_version\":\"20.5.0\"}"}}
+[debug] [2024-01-11T10:33:31.003Z] [runtime-status] [17452] Listening to port: \\?\pipe\fire_emu_909e8880c6ca8d71 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17452] Listening to port: \\\\?\\pipe\\fire_emu_909e8880c6ca8d71"}}
+[debug] [2024-01-11T10:33:31.087Z] [worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: IDLE"}}
+[debug] [2024-01-11T10:33:31.088Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2024-01-11T10:33:31.088Z] [worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: BUSY"}}
+[info] >  Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore {"user":"Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore"}}
+[info] >  Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] { {"user":"Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {"}}
+[info] >    code: 'invalid-argument', {"user":"  code: 'invalid-argument',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   code: 'invalid-argument',"}}
+[info] >    customData: undefined, {"user":"  customData: undefined,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   customData: undefined,"}}
+[info] >    toString: [Function (anonymous)] {"user":"  toString: [Function (anonymous)]","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   toString: [Function (anonymous)]"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[debug] [2024-01-11T10:33:31.878Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 789.9399ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 789.9399ms"}}
+[debug] [2024-01-11T10:33:31.878Z] [worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: IDLE"}}
+[debug] [2024-01-11T10:33:31.878Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2024-01-11T10:33:31.878Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2024-01-11T10:33:31.878Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T10:36:30.406Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:36:31.417Z] Validating nodejs source
+[debug] [2024-01-11T10:36:32.917Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:36:32.917Z] Building nodejs source
+[debug] [2024-01-11T10:36:32.917Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:36:32.918Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:36:32.922Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8239
+
+[debug] [2024-01-11T10:36:33.561Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:36:38.579Z] [worker-pool] Shutting down IDLE worker (us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-app)"}}
+[debug] [2024-01-11T10:36:38.579Z] [worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: FINISHING"}}
+[debug] [2024-01-11T10:36:38.586Z] [worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: exited"}}
+[debug] [2024-01-11T10:36:38.586Z] [worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-d5ec782a-1c12-4c44-9896-88cfb12f3fa2]: FINISHED"}}
+[debug] [2024-01-11T10:37:59.899Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:38:00.914Z] Validating nodejs source
+[debug] [2024-01-11T10:38:02.131Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:38:02.131Z] Building nodejs source
+[debug] [2024-01-11T10:38:02.131Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:38:02.132Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:38:02.136Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8378
+
+[debug] [2024-01-11T10:38:02.774Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:39:01.819Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:39:02.826Z] Validating nodejs source
+[debug] [2024-01-11T10:39:04.845Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:39:04.845Z] Building nodejs source
+[debug] [2024-01-11T10:39:04.846Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:39:04.846Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:39:04.851Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8338
+
+[debug] [2024-01-11T10:39:05.461Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:39:13.132Z] [work-queue] {"queuedWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T10:39:13.131Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T10:39:13.132Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T10:39:13.131Z"],"workRunningCount":1}
+[debug] [2024-01-11T10:39:13.132Z] Accepted request POST /ease-8d84a/us-central1/app/api/createUser --> us-central1-app
+[debug] [2024-01-11T10:39:13.135Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2024-01-11T10:39:13.135Z] [functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser"}}
+[debug] [2024-01-11T10:39:13.135Z] [worker-pool] Cleaned up workers for us-central1-app: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-app: 1 --> 0"}}
+[debug] [2024-01-11T10:39:13.141Z] [worker-pool] addWorker(us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-app)"}}
+[debug] [2024-01-11T10:39:13.141Z] [worker-pool] Adding worker with key us-central1-app, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-app, total=1"}}
+[debug] [2024-01-11T10:39:14.291Z] [runtime-status] [868] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T10:39:14.292Z] [runtime-status] [868] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:39:14.293Z] [runtime-status] [868] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2024-01-11T10:39:14.294Z] [runtime-status] [868] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:39:14.490Z] [runtime-status] [868] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Checked functions.config() {\"config\":{}}"}}
+[debug] [2024-01-11T10:39:14.490Z] [runtime-status] [868] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}}"}}
+[debug] [2024-01-11T10:39:14.490Z] [runtime-status] [868] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:39:14.491Z] [runtime-status] [868] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T10:39:14.493Z] [runtime-status] [868] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:39:14.493Z] [runtime-status] [868] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2024-01-11T10:39:14.687Z] [runtime-status] [868] initializeApp(DEFAULT) {"credential":{"implicit":false,"projectId":"ease-8d84a","privateKey":"-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\ngkCxWU/fnrmHDElMmj0hLw/7\n-----END PRIVATE KEY-----\n","clientEmail":"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com","httpClient":{"retry":{"maxRetries":4,"statusCodes":[503],"ioErrorCodes":["ECONNRESET","ETIMEDOUT"],"backOffFactor":0.5,"maxDelayInMillis":60000}}},"databaseURL":"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] initializeApp(DEFAULT) {\"credential\":{\"implicit\":false,\"projectId\":\"ease-8d84a\",\"privateKey\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\\ngkCxWU/fnrmHDElMmj0hLw/7\\n-----END PRIVATE KEY-----\\n\",\"clientEmail\":\"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com\",\"httpClient\":{\"retry\":{\"maxRetries\":4,\"statusCodes\":[503],\"ioErrorCodes\":[\"ECONNRESET\",\"ETIMEDOUT\"],\"backOffFactor\":0.5,\"maxDelayInMillis\":60000}}},\"databaseURL\":\"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app\"}"}}
+[debug] [2024-01-11T10:39:14.794Z] [runtime-status] [868] Functions runtime initialized. {"cwd":"E:\\Escritorio\\ease_api\\ease_backend\\functions","node_version":"20.5.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Functions runtime initialized. {\"cwd\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\",\"node_version\":\"20.5.0\"}"}}
+[debug] [2024-01-11T10:39:14.794Z] [runtime-status] [868] Listening to port: \\?\pipe\fire_emu_f28f05057f2c9926 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [868] Listening to port: \\\\?\\pipe\\fire_emu_f28f05057f2c9926"}}
+[debug] [2024-01-11T10:39:14.880Z] [worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: IDLE"}}
+[debug] [2024-01-11T10:39:14.880Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2024-01-11T10:39:14.881Z] [worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: BUSY"}}
+[info] >  Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore {"user":"Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore"}}
+[info] >  Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] { {"user":"Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {"}}
+[info] >    code: 'invalid-argument', {"user":"  code: 'invalid-argument',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   code: 'invalid-argument',"}}
+[info] >    customData: undefined, {"user":"  customData: undefined,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   customData: undefined,"}}
+[info] >    toString: [Function (anonymous)] {"user":"  toString: [Function (anonymous)]","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   toString: [Function (anonymous)]"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[debug] [2024-01-11T10:39:15.693Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 812.7964ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 812.7964ms"}}
+[debug] [2024-01-11T10:39:15.694Z] [worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: IDLE"}}
+[debug] [2024-01-11T10:39:15.694Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2024-01-11T10:39:15.694Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2024-01-11T10:39:15.694Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T10:55:11.858Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:55:12.862Z] Validating nodejs source
+[debug] [2024-01-11T10:55:14.084Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:55:14.084Z] Building nodejs source
+[debug] [2024-01-11T10:55:14.084Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:55:14.085Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:55:14.089Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8890
+
+[debug] [2024-01-11T10:55:14.700Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:55:19.714Z] [worker-pool] Shutting down IDLE worker (us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-app)"}}
+[debug] [2024-01-11T10:55:19.714Z] [worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: FINISHING"}}
+[debug] [2024-01-11T10:55:19.723Z] [worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: exited"}}
+[debug] [2024-01-11T10:55:19.723Z] [worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-31e6184a-aba4-421b-8dfa-d334ace8a4fc]: FINISHED"}}
+[debug] [2024-01-11T10:55:19.807Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:55:20.820Z] Validating nodejs source
+[debug] [2024-01-11T10:55:21.953Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:55:21.954Z] Building nodejs source
+[debug] [2024-01-11T10:55:21.954Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:55:21.954Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:55:21.958Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8850
+
+[debug] [2024-01-11T10:55:22.531Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:56:05.805Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:56:06.813Z] Validating nodejs source
+[debug] [2024-01-11T10:56:07.989Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:56:07.989Z] Building nodejs source
+[debug] [2024-01-11T10:56:07.990Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:56:07.990Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:56:07.995Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8176
+
+[debug] [2024-01-11T10:56:08.647Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:56:58.128Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:56:59.140Z] Validating nodejs source
+[debug] [2024-01-11T10:57:01.064Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:57:01.064Z] Building nodejs source
+[debug] [2024-01-11T10:57:01.064Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:57:01.065Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:57:01.069Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8598
+
+[debug] [2024-01-11T10:57:01.657Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:57:18.299Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:57:19.308Z] Validating nodejs source
+[debug] [2024-01-11T10:57:20.457Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:57:20.457Z] Building nodejs source
+[debug] [2024-01-11T10:57:20.457Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:57:20.458Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:57:20.462Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8642
+
+[debug] [2024-01-11T10:57:21.054Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:57:41.908Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:57:42.914Z] Validating nodejs source
+[debug] [2024-01-11T10:57:44.187Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:57:44.187Z] Building nodejs source
+[debug] [2024-01-11T10:57:44.187Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:57:44.187Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:57:44.192Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8090
+
+[debug] [2024-01-11T10:57:44.789Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:57:56.099Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:57:57.109Z] Validating nodejs source
+[debug] [2024-01-11T10:57:58.305Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:57:58.306Z] Building nodejs source
+[debug] [2024-01-11T10:57:58.306Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:57:58.306Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:57:58.310Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8811
+
+[debug] [2024-01-11T10:57:58.890Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2024-01-11T10:58:02.307Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T10:58:03.314Z] Validating nodejs source
+[debug] [2024-01-11T10:58:04.461Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T10:58:04.461Z] Building nodejs source
+[debug] [2024-01-11T10:58:04.461Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T10:58:04.462Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T10:58:04.466Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[info] Serving at port 8046
+
+[debug] [2024-01-11T10:58:05.070Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T10:58:47.692Z] [work-queue] {"queuedWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T10:58:47.692Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T10:58:47.692Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T10:58:47.692Z"],"workRunningCount":1}
+[debug] [2024-01-11T10:58:47.692Z] Accepted request POST /ease-8d84a/us-central1/app/api/createUser --> us-central1-app
+[debug] [2024-01-11T10:58:47.694Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2024-01-11T10:58:47.694Z] [functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser"}}
+[debug] [2024-01-11T10:58:47.694Z] [worker-pool] Cleaned up workers for us-central1-app: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-app: 1 --> 0"}}
+[debug] [2024-01-11T10:58:47.700Z] [worker-pool] addWorker(us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-app)"}}
+[debug] [2024-01-11T10:58:47.700Z] [worker-pool] Adding worker with key us-central1-app, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-app, total=1"}}
+[debug] [2024-01-11T10:58:48.721Z] [runtime-status] [17476] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T10:58:48.722Z] [runtime-status] [17476] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:58:48.723Z] [runtime-status] [17476] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2024-01-11T10:58:48.724Z] [runtime-status] [17476] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:58:48.911Z] [runtime-status] [17476] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Checked functions.config() {\"config\":{}}"}}
+[debug] [2024-01-11T10:58:48.911Z] [runtime-status] [17476] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}}"}}
+[debug] [2024-01-11T10:58:48.912Z] [runtime-status] [17476] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:58:48.913Z] [runtime-status] [17476] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T10:58:48.916Z] [runtime-status] [17476] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T10:58:48.916Z] [runtime-status] [17476] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2024-01-11T10:58:49.099Z] [runtime-status] [17476] initializeApp(DEFAULT) {"credential":{"implicit":false,"projectId":"ease-8d84a","privateKey":"-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\ngkCxWU/fnrmHDElMmj0hLw/7\n-----END PRIVATE KEY-----\n","clientEmail":"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com","httpClient":{"retry":{"maxRetries":4,"statusCodes":[503],"ioErrorCodes":["ECONNRESET","ETIMEDOUT"],"backOffFactor":0.5,"maxDelayInMillis":60000}}},"databaseURL":"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] initializeApp(DEFAULT) {\"credential\":{\"implicit\":false,\"projectId\":\"ease-8d84a\",\"privateKey\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\\ngkCxWU/fnrmHDElMmj0hLw/7\\n-----END PRIVATE KEY-----\\n\",\"clientEmail\":\"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com\",\"httpClient\":{\"retry\":{\"maxRetries\":4,\"statusCodes\":[503],\"ioErrorCodes\":[\"ECONNRESET\",\"ETIMEDOUT\"],\"backOffFactor\":0.5,\"maxDelayInMillis\":60000}}},\"databaseURL\":\"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app\"}"}}
+[debug] [2024-01-11T10:58:49.207Z] [runtime-status] [17476] Functions runtime initialized. {"cwd":"E:\\Escritorio\\ease_api\\ease_backend\\functions","node_version":"20.5.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Functions runtime initialized. {\"cwd\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\",\"node_version\":\"20.5.0\"}"}}
+[debug] [2024-01-11T10:58:49.208Z] [runtime-status] [17476] Listening to port: \\?\pipe\fire_emu_365bf4444be2f392 {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [17476] Listening to port: \\\\?\\pipe\\fire_emu_365bf4444be2f392"}}
+[debug] [2024-01-11T10:58:49.224Z] [worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: IDLE"}}
+[debug] [2024-01-11T10:58:49.224Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2024-01-11T10:58:49.225Z] [worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: BUSY"}}
+[info] >  Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore {"user":"Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore"}}
+[info] >  Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] { {"user":"Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {"}}
+[info] >    code: 'invalid-argument', {"user":"  code: 'invalid-argument',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   code: 'invalid-argument',"}}
+[info] >    customData: undefined, {"user":"  customData: undefined,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   customData: undefined,"}}
+[info] >    toString: [Function (anonymous)] {"user":"  toString: [Function (anonymous)]","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   toString: [Function (anonymous)]"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[debug] [2024-01-11T10:58:50.060Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 835.4084ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 835.4084ms"}}
+[debug] [2024-01-11T10:58:50.061Z] [worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: IDLE"}}
+[debug] [2024-01-11T10:58:50.061Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2024-01-11T10:58:50.061Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2024-01-11T10:58:50.061Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T11:13:52.687Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:13:53.699Z] Validating nodejs source
+[debug] [2024-01-11T11:13:54.857Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:13:54.857Z] Building nodejs source
+[debug] [2024-01-11T11:13:54.857Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:13:54.858Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:13:54.862Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8308
+
+[error] E:\Escritorio\ease_api\ease_backend\functions\index.js:7
+const { doc, getDoc, setDoc, collection } = require('firebase/firestore');
+        ^
+
+SyntaxError: Identifier 'doc' has already been declared
+    at internalCompileFunction (node:internal/vm:73:18)
+    at wrapSafe (node:internal/modules/cjs/loader:1153:20)
+    at Module._compile (node:internal/modules/cjs/loader:1197:27)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1287:10)
+    at Module.load (node:internal/modules/cjs/loader:1091:32)
+    at Module._load (node:internal/modules/cjs/loader:938:12)
+    at Module.require (node:internal/modules/cjs/loader:1115:19)
+    at require (node:internal/modules/helpers:119:18)
+    at loadModule (E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-functions\lib\runtime\loader.js:40:16)
+    at loadStack (E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-functions\lib\runtime\loader.js:93:23)
+
+[debug] [2024-01-11T11:13:55.066Z] Got response code 400; body Failed to generate manifest from function source: SyntaxError: Identifier 'doc' has already been declared
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2024-01-11T11:14:05.611Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:14:06.620Z] Validating nodejs source
+[debug] [2024-01-11T11:14:07.809Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:14:07.809Z] Building nodejs source
+[debug] [2024-01-11T11:14:07.809Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:14:07.810Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:14:07.814Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8277
+
+[error] TypeError: Cannot read properties of undefined (reading 'initializeApp')
+    at Object.<anonymous> (E:\Escritorio\ease_api\ease_backend\functions\index.js:12:7)
+    at Module._compile (node:internal/modules/cjs/loader:1233:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1287:10)
+    at Module.load (node:internal/modules/cjs/loader:1091:32)
+    at Module._load (node:internal/modules/cjs/loader:938:12)
+    at Module.require (node:internal/modules/cjs/loader:1115:19)
+    at require (node:internal/modules/helpers:119:18)
+    at loadModule (E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-functions\lib\runtime\loader.js:40:16)
+    at loadStack (E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-functions\lib\runtime\loader.js:93:23)
+    at E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-functions\lib\bin\firebase-functions.js:56:56
+
+[debug] [2024-01-11T11:14:08.425Z] Got response code 400; body Failed to generate manifest from function source: TypeError: Cannot read properties of undefined (reading 'initializeApp')
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2024-01-11T11:14:47.901Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:14:48.907Z] Validating nodejs source
+[debug] [2024-01-11T11:14:50.048Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:14:50.048Z] Building nodejs source
+[debug] [2024-01-11T11:14:50.048Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:14:50.049Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:14:50.053Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8528
+
+[error] TypeError: express is not a function
+    at Object.<anonymous> (E:\Escritorio\ease_api\ease_backend\functions\index.js:17:13)
+    at Module._compile (node:internal/modules/cjs/loader:1233:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1287:10)
+    at Module.load (node:internal/modules/cjs/loader:1091:32)
+    at Module._load (node:internal/modules/cjs/loader:938:12)
+    at Module.require (node:internal/modules/cjs/loader:1115:19)
+    at require (node:internal/modules/helpers:119:18)
+    at loadModule (E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-functions\lib\runtime\loader.js:40:16)
+    at loadStack (E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-functions\lib\runtime\loader.js:93:23)
+    at E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-functions\lib\bin\firebase-functions.js:56:56
+
+[debug] [2024-01-11T11:14:50.629Z] Got response code 400; body Failed to generate manifest from function source: TypeError: express is not a function
+[error] !!  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2024-01-11T11:15:01.903Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:15:02.916Z] Validating nodejs source
+[debug] [2024-01-11T11:15:04.113Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:15:04.113Z] Building nodejs source
+[debug] [2024-01-11T11:15:04.113Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:15:04.113Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:15:04.117Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8258
+
+[debug] [2024-01-11T11:15:04.683Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T11:15:09.706Z] [worker-pool] Shutting down IDLE worker (us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-app)"}}
+[debug] [2024-01-11T11:15:09.706Z] [worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: FINISHING"}}
+[debug] [2024-01-11T11:15:09.715Z] [worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: exited"}}
+[debug] [2024-01-11T11:15:09.715Z] [worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-adad5ac5-c3a5-4571-bf12-1c902a97891d]: FINISHED"}}
+[debug] [2024-01-11T11:17:16.532Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:17:17.537Z] Validating nodejs source
+[debug] [2024-01-11T11:17:18.791Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:17:18.791Z] Building nodejs source
+[debug] [2024-01-11T11:17:18.791Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:17:18.792Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:17:18.797Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8252
+
+[debug] [2024-01-11T11:17:19.488Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T11:17:59.122Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:18:00.134Z] Validating nodejs source
+[debug] [2024-01-11T11:18:01.364Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:18:01.364Z] Building nodejs source
+[debug] [2024-01-11T11:18:01.365Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:18:01.365Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:18:01.369Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8373
+
+[debug] [2024-01-11T11:18:01.952Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T11:18:10.193Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:18:11.195Z] Validating nodejs source
+[debug] [2024-01-11T11:18:12.402Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:18:12.402Z] Building nodejs source
+[debug] [2024-01-11T11:18:12.402Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:18:12.403Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:18:12.407Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8381
+
+[debug] [2024-01-11T11:18:13.000Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T11:18:30.940Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:18:31.951Z] Validating nodejs source
+[debug] [2024-01-11T11:18:33.129Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:18:33.129Z] Building nodejs source
+[debug] [2024-01-11T11:18:33.130Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:18:33.131Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:18:33.136Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[debug] [2024-01-11T11:18:33.498Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[info] Serving at port 8073
+
+[debug] [2024-01-11T11:18:34.010Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2024-01-11T11:18:34.511Z] Validating nodejs source
+[debug] [2024-01-11T11:18:35.647Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:18:35.647Z] Building nodejs source
+[debug] [2024-01-11T11:18:35.647Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:18:35.648Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:18:35.652Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8320
+
+[debug] [2024-01-11T11:18:36.224Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2024-01-11T11:18:37.403Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:18:38.405Z] Validating nodejs source
+[debug] [2024-01-11T11:18:39.607Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:18:39.607Z] Building nodejs source
+[debug] [2024-01-11T11:18:39.607Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:18:39.608Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:18:39.612Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[info] Serving at port 8433
+
+[debug] [2024-01-11T11:18:40.206Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T11:18:42.342Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:18:43.354Z] Validating nodejs source
+[debug] [2024-01-11T11:18:45.244Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:18:45.244Z] Building nodejs source
+[debug] [2024-01-11T11:18:45.244Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:18:45.245Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:18:45.248Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[info] Serving at port 8410
+
+[debug] [2024-01-11T11:18:45.848Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T11:23:16.385Z] [work-queue] {"queuedWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T11:23:16.384Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T11:23:16.385Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T11:23:16.384Z"],"workRunningCount":1}
+[debug] [2024-01-11T11:23:16.385Z] Accepted request POST /ease-8d84a/us-central1/app/api/createUser --> us-central1-app
+[debug] [2024-01-11T11:23:16.388Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2024-01-11T11:23:16.389Z] [functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser"}}
+[debug] [2024-01-11T11:23:16.389Z] [worker-pool] Cleaned up workers for us-central1-app: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-app: 1 --> 0"}}
+[debug] [2024-01-11T11:23:16.395Z] [worker-pool] addWorker(us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-app)"}}
+[debug] [2024-01-11T11:23:16.395Z] [worker-pool] Adding worker with key us-central1-app, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-app, total=1"}}
+[debug] [2024-01-11T11:23:17.541Z] [runtime-status] [12452] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T11:23:17.542Z] [runtime-status] [12452] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T11:23:17.542Z] [runtime-status] [12452] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2024-01-11T11:23:17.543Z] [runtime-status] [12452] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T11:23:17.730Z] [runtime-status] [12452] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Checked functions.config() {\"config\":{}}"}}
+[debug] [2024-01-11T11:23:17.730Z] [runtime-status] [12452] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}}"}}
+[debug] [2024-01-11T11:23:17.730Z] [runtime-status] [12452] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T11:23:17.731Z] [runtime-status] [12452] Resolved module firebase-admin {"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}"}}
+[debug] [2024-01-11T11:23:17.733Z] [runtime-status] [12452] Resolved module firebase-functions {"declared":true,"installed":true,"version":"4.6.0","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-functions\\lib\\v1\\index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"4.6.0\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-functions\\\\lib\\\\v1\\\\index.js\"}"}}
+[debug] [2024-01-11T11:23:17.734Z] [runtime-status] [12452] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"11.11.1","resolution":"E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"11.11.1\",\"resolution\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\\\\node_modules\\\\firebase-admin\\\\lib\\\\index.js\"}}"}}
+[debug] [2024-01-11T11:23:17.998Z] [runtime-status] [12452] initializeApp(DEFAULT) {"credential":{"implicit":false,"projectId":"ease-8d84a","privateKey":"-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\ngkCxWU/fnrmHDElMmj0hLw/7\n-----END PRIVATE KEY-----\n","clientEmail":"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com","httpClient":{"retry":{"maxRetries":4,"statusCodes":[503],"ioErrorCodes":["ECONNRESET","ETIMEDOUT"],"backOffFactor":0.5,"maxDelayInMillis":60000}}},"databaseURL":"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] initializeApp(DEFAULT) {\"credential\":{\"implicit\":false,\"projectId\":\"ease-8d84a\",\"privateKey\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDOUc8f784ztVjz\\nB5wUzNWMhrCuL1fjiEQVbOic0hrs2/tyHc6M5tQs8aVOo6lO1tHY2eEfHta7K6T8\\nsu7Zpty/zd7zW6MLQFubt5thd2Xyet9aJolyqeNphLM3xkqcOLvCqVGuO0vmJnxa\\nnrf02TYOYsrrwRQiP61cYZXwzeAOhdHdGKmyvp9/qdG4filnSIIRPKpnjTRBvBow\\nVkzwiaQO/ihYDwkjwwVsaMlplr1Pjcsaxn7u32jY8jg/5qqS8R7oy6+Auz/IsOCu\\n9+DVBlJ5xDoxiDGRb7lBethSSfji9P2YmDgpN9CqBxaaoQY65BB2ylBe8eAY5d9P\\n//bEnqQZAgMBAAECggEADcPVWOO1LcEniClbD2PeIH7GUAy5D/q3U3hIFFm2hv8j\\nPr5rLtPiATCgZId/RChevkQaZKri99Ww2iou93xOOzQR7/Rjw5xS2v1W43EQRGtQ\\nYPxJYcogscQdzTa7I21BO6VzyAx34x5GCtQO4Qn9NQcAKQFL+v/6weXXLNvIxcx8\\nTqRDf8beXrrg5TmCYileZ7ODT1P239kBrAmsE1oQFsNruaeDaIoOR47s3nlcdmdU\\n+am0IS7tEvWfYFA6R6WheU/s6K+8KTXRwtAhE7PribsZ0Hhd58PRZ5IltVJIvwu7\\n8mhx/GTVO7DDZHM20oM3fQJpZsxz3qIw9tt/VNnGnQKBgQDpHZK9/gYGb23FPhs/\\n/T8oFeL0n76/XKIJhiAfWN2VOb1brhN9R+zNnzV1RlKUgHr72POsLeXEOA03MJdH\\nOIjzQ+y3oUqZjQXOIP9bCYCXMUPGjUO7zgKppn/UKU4J96qe4acitXY/CF/n3Duh\\nfhaDWdYIbaeTA3aWEqJi3x8WRQKBgQDiktOhlyliOMUdMU7vdskQ2afNyPsc1/Ru\\ngaB7RpBm5pLA/6UnYEWCrIrqyPSu3EnMh6+tQ8eh1ajykB3L8EIYzeyrnbrjcvlC\\n439huV9WtPrTcWW6Wby07fIz89J7SkmEPbGARjN6Xd5KrvZTNBgMugMzmWC+p1l7\\nDVuTdN0NxQKBgQC65jsAmOm7vxsDSQgQBbrdKK8N8gW850gC2sZmW5lMSz7Ggoqd\\np0z0jvENVZRf+6KeyRKUuTe+WjI+TXb8Yxdp8suXbnmhIq/E1C/njXbLwXPVfO0R\\nZdo8qoFSWMt4sljZiZG3AkYLw2shOjGVCMKEDULM/x2bgOtS5x3Kp5kFAQKBgH5k\\nJ7iZyZUoVBU/32fIHMvQj0JFnodtlMZce3ipWX59m1ocgjXgB4ao1+m3Zn9xFZ4K\\nBx8hk2ic9t0xNd4BTe3mWeM2Xv3oslH09KdAMIX++XkgZf45dwJ7RkRi/ISYYUBq\\n5ezHvInDeXCx/2lUwyG+VnDfW8+fLVRulCpC49l9AoGBAKb0ZBafpSWAXNGUiq7h\\nx9ejpHQvdSC5WQmWbEvwuZjuE8h9f14O/M/j0s7FwENteBH5KYWQMDo1sUK/3hRt\\nmA22q8SRbs4aZKH96m4eoYN12mEZ7wQxz0zCIbudwjG3C5dYlLPWS7foGASS3O2k\\ngkCxWU/fnrmHDElMmj0hLw/7\\n-----END PRIVATE KEY-----\\n\",\"clientEmail\":\"firebase-adminsdk-jqkar@ease-8d84a.iam.gserviceaccount.com\",\"httpClient\":{\"retry\":{\"maxRetries\":4,\"statusCodes\":[503],\"ioErrorCodes\":[\"ECONNRESET\",\"ETIMEDOUT\"],\"backOffFactor\":0.5,\"maxDelayInMillis\":60000}}},\"databaseURL\":\"https://ease-8d84a-default-rtdb.europe-west1.firebasedatabase.app\"}"}}
+[debug] [2024-01-11T11:23:18.016Z] [runtime-status] [12452] Functions runtime initialized. {"cwd":"E:\\Escritorio\\ease_api\\ease_backend\\functions","node_version":"20.5.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Functions runtime initialized. {\"cwd\":\"E:\\\\Escritorio\\\\ease_api\\\\ease_backend\\\\functions\",\"node_version\":\"20.5.0\"}"}}
+[debug] [2024-01-11T11:23:18.017Z] [runtime-status] [12452] Listening to port: \\?\pipe\fire_emu_aa35c6cbdb9872dc {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[runtime-status] [12452] Listening to port: \\\\?\\pipe\\fire_emu_aa35c6cbdb9872dc"}}
+[debug] [2024-01-11T11:23:18.025Z] [worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: IDLE"}}
+[debug] [2024-01-11T11:23:18.026Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2024-01-11T11:23:18.027Z] [worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: BUSY"}}
+[info] >  Error adding document:  FirebaseAuthError: The email address is already in use by another account. {"user":"Error adding document:  FirebaseAuthError: The email address is already in use by another account.","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error adding document:  FirebaseAuthError: The email address is already in use by another account."}}
+[info] >      at FirebaseAuthError.fromServerError (E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-admin\lib\utils\error.js:146:16) {"user":"    at FirebaseAuthError.fromServerError (E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\utils\\error.js:146:16)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m     at FirebaseAuthError.fromServerError (E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\utils\\error.js:146:16)"}}
+[info] >      at E:\Escritorio\ease_api\ease_backend\functions\node_modules\firebase-admin\lib\auth\auth-api-request.js:1628:49 {"user":"    at E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\auth\\auth-api-request.js:1628:49","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m     at E:\\Escritorio\\ease_api\\ease_backend\\functions\\node_modules\\firebase-admin\\lib\\auth\\auth-api-request.js:1628:49"}}
+[info] >      at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {"user":"    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"}}
+[info] >      at async E:\Escritorio\ease_api\ease_backend\functions\index.js:31:5 { {"user":"    at async E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js:31:5 {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m     at async E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js:31:5 {"}}
+[info] >    errorInfo: { {"user":"  errorInfo: {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   errorInfo: {"}}
+[info] >      code: 'auth/email-already-exists', {"user":"    code: 'auth/email-already-exists',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m     code: 'auth/email-already-exists',"}}
+[info] >      message: 'The email address is already in use by another account.' {"user":"    message: 'The email address is already in use by another account.'","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m     message: 'The email address is already in use by another account.'"}}
+[info] >    }, {"user":"  },","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   },"}}
+[info] >    codePrefix: 'auth' {"user":"  codePrefix: 'auth'","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   codePrefix: 'auth'"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[debug] [2024-01-11T11:23:18.642Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 616.019ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 616.019ms"}}
+[debug] [2024-01-11T11:23:18.643Z] [worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: IDLE"}}
+[debug] [2024-01-11T11:23:18.643Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2024-01-11T11:23:18.643Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2024-01-11T11:23:18.643Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T11:23:46.410Z] [work-queue] {"queuedWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T11:23:46.410Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T11:23:46.410Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/ease-8d84a/us-central1/app/api/createUser-2024-01-11T11:23:46.410Z"],"workRunningCount":1}
+[debug] [2024-01-11T11:23:46.410Z] Accepted request POST /ease-8d84a/us-central1/app/api/createUser --> us-central1-app
+[debug] [2024-01-11T11:23:46.412Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2024-01-11T11:23:46.412Z] [functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ease-8d84a/us-central1/app/api/createUser, mapping to path=/api/createUser"}}
+[debug] [2024-01-11T11:23:46.413Z] [worker-pool] submitRequest(triggerId=us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-app)"}}
+[info] i  functions: Beginning execution of "us-central1-app" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Beginning execution of \"us-central1-app\""}}
+[debug] [2024-01-11T11:23:46.413Z] [worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: BUSY"}}
+[info] >  Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore {"user":"Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error checking the role user FirebaseError: [code=invalid-argument]: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore"}}
+[info] >  Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] { {"user":"Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m Error adding document:  [FirebaseError: Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore] {"}}
+[info] >    code: 'invalid-argument', {"user":"  code: 'invalid-argument',","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   code: 'invalid-argument',"}}
+[info] >    customData: undefined, {"user":"  customData: undefined,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   customData: undefined,"}}
+[info] >    toString: [Function (anonymous)] {"user":"  toString: [Function (anonymous)]","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m   toString: [Function (anonymous)]"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[debug] [2024-01-11T11:23:47.114Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-app" in 701.0507ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finished \"us-central1-app\" in 701.0507ms"}}
+[debug] [2024-01-11T11:23:47.114Z] [worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: IDLE"}}
+[debug] [2024-01-11T11:23:47.114Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2024-01-11T11:23:47.114Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2024-01-11T11:23:47.114Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2024-01-11T11:26:25.179Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:26:26.187Z] Validating nodejs source
+[debug] [2024-01-11T11:26:28.083Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:26:28.084Z] Building nodejs source
+[debug] [2024-01-11T11:26:28.084Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:26:28.084Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:26:28.088Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8305
+
+[debug] [2024-01-11T11:26:28.654Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T11:26:33.675Z] [worker-pool] Shutting down IDLE worker (us-central1-app) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-app)"}}
+[debug] [2024-01-11T11:26:33.675Z] [worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: FINISHING"}}
+[debug] [2024-01-11T11:26:33.683Z] [worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: exited"}}
+[debug] [2024-01-11T11:26:33.683Z] [worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-app"},"extension":{},"message":"[worker-us-central1-app-1e8edbf8-d5bf-48d7-b668-775c7cc86604]: FINISHED"}}
+[debug] [2024-01-11T11:26:54.126Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[debug] [2024-01-11T11:26:55.135Z] Validating nodejs source
+[debug] [2024-01-11T11:26:56.369Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:26:56.369Z] Building nodejs source
+[debug] [2024-01-11T11:26:56.369Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:26:56.370Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:26:56.375Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8101
+
+[debug] [2024-01-11T11:26:56.990Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2024-01-11T11:27:01.609Z] File E:\Escritorio\ease_api\ease_backend\functions\index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File E:\\Escritorio\\ease_api\\ease_backend\\functions\\index.js changed, reloading triggers"}}
+[info] +  functions: Loaded functions definitions from source: app. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: app."}}
+[debug] [2024-01-11T11:27:02.611Z] Validating nodejs source
+[debug] [2024-01-11T11:27:03.758Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^11.8.0",
+    "firebase-functions": "^4.3.1",
+    "react-native-device-info": "^10.12.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2024-01-11T11:27:03.758Z] Building nodejs source
+[debug] [2024-01-11T11:27:03.758Z] Failed to find version of module node: reached end of search path E:\Escritorio\ease_api\ease_backend\functions\node_modules
+[info] +  functions: Using node@20 from host. 
+[debug] [2024-01-11T11:27:03.758Z] Could not find functions.yaml. Must use http discovery
+[debug] [2024-01-11T11:27:03.762Z] Found firebase-functions binary at 'E:\Escritorio\ease_api\ease_backend\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8462
+
+[debug] [2024-01-11T11:27:04.340Z] Got response from /__/functions.yaml {"endpoints":{"app":{"platform":"gcfv1","availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"serviceAccountEmail":null,"vpc":null,"httpsTrigger":{},"entryPoint":"app"}},"specVersion":"v1alpha1","requiredAPIs":[]}
