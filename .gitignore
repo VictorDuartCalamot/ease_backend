@@ -7,9 +7,6 @@ functions/node_modules/
 functions/ui-debug.log
 # Firebase
 fb/firebase_key.json
-fb/firebaseConfig.mjs
-fb/validationUtils.mjs
-fb/dbUtils.mjs
 # Debug
 firestore-debug.log
 ui-debug.log
