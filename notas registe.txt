@@ -1,0 +1,20 @@
+#Cliente 
+import axios from 'axios';
+
+const registerUser = async () => {
+  try {
+    const response = await axios.post('http://127.0.0.1:8000/api/users/register/', {
+      name: 'pepe',
+      email: 'pepe@gmail.com',
+      password: 'abcd1234!',
+    });
+    console.log(response.data);
+    // Manejo de la respuesta del servidor
+  } catch (error) {
+    console.error(error);
+    // Manejo de errores
+  }
+}
+
+// Llamamos a la función registerUser en algún punto de tu aplicación, 
+// por ejemplo, en el manejador de un botón o en un efecto.
