@@ -9,3 +9,7 @@ pip install django dj-database-url djangorestframework-simplejwt psycopg2-binary
 
 #Copy packages to requirements.txt
 pip freeze > requirements.txt
+
+
+#Api root url
+https://easeapi.onrender.com/
