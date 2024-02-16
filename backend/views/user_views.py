@@ -8,10 +8,7 @@ from django.contrib.auth.hashers import make_password
 from backend.serializers import UserSerializerWithToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from rest_framework.exceptions import AuthenticationFailed
-
-
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):

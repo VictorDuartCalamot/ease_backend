@@ -11,16 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'RENDER' not in os.environ
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['192.168.1.158','127.0.0.1','10.0.2.2']
-
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -115,8 +111,9 @@ DATABASES = {
         }    
 }
 
-DATABASES['default'] = dj_database_url.parse('postgres://easedb_user:2FiW5cP7P9rRUfiwqKidJRDt76OwKUP8@dpg-cn1524en7f5s73fdqsa0-a.frankfurt-postgres.render.com/easedb')
-
+database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"] = dj_database_url.parse(database_url)
+#DATABASES['default'] = dj_database_url.parse('postgres://easedb_user:2FiW5cP7P9rRUfiwqKidJRDt76OwKUP8@dpg-cn1524en7f5s73fdqsa0-a/easedb')
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
