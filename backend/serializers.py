@@ -39,8 +39,8 @@ class UserSerializerWithToken(UserSerializer):
 class IncomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Income
-        fields = ['amount', 'category', 'date', 'user_id']
-        read_only_fields = ['user_id']  
+        fields = ['amount', 'category', 'date', 'user']
+        read_only_fields = ['user']  
 
     def create(self, validated_data):
         # Assign authenticated user's ID to the 'user' field
@@ -50,10 +50,10 @@ class IncomeSerializer(serializers.ModelSerializer):
 class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Expense
-        fields = ['amount', 'category', 'date', 'user_id']
-        read_only_fields = ['user_id']  
+        fields = ['amount', 'category', 'date', 'user']
+        read_only_fields = ['user']  
 
     def create(self, validated_data):
         # Assign authenticated user's ID to the 'user' field
-        validated_data['user_id'] = self.context['request'].user
+        validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
