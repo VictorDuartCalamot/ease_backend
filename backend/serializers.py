@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from .models import Income, Expense
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -34,3 +34,26 @@ class UserSerializerWithToken(UserSerializer):
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
+
+
+class IncomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Income
+        fields = ['amount', 'category', 'date', 'user_id']
+        read_only_fields = ['user_id']  
+
+    def create(self, validated_data):
+        # Assign authenticated user's ID to the 'user' field
+        validated_data['user_id'] = self.context['request'].user
+        return super().create(validated_data)
+
+class ExpenseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expense
+        fields = ['amount', 'category', 'date', 'user_id']
+        read_only_fields = ['user_id']  
+
+    def create(self, validated_data):
+        # Assign authenticated user's ID to the 'user' field
+        validated_data['user_id'] = self.context['request'].user
+        return super().create(validated_data)
