@@ -3,9 +3,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from models import Income, Expense
-from serializers import IncomeSerializer, ExpenseSerializer
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from backend.models import Income, Expense
+from backend.serializers import IncomeSerializer, ExpenseSerializer
+from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 
 class IncomeView(APIView):

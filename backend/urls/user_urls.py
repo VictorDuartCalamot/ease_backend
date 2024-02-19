@@ -1,6 +1,5 @@
 from django.urls import path
 from backend.views import user_views as user_views
-from backend.views import management_views as management_views
 
 
 urlpatterns = [
