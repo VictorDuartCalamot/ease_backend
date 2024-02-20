@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db import models
-from utils import generate_random_code
+from backend.utils import generate_random_code
 #Income/Expense models
 class Income(models.Model):
     id = models.CharField(_('Code'), max_length=20, unique=True)
