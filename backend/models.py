@@ -4,7 +4,7 @@ from django.db import models
 from backend.utils import generate_random_id
 #Income/Expense models
 class Income(models.Model):
-    id = models.CharField(('income_id'), max_length=20, unique=True)
+    id = models.CharField(('income_id'), max_length=20, unique=True,primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     date = models.DateField()
@@ -17,7 +17,7 @@ class Income(models.Model):
 
     
 class Expense(models.Model):
-    id = models.CharField(('expense_id'), max_length=20, unique=True)
+    id = models.CharField(('expense_id'), max_length=20, unique=True,primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     date = models.DateField()
