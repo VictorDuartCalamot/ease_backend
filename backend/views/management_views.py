@@ -6,6 +6,7 @@ from rest_framework import status
 from backend.models import Income, Expense
 from backend.serializers import IncomeSerializer, ExpenseSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
 from django.http import Http404
 
 class IncomeView(APIView):
@@ -57,12 +58,27 @@ class ExpenseView(APIView):
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data)
     
-    def post(self, request):        
-        print(request.data)
-        serializer = ExpenseSerializer(data=request.data)        
+def post(self, request):
+        # Retrieve the token from the request headers
+        token = request.headers.get('Authorization').split(' ')[1]
+        # Retrieve the user associated with the token
+        try:
+            token_obj = Token.objects.get(key=token)
+            user = token_obj.user
+        except Token.DoesNotExist:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
+        print(user)
+        # Assign the authenticated user to the request data
+        request.data['user'] = user.id
+        # Create a serializer instance with the modified request data
+        serializer = ExpenseSerializer(data=request.data)
+        # Validate the serializer data
         if serializer.is_valid():
-            serializer.save(user=request.user)  # Assign the authenticated user to the expense
+            # Save the serializer data to the database
+            serializer.save()
+            # Return a success response
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # Return an error response if validation fails
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request, pk):
