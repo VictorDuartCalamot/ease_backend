@@ -3,7 +3,14 @@ from django.contrib.auth.models import User
 from django.db import models
 from backend.utils import generate_random_id
 #Income/Expense models
-class Income(models.Model):
+
+class auth_user_logs(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    successful = models.BooleanField(default=False)
+    description = models.CharField(max_length=50)
+    
+class income(models.Model):
     id = models.CharField(('income_id'), max_length=20, unique=True,primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
@@ -16,7 +23,7 @@ class Income(models.Model):
         super().save(*args, **kwargs)
 
     
-class Expense(models.Model):
+class expense(models.Model):
     id = models.CharField(('expense_id'), max_length=20, unique=True,primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)

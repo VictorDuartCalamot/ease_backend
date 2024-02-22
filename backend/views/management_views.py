@@ -16,12 +16,19 @@ class IncomeView(APIView):
             return Income.objects.get(pk=pk, user=self.request.user)
         except Income.DoesNotExist:
             raise Http404
-
+        
+    def post(self, request):
+            serializer = IncomeSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(user=request.user)  # Assign the authenticated user to the expense
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
     def get(self, request, pk):
         income = self.get_object(pk)
         serializer = IncomeSerializer(income)
         return Response(serializer.data)
-
+        
     def put(self, request, pk):
         income = self.get_object(pk)
         serializer = IncomeSerializer(income, data=request.data)
@@ -49,7 +56,13 @@ class ExpenseView(APIView):
         expense = self.get_object(pk)
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data)
-
+    def post(self, request):
+            serializer = ExpenseSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(user=request.user)  # Assign the authenticated user to the expense
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     def put(self, request, pk):
         expense = self.get_object(pk)
         serializer = ExpenseSerializer(expense, data=request.data)
