@@ -10,7 +10,7 @@ class auth_user_logs(models.Model):
     successful = models.BooleanField(default=False)
     description = models.CharField(max_length=50)
     
-class income(models.Model):
+class Income(models.Model):
     id = models.CharField(('income_id'), max_length=20, unique=True,primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
@@ -23,7 +23,7 @@ class income(models.Model):
         super().save(*args, **kwargs)
 
     
-class expense(models.Model):
+class Expense(models.Model):
     id = models.CharField(('expense_id'), max_length=20, unique=True,primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
