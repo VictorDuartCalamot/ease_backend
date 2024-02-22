@@ -7,7 +7,7 @@ from backend.models import Income, Expense
 from backend.serializers import IncomeSerializer, ExpenseSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication,BasicAuthentication
 from django.http import Http404
 
 class IncomeView(APIView):
@@ -48,7 +48,7 @@ class IncomeView(APIView):
 
 class ExpenseView(APIView):
     permission_classes = [IsAuthenticated]    
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication,SessionAuthentication, BasicAuthentication]
     
     def get_object(self, pk):
         try:
