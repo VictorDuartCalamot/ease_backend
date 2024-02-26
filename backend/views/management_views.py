@@ -7,7 +7,7 @@ from backend.models import Income, Expense
 from backend.serializers import IncomeSerializer, ExpenseSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication,BasicAuthentication
+from rest_framework.authentication import TokenAuthentication
 from django.http import Http404
 
 class IncomeView(APIView):
