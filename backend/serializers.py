@@ -52,8 +52,9 @@ class ExpenseSerializer(serializers.ModelSerializer):
     creation_date = serializers.DateField(format="%d-%m-%Y", input_formats=['%d-%m-%Y', 'iso-8601'])
     class Meta:
         model = Expense
-        fields = ['amount', 'category', 'creation_date', 'user']
-        read_only_fields = ['user']  
+        fields = ['amount', 'category', 'creation_date']
+        #fields = ['amount', 'category', 'creation_date', 'user']
+        #read_only_fields = ['user']  
 
     def create(self, validated_data):
         # Assign authenticated user's ID to the 'user' field
