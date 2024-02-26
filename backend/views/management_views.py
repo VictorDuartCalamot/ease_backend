@@ -85,3 +85,19 @@ class ExpenseView(APIView):
         expense = self.get_object(pk)
         expense.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ExpenseTryView(APIView):
+    def post(self, request):
+        # Deserialize request data
+        serializer = ExpenseSerializer(data=request.data)
+        
+        # Check if serializer is valid
+        if serializer.is_valid():
+            # Save the expense
+            serializer.save()
+            
+            # Return success response
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            # Return error response
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

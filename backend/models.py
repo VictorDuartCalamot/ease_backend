@@ -34,3 +34,10 @@ class Expense(models.Model):
             if not self.id:
                 self.id = generate_random_id('E-')
             super().save(*args, **kwargs)
+
+
+class ExpenseTry(models.Model):
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.CharField(max_length=100)
+    creation_date = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
