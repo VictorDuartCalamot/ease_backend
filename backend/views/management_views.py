@@ -68,7 +68,8 @@ class ExpenseView(APIView):
         serializer = ExpenseSerializer(data=request.data)
         if serializer.is_valid():
             # Assign the authenticated user to the expense
-            serializer.save(user=request.user)
+            serializer.save()
+            #serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
