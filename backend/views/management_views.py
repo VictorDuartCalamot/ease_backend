@@ -63,6 +63,7 @@ class ExpenseView(APIView):
     
     def post(self, request):
         print('Postin!')
+        print(request.data)
         # Deserialize request data
         serializer = ExpenseSerializer(data=request.data)
         if serializer.is_valid():
