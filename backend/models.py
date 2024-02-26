@@ -35,9 +35,8 @@ class Expense(models.Model):
                 self.id = generate_random_id('E-')
             super().save(*args, **kwargs)
 
-
-class ExpenseTry(models.Model):
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.CharField(max_length=100)
-    creation_date = models.DateField()
+class Expense2(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)

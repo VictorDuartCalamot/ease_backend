@@ -1,14 +1,17 @@
 # backend/views.py
 
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from backend.models import Income, Expense
-from backend.serializers import IncomeSerializer, ExpenseSerializer
+from backend.models import Income, Expense, Expense2
+from backend.serializers import IncomeSerializer, ExpenseSerializer,Expense2Serializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from django.http import Http404
+from rest_framework import generics
+from backend.permissions import IsOwner
 
 class IncomeView(APIView):
     permission_classes = [IsAuthenticated]   
@@ -61,6 +64,7 @@ class ExpenseView(APIView):
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data)
     
+    @api_view(['POST'])
     def post(self, request):
         print('Postin!')
         print(request.data)
@@ -86,26 +90,24 @@ class ExpenseView(APIView):
         expense.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class ExpenseTryView(APIView):
-    def post(self, request):
-        # Deserialize request data
-        try:
-            serializer = ExpenseSerializer(
-                amount = 'amount', 
-                category = 'category', 
-                creation_date = 'creation_date',                
-                )
 
-        except Exception as e:
-            message = {'detail': 'Something went wrong creating the expense'}
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)                
-        # Check if serializer is valid
-        if serializer.is_valid():
-            # Save the expense
-            serializer.save()
-            
-            # Return success response
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            # Return error response
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ExpenseListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = Expense2Serializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Expense2.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+
+class ExpenseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+
+    def get_queryset(self):
+        return Expense.objects.filter(user=self.request.user)
