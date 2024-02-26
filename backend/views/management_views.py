@@ -64,7 +64,6 @@ class ExpenseView(APIView):
         serializer = ExpenseSerializer(expense)
         return Response(serializer.data)
     
-    @api_view(['POST'])
     def post(self, request):
         print('Postin!')
         print(request.data)
@@ -92,22 +91,3 @@ class ExpenseView(APIView):
     
 
 
-
-class ExpenseListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = Expense2Serializer
-    #permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        return Expense2.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-
-
-class ExpenseRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
-
-    def get_queryset(self):
-        return Expense.objects.filter(user=self.request.user)

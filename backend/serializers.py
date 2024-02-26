@@ -67,8 +67,3 @@ class AuthUserLogsSerializer(serializers.ModelSerializer):
         fields = ['id', 'date','successful', 'description']
         read_only_fields = ['id', 'date','successful', 'description']
 
-
-class Expense2Serializer(serializers.ModelSerializer):
-    class Meta:
-        model = Expense
-        fields = ['id', 'title', 'amount', 'created_at']
