@@ -37,9 +37,10 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class IncomeSerializer(serializers.ModelSerializer):
+    creation_date = serializers.DateField(format="%d-%m-%Y", input_formats=['%d-%m-%Y', 'iso-8601'])
     class Meta:
         model = Income
-        fields = ['amount', 'category', 'date', 'user']
+        fields = ['amount', 'category', 'creation_date', 'user']
         read_only_fields = ['user']  
 
     def create(self, validated_data):
@@ -48,9 +49,10 @@ class IncomeSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 class ExpenseSerializer(serializers.ModelSerializer):
+    creation_date = serializers.DateField(format="%d-%m-%Y", input_formats=['%d-%m-%Y', 'iso-8601'])
     class Meta:
         model = Expense
-        fields = ['amount', 'category', 'date', 'user']
+        fields = ['amount', 'category', 'creation_date', 'user']
         read_only_fields = ['user']  
 
     def create(self, validated_data):
