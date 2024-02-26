@@ -71,7 +71,7 @@ class AuthUserLogsSerializer(serializers.ModelSerializer):
 
 class ExpenseTrySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Expense
+        model = ExpenseTry
         fields = ['amount', 'category', 'creation_date', 'user']
         read_only_fields = ['user']
 
