@@ -89,8 +89,16 @@ class ExpenseView(APIView):
 class ExpenseTryView(APIView):
     def post(self, request):
         # Deserialize request data
-        serializer = ExpenseSerializer(data=request.data)
-        
+        try:
+            serializer = ExpenseSerializer.create(
+                amount = 'amount', 
+                category = 'category', 
+                creation_date = 'creation_date',                
+                )
+
+        except Exception as e:
+            message = {'detail': 'Something went wrong creating the expense'}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)                
         # Check if serializer is valid
         if serializer.is_valid():
             # Save the expense
