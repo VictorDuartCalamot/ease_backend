@@ -90,7 +90,7 @@ class ExpenseTryView(APIView):
     def post(self, request):
         # Deserialize request data
         try:
-            serializer = ExpenseSerializer.create(
+            serializer = ExpenseSerializer(
                 amount = 'amount', 
                 category = 'category', 
                 creation_date = 'creation_date',                
