@@ -95,7 +95,7 @@ class ExpenseView(APIView):
 
 class ExpenseListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = Expense2Serializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Expense2.objects.filter(user=self.request.user)
