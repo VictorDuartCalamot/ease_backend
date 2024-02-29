@@ -50,7 +50,7 @@ class IncomeView(APIView):
 
 
 class ExpenseView(APIView):
-    permission_classes = [IsAuthenticated]    
+    #permission_classes = [IsAuthenticated]    
     #authentication_classes = [TokenAuthentication]
     
     def get_object(self, pk):
