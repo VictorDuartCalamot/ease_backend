@@ -14,8 +14,8 @@ from rest_framework import generics
 from backend.permissions import IsOwner
 
 class IncomeView(APIView):
-    permission_classes = [IsAuthenticated]   
-    authentication_classes = [TokenAuthentication] 
+    #permission_classes = [IsAuthenticated]   
+    #authentication_classes = [TokenAuthentication] 
 
     def get_object(self, pk):
         try:
