@@ -36,11 +36,13 @@ def registerUser(request):
     data = request.data
     email = (data['email']).strip().lower()
     name = (data['name']).strip()
+    last_name = (data['last_name']).strip()
     password = (data['password']).strip()
 
     try:
         user = User.objects.create(
             first_name=name,
+            last_name=last_name,
             username=email,
             email=email,
             password=make_password(password)
