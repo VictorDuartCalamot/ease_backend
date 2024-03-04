@@ -22,6 +22,7 @@ class ExpenseView(viewsets.ModelViewSet):
         user = request.user
         print(user)
         print(request.data)
+        print(request)
         serializer = ExpenseSerializer(data=request.data)
         serializer.context['user'] = self.request.user
         if serializer.is_valid():
