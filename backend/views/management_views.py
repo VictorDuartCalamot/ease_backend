@@ -16,7 +16,7 @@ class ExpenseView(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self,request):
+    def create(self,request):
         print("Entramos en el post")
         permission_classes = [IsAuthenticated]
         user = request.user
