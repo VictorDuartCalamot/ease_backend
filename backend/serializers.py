@@ -54,13 +54,15 @@ class ExpenseSerializer(serializers.ModelSerializer):
         model = Expense
         #fields = ['amount', 'category', 'creation_date']
         #fields = ['amount', 'category', 'creation_date', 'user']
-        fields = ['amount', 'category', 'user']
-        read_only_fields = ['user']  
-
+        #fields = ['amount', 'category', 'user']
+        fields = ['amount', 'category']
+        #read_only_fields = ['user']  
+    """
     def create(self, validated_data):
         # Assign authenticated user's ID to the 'user' field
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+        """
 
 class AuthUserLogsSerializer(serializers.ModelSerializer):
     class Meta:
