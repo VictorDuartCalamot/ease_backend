@@ -36,6 +36,12 @@ class UserSerializerWithToken(UserSerializer):
         return str(token.access_token)
 
 
+class AuthUserLogsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = auth_user_logs
+        fields = ['id', 'date','successful', 'description']
+        read_only_fields = ['id', 'date','successful', 'description']
+
 class IncomeSerializer(serializers.ModelSerializer):
     creation_date = serializers.DateField(format="%d-%m-%Y", input_formats=['%d-%m-%Y', 'iso-8601'])
     class Meta:
@@ -64,9 +70,4 @@ class ExpenseSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
         """
 
-class AuthUserLogsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = auth_user_logs
-        fields = ['id', 'date','successful', 'description']
-        read_only_fields = ['id', 'date','successful', 'description']
 

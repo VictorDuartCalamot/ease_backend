@@ -13,6 +13,7 @@ from django.http import Http404
 from rest_framework import generics
 from backend.permissions import IsOwner
 
+"""
 class IncomeView(APIView):
     #permission_classes = [IsAuthenticated]   
     #authentication_classes = [TokenAuthentication] 
@@ -27,13 +28,13 @@ class IncomeView(APIView):
             #serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+"""
 
 class ExpenseView(APIView):
     #permission_classes = [IsAuthenticated]    
     #authentication_classes = [TokenAuthentication]
     @api_view(['POST'])
-    def post(self, request):
+    def post(self, request,format=None):
         print('Postin!')
         print(request.data)
         # Deserialize request data

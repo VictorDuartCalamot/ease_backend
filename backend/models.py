@@ -10,6 +10,7 @@ class auth_user_logs(models.Model):
     successful = models.BooleanField(default=False)
     description = models.CharField(max_length=50)
     
+"""
 class Income(models.Model):
     id = models.CharField(('income_id'), max_length=20, unique=True,primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -21,7 +22,7 @@ class Income(models.Model):
         if not self.id:
             self.id = generate_random_id('I-')
         super().save(*args, **kwargs)
-
+"""
     
 class Expense(models.Model):
     id = models.CharField(('expense_id'), max_length=20, unique=True,primary_key=True)
