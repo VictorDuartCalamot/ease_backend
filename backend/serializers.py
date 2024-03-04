@@ -42,4 +42,10 @@ class ExpenseSerializer(serializers.ModelSerializer):
         model = Expense
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
         read_only_fields = ['id', 'user']
-    
+        
+    def create(self, validated_data):
+        # Retrieve the user from the context
+        user = self.context.get('user')
+        # Add the user to the validated data before saving
+        validated_data['user'] = user
+        return super().create(validated_data)
