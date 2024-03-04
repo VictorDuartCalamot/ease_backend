@@ -21,7 +21,7 @@ class ExpenseView(viewsets.ModelViewSet):
         user = User.objects.get(email=request.user)     
         print(request.data)  
         print(user.pk)  
-        serializer = ExpenseSerializer(data=request.data,context={'user': user})
+        serializer = ExpenseSerializer(data=request.data,context={'user': user.pk})
         print(serializer)        
         if serializer.is_valid():
             serializer.save()  # Save the expense object to the database
