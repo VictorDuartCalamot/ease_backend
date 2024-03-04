@@ -20,9 +20,10 @@ class ExpenseView(viewsets.ModelViewSet):
         print("Entramos en el post")
         permission_classes = [IsAuthenticated]
         user = request.user
-        print(user)
+        print(request.user.user_id)
+        print(request(user))
         print(request.data)
-        print(request)
+        print(request.user_id)
         serializer = ExpenseSerializer(data=request.data)
         serializer.context['user'] = self.request.user
         if serializer.is_valid():
