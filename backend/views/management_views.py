@@ -17,8 +17,7 @@ class ExpenseView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self,request):
-        print("Entramos en el post")
-        permission_classes = [IsAuthenticated]
+        print("Entramos en el post")        
         user = request.user
         print(request.user.user_id)
         print(request(user))
