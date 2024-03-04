@@ -10,7 +10,7 @@ from rest_framework import generics
 from backend.permissions import IsOwner
 from backend.serializers import ExpenseSerializer
 from backend.models import Expense
-
+from django.contrib.auth.models import User
 class ExpenseView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
@@ -18,13 +18,11 @@ class ExpenseView(viewsets.ModelViewSet):
 
     def create(self,request):
         print("Entramos en el post")        
-        user = request.user        
-        print(user)
-        print(request.data)
-        print(request.user_id)
-        print(request.user.user_id)
+        user = User.objects.get(email=request.user)     
+        print(request.data)  
+        print(user)  
         serializer = ExpenseSerializer(data=request.data)
-        serializer.context['user'] = self.request.user
+        serializer.context['user'] = user
         if serializer.is_valid():
             serializer.save()  # Save the expense object to the database
             return Response(serializer.data, status=status.HTTP_201_CREATED)
