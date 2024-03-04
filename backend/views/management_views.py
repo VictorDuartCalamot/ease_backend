@@ -34,7 +34,7 @@ class ExpenseView(APIView):
     #permission_classes = [IsAuthenticated]    
     #authentication_classes = [TokenAuthentication]
     @api_view(['POST'])
-    def post(self, request,format=None):
+    def post(self, request):
         print('Postin!')
         print(request.data)
         # Deserialize request data
