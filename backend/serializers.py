@@ -38,17 +38,17 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField()    
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())    
     class Meta:
         model = Expense
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
         read_only_fields = ['id']
         
     def create(self, validated_data):
-        print("He entrado en el create dentro del serializer")
+        print("He entrado en el create dentro del serializer y antes de hacer el self.context")
         # Retrieve the user from the context
         user = self.context.get('user')
-        print("El usuario: "+user)
+        print("Despues de hacer el self.context El usuario: "+user)
         # Add the user to the validated data before saving
         validated_data['user'] = user
         return super().create(validated_data)
