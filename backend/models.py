@@ -22,6 +22,5 @@ class Expense(models.Model):
         print("Entro en el save del modelo")                
         self.id = generate_random_id('E-')
         print("ID: "+self.id)
-        #super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
         print("Guardo las cosas?")
-    print(id)
