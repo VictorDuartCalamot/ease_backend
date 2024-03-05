@@ -23,3 +23,4 @@ class Expense(models.Model):
         self.id = generate_random_id('E-')
         print("ID: "+self.id)
         super().save(*args, **kwargs)
+        print("Guardo las cosas?")
