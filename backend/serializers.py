@@ -45,8 +45,10 @@ class ExpenseSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'user']
         
     def create(self, validated_data):
+        print("He entrado en el create dentro del serializer")
         # Retrieve the user from the context
         user = self.context.get('user')
+        print("El usuario: "+user)
         # Add the user to the validated data before saving
         validated_data['user'] = user
         return super().create(validated_data)

@@ -19,6 +19,7 @@ class Expense(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def save(self, *args, **kwargs):
-            if not self.id:
-                self.id = generate_random_id('E-')
-            super().save(*args, **kwargs)
+        print("Entro en el save del modelo")        
+        if not self.id:
+            self.id = generate_random_id('E-')
+        super().save(*args, **kwargs)
