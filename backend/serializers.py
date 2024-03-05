@@ -38,7 +38,7 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
-    user = serializers.IntegerField()
+    user = serializers.IntegerField(read_only=True)
     class Meta:
         model = Expense
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
