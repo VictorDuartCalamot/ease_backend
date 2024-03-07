@@ -24,7 +24,8 @@ class ExpenseView(viewsets.ModelViewSet):
         serializer = ExpenseSerializer(data=request.data, context={'user': user_pk})
         print(serializer)        
         if serializer.is_valid():
-            serializer.save()  # Save the expense object to the database
+            print('Valida el serializer?')
+            serializer.save(user=user_pk)  # Save the expense object to the database
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             print(serializer.errors)  # Print out the errors for debugging
