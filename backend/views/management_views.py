@@ -19,11 +19,16 @@ class ExpenseView(viewsets.ModelViewSet):
 
     def create(self, request):
         print("Entramos en el post")        
-        user = User.objects.get(email=request.user)       
-        serializer = ExpenseSerializer(data=request.data, context={'user': user.pk})
+        user = request.user    
+        print(user)
+        serializer = ExpenseSerializer(data=request.data, context={'user': user})
         print(serializer)        
         if serializer.is_valid():
+<<<<<<< HEAD
             serializer.save(user=user.pk)  # Save the expense object to the database
+=======
+            serializer.save(user=user)  # Save the expense object to the database
+>>>>>>> 78111347c5d4676c11efb659c147cd405e5acc2e
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             print(serializer.errors)  # Print out the errors for debugging

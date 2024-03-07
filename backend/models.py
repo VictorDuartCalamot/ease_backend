@@ -12,14 +12,15 @@ class auth_user_logs(models.Model):
 
     
 class Expense(models.Model):
-    id = models.CharField(('expense_id'), max_length=20, unique=True,primary_key=True)
+    id = models.CharField(('expense_id'), max_length=50, unique=True,primary_key=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     creation_date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def save(self, *args, **kwargs):
-        print("Entro en el save del modelo")        
-        if not self.id:
-            self.id = generate_random_id('E-')
+        print("Entro en el save del modelo")                
+        self.id = generate_random_id('E-')
+        print("ID: "+self.id)
         super().save(*args, **kwargs)
+        print("Guardo las cosas?")
