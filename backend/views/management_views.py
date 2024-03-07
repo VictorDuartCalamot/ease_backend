@@ -20,7 +20,10 @@ class ExpenseView(viewsets.ModelViewSet):
     def create(self, request):
         print("Entramos en el post")        
         user_pk = request.user.pk  
-        print("Es integer? "+isinstance(request.user.pk, int))
+        if isinstance(request.user.pk, int):
+            print("True")
+        else:
+            print("False")
         print(user_pk)
         serializer = ExpenseSerializer(data=request.data, context={'user': user_pk})
         print(serializer)        
