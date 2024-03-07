@@ -49,8 +49,8 @@ class ExpenseSerializer(serializers.ModelSerializer):
         # Retrieve the user from the context
         
         print(self.context.get('user'))
-        user = self.context.get('user')
+        user_pk = self.context.get('user')
         print("Despues de hacer el self.context El usuario: "+user)
         # Add the user to the validated data before saving
-        validated_data['user'] = user
+        validated_data['user'] = user_pk
         return super().create(validated_data)
