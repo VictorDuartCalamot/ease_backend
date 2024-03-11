@@ -58,4 +58,4 @@ class ExpenseSerializer(serializers.ModelSerializer):
         # Add the user to the validated data before saving
         validated_data['user'] = user
         print("Despues de validated_data")
-        return super().create(validated_data),print("salgo")
+        return super().create(validated_data)
