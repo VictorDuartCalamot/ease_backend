@@ -59,5 +59,5 @@ class ExpenseSerializer(serializers.ModelSerializer):
         validated_data['user'] = user
         print("Despues de validated_data")
         created_object = super().create(validated_data)
-        print("Object created")
+        print("Object created",str(created_object))
         return created_object
