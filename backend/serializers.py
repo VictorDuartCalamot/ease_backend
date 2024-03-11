@@ -38,13 +38,13 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    user_id = serializers.RelatedField(source='user',read_only=True)
     class Meta:
         model = Expense
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
         read_only_fields = ['id']
         
-    def create(self, validated_data):
+    '''def create(self, validated_data):
         # Retrieve the user from the validated data
         user = validated_data.pop('user', None)
         if user:
@@ -53,7 +53,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
             return expense
         else:
             # Handle the case where user is not provided
-            raise serializers.ValidationError("User data is required.")
+            raise serializers.ValidationError("User data is required.")'''
     """def create(self, validated_data):
         print("He entrado en el create dentro del serializer y antes de hacer el self.context")
         # Retrieve the user from the context        
