@@ -21,6 +21,7 @@ class ExpenseView(viewsets.ModelViewSet):
         print("Entramos en el post")        
         user_pk = request.user.pk 
         user_instance = User.objects.get(id=user_pk) 
+        print(self.user)
         print(user_pk)
         print(user_instance)
         serializer = ExpenseSerializer(data=request.data, context={'user': user_instance})
