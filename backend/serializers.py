@@ -54,7 +54,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
         except Exception as e:
             print(f"Error retrieving user_pk: {str(e)}")
                             
-        print("Despues de hacer el self.context El usuario: "+ str(user_pk))
+        print("Despues de hacer el self.context El usuario: "+ str(user))
         # Add the user to the validated data before saving
         validated_data['user'] = user
         print("Despues de validated_data")

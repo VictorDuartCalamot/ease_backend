@@ -11,8 +11,8 @@ from backend.permissions import IsOwner
 from backend.serializers import ExpenseSerializer
 from backend.models import Expense
 from django.contrib.auth.models import User
-
-class ExpenseView(viewsets.ModelViewSet):
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+class ExpenseView(viewsets.ModelViewSet,TokenObtainPairSerializer):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]
@@ -24,7 +24,7 @@ class ExpenseView(viewsets.ModelViewSet):
         print(self.user)
         print(user_pk)
         print(user_instance)
-        serializer = ExpenseSerializer(data=request.data, context={'user': user_instance})
+        serializer = ExpenseSerializer(data=request.data, context={'user': self.user})
         print(serializer)        
         if serializer.is_valid():
             print('Valida el serializer?')
