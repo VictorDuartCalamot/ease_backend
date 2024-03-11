@@ -22,4 +22,6 @@ class Expense(models.Model):
         print("Entro en el save del modelo")                
         self.id = generate_random_id('E-')
         print("ID: "+ str(self.id))
-        return super().save(*args, **kwargs)        
+        object = super().save(*args, **kwargs)        
+        print("Despues de guardar el objeto" + str(object))
+        return object
