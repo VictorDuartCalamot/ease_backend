@@ -11,6 +11,8 @@ from backend.permissions import IsOwner
 from backend.serializers import ExpenseSerializer
 from backend.models import Expense
 from django.contrib.auth.models import User
+
+from backend.serializers import UserSerializerWithToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 class ExpenseView(viewsets.ModelViewSet,TokenObtainPairSerializer):
     queryset = Expense.objects.all()
@@ -20,12 +22,15 @@ class ExpenseView(viewsets.ModelViewSet,TokenObtainPairSerializer):
     def create(self, request):
         print("Entramos en el post")        
         user_pk = request.user.pk 
+        
         user_instance = User.objects.get(id=user_pk) 
-        print(self.user)
+       
         print(user_pk)
         print(user_instance)
-        serializer = ExpenseSerializer(data=request.data, context={'user': self.user})
-        print(serializer)        
+        serializer = ExpenseSerializer(data=request.data, context={'user': user_instance}) 
+        print(serializer)    
+        userSerializer = UserSerializerWithToken(request.user)    
+        print(userSerializer)
         if serializer.is_valid():
             print('Valida el serializer?')
             serializer.save()  # Save the expense object to the database
