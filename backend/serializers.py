@@ -38,17 +38,17 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
-    user = serializers.IntegerField(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     class Meta:
         model = Expense
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
         read_only_fields = ['id']
         
-    def create(self, validated_data):
+    """def create(self, validated_data):
         print("He entrado en el create dentro del serializer y antes de hacer el self.context")
         # Retrieve the user from the context        
         try:
-            user = self.context.get('user')
+            user = validated_data.pop('user', None)
             print(user)  # Verify if this prints anything
     # Add other operations with user_pk here
         except Exception as e:
@@ -56,8 +56,8 @@ class ExpenseSerializer(serializers.ModelSerializer):
                             
         print("Despues de hacer el self.context El usuario: "+ str(user))
         # Add the user to the validated data before saving
-        validated_data['user'] = user
+        #validated_data['user'] = user
         print("Despues de validated_data")
-        created_object = super().create(validated_data)
+        created_object = Expense.objects.create(user=user, **validated_data)
         print("Object created",str(created_object))
-        return created_object
+        return created_object"""
