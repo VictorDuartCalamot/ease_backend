@@ -14,9 +14,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         try:
             data = super().validate(attrs)
-
+            print(data)
+            print(self.user)
             serializer = UserSerializerWithToken(self.user).data
-
+            print(serializer)
             for k, v in serializer.items():
                 data[k] = v
 
