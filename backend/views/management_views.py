@@ -19,9 +19,10 @@ class ExpenseView(viewsets.ModelViewSet):
 
     def create(self, request):
         print("Entramos en el post")        
-        user_pk = request.user.pk  
+        user_pk = request.user.pk 
+        user_instance = User.objects.get(pk=user_pk) 
         print(user_pk)
-        serializer = ExpenseSerializer(data=request.data, context={'user': user_pk})
+        serializer = ExpenseSerializer(data=request.data, context={'user': user_instance})
         print(serializer)        
         if serializer.is_valid():
             print('Valida el serializer?')
