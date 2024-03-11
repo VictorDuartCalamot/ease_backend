@@ -19,16 +19,10 @@ class ExpenseView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
-        print("Entramos en el post")        
-        user_pk = request.user.pk 
-        
-        user_instance = User.objects.get(id=user_pk) 
-       
-        print(user_pk)
-        print(user_instance)
-        serializer = ExpenseSerializer(data=request.data, context={'user': user_instance}) 
-        print(serializer)   
+        print("Entramos en el post")                                
         userdata = UserSerializerWithToken(request.user).data
+        serializer = ExpenseSerializer(data=request.data, context={'user': userdata}) 
+        print(serializer)           
         print(userdata)
         if serializer.is_valid():
             print('Valida el serializer?')
