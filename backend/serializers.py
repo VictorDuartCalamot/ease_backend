@@ -38,6 +38,7 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = Expense
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
