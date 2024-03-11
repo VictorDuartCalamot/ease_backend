@@ -13,11 +13,8 @@ from rest_framework.exceptions import AuthenticationFailed
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         try:
-            data = super().validate(attrs)
-            print(data)
-            print(self.user)
+            data = super().validate(attrs)            
             serializer = UserSerializerWithToken(self.user).data
-            print(serializer)
             for k, v in serializer.items():
                 data[k] = v
 
