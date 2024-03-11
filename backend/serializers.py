@@ -44,6 +44,16 @@ class ExpenseSerializer(serializers.ModelSerializer):
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
         read_only_fields = ['id']
         
+    def create(self, validated_data):
+        # Retrieve the user from the validated data
+        user = validated_data.pop('user', None)
+        if user:
+            # If user is present, create the Expense object with it
+            expense = Expense.objects.create(user=user, **validated_data)
+            return expense
+        else:
+            # Handle the case where user is not provided
+            raise serializers.ValidationError("User data is required.")
     """def create(self, validated_data):
         print("He entrado en el create dentro del serializer y antes de hacer el self.context")
         # Retrieve the user from the context        
