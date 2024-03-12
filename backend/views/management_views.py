@@ -22,8 +22,9 @@ class ExpenseView(viewsets.ModelViewSet):
         print("Entramos en el post")  
         #print(request.user.pk)                              
         userdata = UserSerializerWithToken(request.user).data
+        request.data['user'] = userdata
         #serializer = ExpenseSerializer(data=request.data, context={'user': request.user.pk}) 
-        serializer = ExpenseSerializer(data=request.data, context={'user': userdata}) 
+        serializer = ExpenseSerializer(data=request.data) 
         #print(serializer)           
         #print(userdata)
         if serializer.is_valid():

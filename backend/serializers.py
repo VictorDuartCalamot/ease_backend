@@ -44,9 +44,9 @@ class ExpenseSerializer(serializers.ModelSerializer):
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
         read_only_fields = ['id']
         
-        def create(self,validated_data):
+        '''def create(self,validated_data):
             user = validated_data.pop('user',None)
-            return Expense.objects.create(user=user,**validated_data)        
+            return Expense.objects.create(user=user,**validated_data)     '''   
     '''def create(self, validated_data):
         # Retrieve the user from the validated data
         user = validated_data.pop('user', None)
