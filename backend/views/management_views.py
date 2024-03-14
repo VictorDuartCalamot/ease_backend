@@ -15,11 +15,11 @@ from django.contrib.auth.models import User
 from backend.serializers import UserSerializerWithToken
 
 class ExpenseListView(viewsets.ModelViewSet):
-    queryset = Expense.objects.all()
+    #queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated,IsOwnerOrReadOnly] 
     
-    def get(self, request):
+    def get(self, request):        
         print('Inside get request')
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
@@ -64,8 +64,9 @@ class ExpenseListView(viewsets.ModelViewSet):
         else:
             print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 class ExpenseDetailView(viewsets.ModelViewSet):
-    queryset = Expense.objects.all()
+    #queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]  
 
