@@ -48,7 +48,7 @@ class ExpenseView(viewsets.ModelViewSet):
             return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)
         
         # Assign the user to the expense
-        request.data['user_id'] = request.user.id
+        request.data['user'] = request.user.id
         
         # Print request data for debugging
         print("Request data:", request.data)
