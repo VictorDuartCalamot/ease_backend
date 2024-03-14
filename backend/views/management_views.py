@@ -18,7 +18,9 @@ class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated,IsOwnerOrReadOnly] 
+    
     def get(self, request):
+        print('Inside get request')
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
@@ -68,6 +70,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]  
 
     def delete(self, request, pk):
+        print('Inside delete request')
         try:
             expense = Expense.objects.get(pk=pk)
             expense.delete()
