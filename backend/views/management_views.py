@@ -1,45 +1,51 @@
 # backend/views.py
-from rest_framework.decorators import api_view
+import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
 from rest_framework.permissions import IsAuthenticated
+from backend.permissions import IsOwnerOrReadOnly
+from backend.serializers import ExpenseSerializer
+from backend.models import Expense
+from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from django.http import Http404
 from rest_framework import generics
-from backend.permissions import IsOwner
-from backend.serializers import ExpenseSerializer
-from backend.models import Expense
 from django.contrib.auth.models import User
 from backend.serializers import UserSerializerWithToken
-'''
-class ExpenseView(viewsets.ModelViewSet):
-    queryset = Expense.objects.all()
-    serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated]
 
-    def create(self, request):
-        print("Entramos en el post")  
-        #print(request.user.pk)                              
-        #userdata = UserSerializerWithToken(request.user).data
-        request.data['user'] = request.user.pk
-        #serializer = ExpenseSerializer(data=request.data, context={'user': request.user.pk}) 
-        serializer = ExpenseSerializer(data=request.data) 
-        #print(serializer)           
-        #print(userdata)
-        if serializer.is_valid():
-            print('Valida el serializer?')
-            serializer.save()  # Save the expense object to the database
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            print(serializer.errors)  # Print out the errors for debugging
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-     '''   
-class ExpenseView(viewsets.ModelViewSet):
+class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated]
-    IsOwner = [IsOwner]
+    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly] 
+    def get(self, request):
+        # Get query parameters for date range
+        start_date_str = request.query_params.get('start_date')
+        end_date_str = request.query_params.get('end_date')
+
+        # Convert date strings to datetime objects
+        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
+
+        # Get expenses for the authenticated user
+        user_expenses = Expense.objects.filter(user=request.user.id)
+
+        # Filter expenses based on date range if provided
+        if start_date and end_date:
+            expenses = user_expenses.filter(creation_date__range=[start_date, end_date])
+        elif start_date:
+            expenses = user_expenses.filter(creation_date__gte=start_date)
+        elif end_date:
+            expenses = user_expenses.filter(creation_date__lte=end_date)
+        else:
+            expenses = user_expenses
+
+        # Serialize the expenses
+        serializer = ExpenseSerializer(expenses, many=True)
+
+        # Return a JSON response containing the serialized expenses
+        return Response(serializer.data)
+    
     def create(self, request, *args, **kwargs):                
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
@@ -55,17 +61,18 @@ class ExpenseView(viewsets.ModelViewSet):
         else:
             print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-    def delete(self, request):
-        expense_object = self.get_object(request.data.id)
-        expense_object.delete()
-        try: 
-            self.get_object(request.data.id)
-            # If the object still exists after deletion, return 202 Accepted
-            return Response(status=status.HTTP_202_ACCEPTED)
-        except Expense.DoesNotExist:
-            # If the object doesn't exist after deletion, return 204 No Content
+class ExpenseDetailView(viewsets.ModelViewSet):
+    queryset = Expense.objects.all()
+    serializer_class = ExpenseSerializer
+    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]  
+
+    def delete(self, request, pk):
+        try:
+            expense = Expense.objects.get(pk=pk)
+            expense.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+        except Expense.DoesNotExist:
+            return Response("Expense not found.", status=status.HTTP_404_NOT_FOUND)
 
         
 
