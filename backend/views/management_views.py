@@ -31,13 +31,14 @@ class ExpenseListView(viewsets.ModelViewSet):
         user_expenses = Expense.objects.filter(user=request.user.id)
 
         # Filter expenses based on date range if provided
-        if start_date and end_date:
+        if start_date is not None and end_date is not None:
             expenses = user_expenses.filter(creation_date__range=[start_date, end_date])
-        elif start_date:
+        elif start_date is not None:
             expenses = user_expenses.filter(creation_date__gte=start_date)
-        elif end_date:
+        elif end_date is not None:
             expenses = user_expenses.filter(creation_date__lte=end_date)
         else:
+            # Return all expenses if no date range is provided
             expenses = user_expenses
 
         # Serialize the expenses
