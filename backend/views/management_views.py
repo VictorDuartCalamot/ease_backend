@@ -39,7 +39,7 @@ class ExpenseView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]
-
+    IsOwner = [IsOwner]
     def create(self, request, *args, **kwargs):                
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
