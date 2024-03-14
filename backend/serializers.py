@@ -41,7 +41,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = Expense
-        fields = ['id', 'amount', 'category', 'creation_date', 'user_id']
+        fields = ['id', 'amount', 'category', 'creation_date', 'user']
         read_only_fields = ['id']
         
         '''def create(self,validated_data):
