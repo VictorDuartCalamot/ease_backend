@@ -12,7 +12,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
 
         # Check if the user is the owner of the expense.
-        if obj.user == request.user:
+        if obj.user == request.user.id:
             return True
         else:
             return False
