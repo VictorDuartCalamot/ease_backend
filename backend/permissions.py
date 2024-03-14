@@ -7,10 +7,13 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
+        print(obj)
+        print(request)
         # Allow GET, HEAD, and OPTIONS requests.
         if request.method in permissions.SAFE_METHODS:
             return True
 
+        
         # Check if the user is the owner of the expense.
         if obj.user == request.user.id:
             return True
