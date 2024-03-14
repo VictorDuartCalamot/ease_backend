@@ -19,6 +19,13 @@ class Expense(models.Model):
     category = models.CharField(max_length=100)
     creation_date = models.DateField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    permissions = [
+            ("can_view_expense", "Can view expense"),
+            ("can_add_expense", "Can add expense"),
+            ("can_change_expense", "Can change expense"),
+            ("can_delete_expense", "Can delete expense"),
+        ]
     
     """def save(self, *args, **kwargs):
         print("Entro en el save del modelo")                
