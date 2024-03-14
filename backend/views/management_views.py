@@ -67,7 +67,7 @@ class ExpenseListView(viewsets.ModelViewSet):
 class ExpenseDetailView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]  
+    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly.has_object_permission]  
 
     def delete(self, request, pk):
         print('Inside delete request')
