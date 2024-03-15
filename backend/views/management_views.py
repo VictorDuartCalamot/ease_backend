@@ -2,7 +2,7 @@
 import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated , AllowAny
 from backend.permissions import IsOwnerOrReadOnly
 from backend.serializers import ExpenseSerializer
 from backend.models import Expense
@@ -17,7 +17,7 @@ from backend.serializers import UserSerializerWithToken
 class ExpenseListView(viewsets.ModelViewSet):
     #queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticated,AllowAny] 
     
     def get(self, request):        
         print('Inside get request')
