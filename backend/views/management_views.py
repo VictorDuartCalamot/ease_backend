@@ -44,12 +44,10 @@ class ExpenseListView(viewsets.ModelViewSet):
             expenses = user_expenses
         print(expenses)
         # Serialize the expenses        
-        serializer = ExpenseSerializer(expenses, many=True)
-        if serializer.is_valid():
-            print(serializer)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_204_NO_CONTENT)            
+        serializer = ExpenseSerializer(expenses, many=True)        
+        print(serializer)
+        # Return a JSON response containing the serialized expenses
+        return Response(serializer.data, status=status.HTTP_200_OK)         
         # Return a JSON response containing the serialized expenses
         
         
