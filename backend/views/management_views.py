@@ -17,7 +17,7 @@ from backend.serializers import UserSerializerWithToken
 class ExpenseListView(viewsets.ModelViewSet):
     #queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated] 
+    #permission_classes = [IsAuthenticated] 
     
     def get(self, request):        
         print('Inside get request')
@@ -79,6 +79,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         print('Inside delete request')
         try:
             expense = Expense.objects.get(pk=pk)
+            print(expense)
             expense.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:
