@@ -29,17 +29,24 @@ class ExpenseListView(viewsets.ModelViewSet):
         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
         end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
         print('Usuario',request.user.id)
+        print('Start date',start_date)
+        print('End Date',end_date)
+
         # Get expenses for the authenticated user
         user_expenses = Expense.objects.filter(user=request.user.id)
-
+        print('Filtros',user_expenses)
         # Filter expenses based on date range if provided
         if start_date is not None and end_date is not None:
+            print('1')
             expenses = user_expenses.filter(creation_date__range=[start_date, end_date])
         elif start_date is not None:
+            print('2')
             expenses = user_expenses.filter(creation_date__gte=start_date)
         elif end_date is not None:
+            print('3')
             expenses = user_expenses.filter(creation_date__lte=end_date)
         else:
+            print('4')
             # Return all expenses if no date range is provided
             expenses = user_expenses
         print(expenses)
