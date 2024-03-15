@@ -17,7 +17,7 @@ from backend.serializers import UserSerializerWithToken
 class ExpenseListView(viewsets.ModelViewSet):
     #queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    #permission_classes = [IsAuthenticated,IsOwnerOrReadOnly] 
+    permission_classes = [IsAuthenticated] 
     
     def get(self, request):        
         print('Inside get request')
@@ -30,7 +30,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
 
         # Get expenses for the authenticated user
-        user_expenses = Expense.objects.filter(user=request.user.id)
+        user_expenses = Expense.objects.filter(user=request.user)
 
         # Filter expenses based on date range if provided
         if start_date is not None and end_date is not None:
@@ -42,12 +42,17 @@ class ExpenseListView(viewsets.ModelViewSet):
         else:
             # Return all expenses if no date range is provided
             expenses = user_expenses
-
-        # Serialize the expenses
+        print(expenses)
+        # Serialize the expenses        
         serializer = ExpenseSerializer(expenses, many=True)
-
+        if serializer.is_valid():
+            print(serializer)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)            
         # Return a JSON response containing the serialized expenses
-        return Response(serializer.data)
+        
+        
     
     def create(self, request, *args, **kwargs):                
         # Ensure the user is authenticated
