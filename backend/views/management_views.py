@@ -28,9 +28,9 @@ class ExpenseListView(viewsets.ModelViewSet):
         # Convert date strings to datetime objects
         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
         end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
-        print('Usuario',self.request.user.id)
+        print('Usuario',request.user.id)
         # Get expenses for the authenticated user
-        user_expenses = Expense.objects.filter(user=self.request.user.id)
+        user_expenses = Expense.objects.filter(user=request.user.id)
 
         # Filter expenses based on date range if provided
         if start_date is not None and end_date is not None:
