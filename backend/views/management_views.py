@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from backend.serializers import UserSerializerWithToken
 
 class ExpenseListView(viewsets.ModelViewSet):
-    #queryset = Expense.objects.all()
+    queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     #permission_classes = [IsAuthenticated] 
     
