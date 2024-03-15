@@ -17,7 +17,7 @@ from backend.serializers import UserSerializerWithToken
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    #permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly] 
     
     def get(self, request):        
         print('Inside get request')
@@ -53,6 +53,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         # Serialize the expenses        
         serializer = ExpenseSerializer(expenses, many=True)        
         print(serializer)
+        
         # Return a JSON response containing the serialized expenses
         return Response(serializer.data, status=status.HTTP_200_OK)         
         # Return a JSON response containing the serialized expenses
