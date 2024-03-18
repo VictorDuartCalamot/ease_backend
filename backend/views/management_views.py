@@ -45,7 +45,10 @@ class ExpenseListView(viewsets.ModelViewSet):
         expenses = Expense.objects.filter(user=request.user.id)
         
         if start_date is not None and end_date is not None:
-            expenses = expenses.filter(creation_date__range=[start_date, end_date])
+            if start_date == end_date:
+                expenses = expenses.filter(creation_date=start_date)
+            else:
+                expenses = expenses.filter(creation_date__range=[start_date, end_date])
         elif start_date is not None:
             expenses = expenses.filter(creation_date__gte=start_date)
         elif end_date is not None:            
