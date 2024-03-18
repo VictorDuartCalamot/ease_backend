@@ -1,5 +1,6 @@
 # backend/views.py
-import datetime
+
+from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
 from rest_framework.permissions import IsAuthenticated , AllowAny
@@ -24,10 +25,10 @@ class ExpenseListView(viewsets.ModelViewSet):
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
-
+        print(start_date_str,+'-'+end_date_str)
         # Convert date strings to datetime objects
         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
-        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None
+        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None        
         print('Usuario',request.user.id)
         print('Start date',start_date)
         print('End Date',end_date)
