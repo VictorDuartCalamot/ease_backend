@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated , DjangoObjectPermissions
 from backend.serializers import ExpenseSerializer
 from backend.models import Expense
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from guardian.shortcuts import get_objects_for_user
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
@@ -28,39 +29,35 @@ class ExpenseListView(viewsets.ModelViewSet):
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         print(start_date_str,'-',end_date_str)
-        # Convert date strings to datetime objects
-        start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
-        end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else None        
+
+        # Convert date strings to datetime objects, handling potential errors
+        try:
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
+        except ValueError:
+            return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+        
         print('Usuario',request.user.id)
         print('Start date',start_date)
         print('End Date',end_date)
 
-        # Get expenses for the authenticated user
-        user_expenses = Expense.objects.filter(user=request.user.id)
-        print('Filtros',user_expenses)
-        # Filter expenses based on date range if provided
+        # Filter expenses based on date range
+        expenses = Expense.objects.filter(user=request.user.id)
+        
         if start_date is not None and end_date is not None:
-            print('1')
-            expenses = user_expenses.filter(creation_date=[start_date, end_date])
+            expenses = expenses.filter(creation_date__range=[start_date, end_date])
         elif start_date is not None:
-            print('2')
-            expenses = user_expenses.filter(creation_date=start_date)
-        elif end_date is not None:
-            print('3')
-            expenses = user_expenses.filter(creation_date=end_date)
-        else:
-            print('4')
-            # Return all expenses if no date range is provided
-            expenses = user_expenses
-        print(expenses)
-        # Serialize the expenses        
+            expenses = expenses.filter(creation_date__gte=start_date)
+        elif end_date is not None:            
+            expenses = expenses.filter(creation_date__lte=end_date)
+
+        print('Filtered expenses:', expenses)
+        
+        # Serialize the expenses
         serializer = ExpenseSerializer(expenses, many=True)        
-        print(serializer)
-        
+
         # Return a JSON response containing the serialized expenses
-        return Response(serializer.data, status=status.HTTP_200_OK)         
-        # Return a JSON response containing the serialized expenses
-        
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
     
     def create(self, request, *args, **kwargs):                
