@@ -25,12 +25,4 @@ class Expense(models.Model):
             ("can_add_expense", "Can add expense"),
             ("can_change_expense", "Can change expense"),
             ("can_delete_expense", "Can delete expense"),
-        ]
-    
-    """def save(self, *args, **kwargs):
-        print("Entro en el save del modelo")                
-        #self.id = generate_random_id('E-')
-        print("ID: "+ str(self.id))
-        object = super().save(*args, **kwargs)        
-        print("Despues de guardar el objeto" + str(object))
-        return object"""
+        ]    

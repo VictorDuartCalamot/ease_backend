@@ -3,10 +3,11 @@
 from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
-from rest_framework.permissions import IsAuthenticated , AllowAny
-from backend.permissions import IsOwnerOrReadOnly
+from rest_framework.permissions import IsAuthenticated , DjangoObjectPermissions
 from backend.serializers import ExpenseSerializer
 from backend.models import Expense
+from django.shortcuts import get_object_or_404
+from guardian.shortcuts import get_objects_for_user
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
@@ -15,10 +16,11 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from backend.serializers import UserSerializerWithToken
 
+
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated] #,IsOwnerOrReadOnly 
+    permission_classes = [IsAuthenticated] 
     
     def get(self, request):        
         print('Inside get request')
@@ -80,8 +82,12 @@ class ExpenseListView(viewsets.ModelViewSet):
 class ExpenseDetailView(viewsets.ModelViewSet):
     #queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly]  
+    permission_classes = [IsAuthenticated]  
 
+    def get_object(self, pk):
+        # Retrieve the expense object based on the primary key (pk)
+        return get_object_or_404(Expense, pk=pk)
+    
     def delete(self, request, pk):
         print('Inside delete request')
         try:
