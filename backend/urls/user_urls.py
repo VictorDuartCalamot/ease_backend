@@ -1,8 +1,9 @@
 from django.urls import path
-from backend.views import user_views as views
+from backend.views import user_views as user_views
+
 
 urlpatterns = [
-    path('login/', views.MyTokenObtainPairView.as_view(),
+    path('login/', user_views.MyTokenObtainPairView.as_view(),
         name='token_obtain_pair'),
-    path('register/', views.registerUser, name='register'),
+    path('register/', user_views.registerUser, name='register'),
 ]

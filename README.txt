@@ -5,7 +5,7 @@ python -m venv venv
 .\venv\Scripts\activate
 
 #Install required packages (inside venv)
-pip install django dj-database-url djangorestframework-simplejwt psycopg2-binary whitenoise[brotli] gunicorn
+pip install django dj-database-url djangorestframework-simplejwt psycopg2-binary whitenoise[brotli] gunicorn django-guardian
 
 #Copy packages to requirements.txt
 pip freeze > requirements.txt
