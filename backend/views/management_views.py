@@ -23,7 +23,10 @@ class ExpenseListView(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated] 
     
-    def get(self, request):        
+    def get(self, request):     
+        '''
+            Get to retrieve data filtered by dates 
+        '''   
         print('Inside get request')
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
@@ -116,6 +119,23 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         except Expense.DoesNotExist:
             return Response("Expense not found.", status=status.HTTP_404_NOT_FOUND)
 
+    
+    def update(self, request, pk):
+        '''
+            Update expense object with specified PK
+        '''
+        # Retrieve the expense object
+        expense = self.get_object(pk)
         
-
+        # Serialize the expense data with the updated data from request
+        serializer = ExpenseSerializer(expense, data=request.data)
+        
+        # Validate the serializer data
+        if serializer.is_valid():
+            # Save the updated expense object
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            # Return error response if serializer data is invalid
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from backend.utils import generate_random_id
 import uuid
+from guardian.shortcuts import assign_perm,remove_perm
 #Income/Expense models
 """
 class auth_user_logs(models.Model):
@@ -26,3 +26,18 @@ class Expense(models.Model):
             ("can_change_expense", "Can change expense"),
             ("can_delete_expense", "Can delete expense"),
         ]    
+    
+    def save(self, *args, **kwargs):
+        # Call the parent save method to save the expense first
+        super().save(*args, **kwargs)
+        
+        # Assign permissions to the user who created the expense
+        assign_perm('change_expense', self.user, self)
+        assign_perm('delete_expense', self.user, self)
+
+    def delete(self, *args, **kwargs):
+        # Remove permissions when expense is deleted
+        user = self.user
+        super().delete(*args, **kwargs)
+        remove_perm('change_expense', user, self)
+        remove_perm('delete_expense', user, self)
