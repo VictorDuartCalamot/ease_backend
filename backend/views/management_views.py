@@ -17,7 +17,7 @@ from backend.serializers import UserSerializerWithToken
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly] 
+    permission_classes = [IsAuthenticated] #,IsOwnerOrReadOnly 
     
     def get(self, request):        
         print('Inside get request')
