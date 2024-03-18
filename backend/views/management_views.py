@@ -45,13 +45,18 @@ class ExpenseListView(viewsets.ModelViewSet):
         expenses = Expense.objects.filter(user=request.user.id)
         
         if start_date is not None and end_date is not None:
+            print('Inside both fullfilled values')
             if start_date == end_date:
+                print('Both are the same dates')
                 expenses = expenses.filter(creation_date=start_date)
             else:
+                print('Different dates, range')
                 expenses = expenses.filter(creation_date__range=[start_date, end_date])
         elif start_date is not None:
+            print('Start date is fullfilled')
             expenses = expenses.filter(creation_date__gte=start_date)
-        elif end_date is not None:            
+        elif end_date is not None:   
+            print('End date is fullfilled')         
             expenses = expenses.filter(creation_date__lte=end_date)
 
         print('Filtered expenses:', expenses)
@@ -63,7 +68,10 @@ class ExpenseListView(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
         
     
-    def create(self, request, *args, **kwargs):                
+    def create(self, request, *args, **kwargs):  
+        '''
+            Post request to create new expense object
+        '''              
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
             return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
@@ -80,15 +88,25 @@ class ExpenseListView(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class ExpenseDetailView(viewsets.ModelViewSet):
+    '''
+        View for requests with specific PK
+    '''
     #queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]  
 
     def get_object(self, pk):
+        '''
+            Get single expense object with specified PK
+        
+        '''
         # Retrieve the expense object based on the primary key (pk)
         return get_object_or_404(Expense, pk=pk)
     
     def delete(self, request, pk):
+        '''
+            Delete expense object with specified PK 
+        '''
         print('Inside delete request')
         try:
             expense = Expense.objects.get(pk=pk)
