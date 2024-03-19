@@ -126,7 +126,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             Update expense object with specified PK
         '''
         # Retrieve the expense object
-        expense = self.get_object(pk)
+        expense = self.get_object()
         
         # Serialize the expense data with the updated data from request
         serializer = ExpenseSerializer(expense, data=request.data)
