@@ -127,7 +127,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         '''
         # Retrieve the expense object
         expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that
-        
+        request.data['user'] = request.user.id
         # Serialize the expense data with the updated data from request
         serializer = ExpenseSerializer(expense, data=request.data)
         
