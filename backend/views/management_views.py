@@ -98,14 +98,13 @@ class ExpenseDetailView(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]  
 
-    '''def get_object(self, pk):
+    def get(self, pk):
         
         #    Get single expense object with specified PK
         
         
         # Retrieve the expense object based on the primary key (pk)
         return get_object_or_404(Expense, id=pk)
-    '''
     
     def delete(self, request, pk):
         '''
@@ -126,7 +125,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             Update expense object with specified PK
         '''
         # Retrieve the expense object
-        expense = self.get_object()
+        expense = self.get(pk) #The get_object() method retrieves the PK from the URL and looks for the object using that data.
         
         # Serialize the expense data with the updated data from request
         serializer = ExpenseSerializer(expense, data=request.data)
