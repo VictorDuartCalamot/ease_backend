@@ -32,6 +32,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken', 
     'backend',
     'guardian',
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+    
 
 ]
 REST_FRAMEWORK = {
