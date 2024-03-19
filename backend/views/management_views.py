@@ -104,7 +104,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         
         '''
         # Retrieve the expense object based on the primary key (pk)
-        return get_object_or_404(Expense, pk=pk)
+        return get_object_or_404(Expense, id=pk)
     
     def delete(self, request, pk):
         '''
