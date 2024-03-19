@@ -102,8 +102,13 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         '''
            Get single expense object with specified PK
         '''        
+        expense = self.get_object()
         # Retrieve the expense object based on the primary key (pk)
-        return get_object_or_404()
+        if expense:
+            return Response(expense, status=status.HTTP_200_OK)
+        else:
+            return Response(expense.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
     
     def delete(self, request, pk):
