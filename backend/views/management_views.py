@@ -94,7 +94,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
     '''
         View for requests with specific PK
     '''
-    #queryset = Expense.objects.all()
+    queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]  
 
