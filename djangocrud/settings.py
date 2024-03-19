@@ -28,12 +28,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.auth.backends.ModelBackend',    
     'rest_framework',   
     'rest_framework.authtoken', 
     'backend',
     'guardian',
-    'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
+    #
+    #
     
 
 ]
