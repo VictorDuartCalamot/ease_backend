@@ -108,7 +108,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         # Return a JSON response containing the serialized authUserLog
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    @permission_classes(IsAuthenticated)
+    #@permission_classes(IsAuthenticated)
     def create(self, request, *args, **kwargs):  
         '''
             Post request to create new income object
