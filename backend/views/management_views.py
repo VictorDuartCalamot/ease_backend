@@ -40,9 +40,9 @@ class ExpenseListView(viewsets.ModelViewSet):
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         
-        print('Usuario',request.user.id)
-        print('Start date',start_date)
-        print('End Date',end_date)
+        # Ensure start_date is not after end_date
+        if start_date and end_date and start_date > end_date:
+            return Response({'error': 'Start date cannot be after end date.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Filter expenses based on date range
         expenses = Expense.objects.filter(user=request.user.id)
@@ -106,15 +106,17 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         print(self)  
         print(request)
         print(object)
-        expense = Expense.objects.filter(id=pk,user=request.user.id)
+        try:
+        # Retrieve the expense object based on the primary key (pk) and user
+            expense = Expense.objects.get(id=pk, user=request.user.id)
+        except Expense.DoesNotExist:
+        # If the expense object does not exist for the specified user, return a 404 Not Found response
+            return Response({'error': 'Expense not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
         print(expense)
         serializer = ExpenseSerializer(expense) 
-        print(serializer.data)
-        # Retrieve the expense object based on the primary key (pk)
-        #if serializer.data:
-        #    return Response(serializer.data, status=status.HTTP_200_OK)
-        #else:
-        #    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        print(serializer.data)        
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     
     
