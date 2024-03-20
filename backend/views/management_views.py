@@ -4,6 +4,7 @@ from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
 from rest_framework.permissions import IsAuthenticated , DjangoObjectPermissions
+from backend.permissions import IsOwnerOrReadOnly
 from backend.serializers import ExpenseSerializer
 from backend.models import Expense
 from django.shortcuts import get_object_or_404
@@ -31,7 +32,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
-        print(start_date_str,'-',end_date_str)
+        #print(start_date_str,'-',end_date_str)
 
         # Convert date strings to datetime objects, handling potential errors
         try:
@@ -48,25 +49,22 @@ class ExpenseListView(viewsets.ModelViewSet):
         expenses = Expense.objects.filter(user=request.user.id)
         
         if start_date is not None and end_date is not None:
-            print('Inside both fullfilled values')
+            #print('Inside both fullfilled values')
             if start_date == end_date:
-                print('Both are the same dates')
+                #print('Both are the same dates')
                 expenses = expenses.filter(creation_date=start_date)
             else:
-                print('Different dates, range')
+                #print('Different dates, range')
                 expenses = expenses.filter(creation_date__range=[start_date, end_date])
         elif start_date is not None:
-            print('Start date is fullfilled')
+            #print('Start date is fullfilled')
             expenses = expenses.filter(creation_date__gte=start_date)
         elif end_date is not None:   
-            print('End date is fullfilled')         
+            #print('End date is fullfilled')         
             expenses = expenses.filter(creation_date__lte=end_date)
-
-        print('Filtered expenses:', expenses)
-        
+        #print('Filtered expenses:', expenses)        
         # Serialize the expenses
         serializer = ExpenseSerializer(expenses, many=True)        
-
         # Return a JSON response containing the serialized expenses
         return Response(serializer.data, status=status.HTTP_200_OK)
         
@@ -87,25 +85,21 @@ class ExpenseListView(viewsets.ModelViewSet):
             serializer.save()  # Save the expense object to the database
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print(serializer.errors)  # Print out the errors for debugging
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+            #print(serializer.errors)  # Print out the errors for debugging
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 class ExpenseDetailView(viewsets.ModelViewSet):
     '''
         View for requests with specific PK
     '''
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-    permission_classes = [IsAuthenticated]  
+    permission_classes = [IsAuthenticated,IsOwnerOrReadOnly] 
+     
 
     def get(self,request,pk):
         '''
            Get single expense object with specified PK
         '''      
-        print(pk)
-        print(self)  
-        print(request)
-        print(object)
         try:
         # Retrieve the expense object based on the primary key (pk) and user
             expense = Expense.objects.get(id=pk, user=request.user.id)
@@ -113,21 +107,19 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         # If the expense object does not exist for the specified user, return a 404 Not Found response
             return Response({'error': 'Expense not found.'}, status=status.HTTP_404_NOT_FOUND)
         
-        print(expense)
+        #print(expense)
         serializer = ExpenseSerializer(expense) 
-        print(serializer.data)        
+        #print(serializer.data)        
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    
-    
+        
     def delete(self, request, pk):
         '''
             Delete expense object with specified PK 
         '''
-        print('Inside delete request')
+        #print('Inside delete request')
         try:
             expense = Expense.objects.get(pk=pk)
-            print(expense)
+            #print(expense)
             expense.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:
@@ -139,7 +131,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             Update expense object with specified PK
         '''
         # Retrieve the expense object
-        expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that
+        expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
         request.data['user'] = request.user.id
         # Serialize the expense data with the updated data from request
         serializer = ExpenseSerializer(expense, data=request.data)
