@@ -101,8 +101,10 @@ class ExpenseDetailView(viewsets.ModelViewSet):
     def get_objectByPK(self,request):
         '''
            Get single expense object with specified PK
-        '''        
-        expense = self.get_object()
+        '''      
+        print(self)  
+        print(request)
+        expense = Expense.objects.filter(user=request.user.id,id=object.id)
         # Retrieve the expense object based on the primary key (pk)
         if expense:
             return Response(expense, status=status.HTTP_200_OK)
