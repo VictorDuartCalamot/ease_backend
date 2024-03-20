@@ -3,20 +3,11 @@
 from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
-from rest_framework.permissions import IsAuthenticated , DjangoObjectPermissions
+from rest_framework.permissions import IsAuthenticated
 from backend.permissions import IsOwnerOrReadOnly
 from backend.serializers import ExpenseSerializer, IncomeSerializer
 from backend.models import Expense, Income
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from guardian.shortcuts import get_objects_for_user
-from rest_framework.decorators import api_view
-from rest_framework.authtoken.models import Token
-from rest_framework.authentication import TokenAuthentication
-from django.http import Http404
-from rest_framework import generics
-from django.contrib.auth.models import User
-from backend.serializers import UserSerializerWithToken
 
 #Expenses
 class ExpenseListView(viewsets.ModelViewSet):
@@ -216,6 +207,7 @@ class IncomeListView(viewsets.ModelViewSet):
             #print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 class IncomeDetailView(viewsets.ModelViewSet):
+
     '''
         View for requests with specific PK
     '''
@@ -254,6 +246,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
 
     
     def update(self, request, *args,**kwargs):
+
         '''
             Update income object with specified PK
         '''

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 #from .models import Income, Expense,auth_user_logs
-from .models import Expense, Income
+from .models import Expense, Income, AuthUserLogs
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -50,3 +50,10 @@ class IncomeSerializer(serializers.ModelSerializer):
         model = Income
         fields = ['id', 'amount', 'category', 'creation_date', 'user']
         read_only_fields = ['id']        
+
+
+class AuthUserLogsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuthUserLogs
+        fields = ['id','user','creation_date','successful','description']
+        read_only_fields = ['id']

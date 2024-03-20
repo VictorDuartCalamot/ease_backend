@@ -3,14 +3,14 @@ from django.db import models
 import uuid
 from guardian.shortcuts import assign_perm,remove_perm
 #Income/Expense models
-"""
-class auth_user_logs(models.Model):
+
+class AuthUserLogs(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField()
+    creation_date = models.DateField()
     successful = models.BooleanField(default=False)
     description = models.CharField(max_length=50)
-    """
-
+    
     
 class Expense(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
