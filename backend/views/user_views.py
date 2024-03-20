@@ -61,9 +61,9 @@ def registerUser(request):
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
     serializer_class = AuthUserLogsSerializer
-    #permission_classes = [IsAuthenticated,IsAdminUser]
+    permission_classes = [IsAuthenticated]
 
-    @permission_classes(permission_classes=[IsAuthenticated, IsAdminUser])
+    #@permission_classes(permission_classes=[IsAuthenticated, IsAdminUser])
     def get(self, request):
         '''
             Get to retrieve data filtered by dates 
