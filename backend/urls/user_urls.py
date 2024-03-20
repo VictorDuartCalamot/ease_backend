@@ -6,6 +6,6 @@ urlpatterns = [
     path('login/', user_views.MyTokenObtainPairView.as_view(),
         name='token_obtain_pair'),
     path('register/', user_views.registerUser, name='register'),
-    path('loginLog/', user_views.AuthUserLogsListView.as_view({'get':'get','post':'create'}), name='income-list'),
-    path('loginLog/<uuid:pk>/', user_views.AuthUserLogsDetailView.as_view({'get':'get','delete':'delete','put':'update'}), name='income-detail'),
+    #path('loginLog/', user_views.AuthUserLogsListView.as_view({'get':'get','post':'create'}), name='income-list'),
+    #path('loginLog/<uuid:pk>/', user_views.AuthUserLogsDetailView.as_view({'get':'get','delete':'delete','put':'update'}), name='income-detail'),
 ]

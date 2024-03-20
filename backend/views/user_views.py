@@ -57,7 +57,7 @@ def registerUser(request):
         message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-
+'''
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
     serializer_class = AuthUserLogsSerializer
@@ -65,9 +65,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
 
     #@permission_classes(permission_classes=[IsAuthenticated, IsAdminUser])
     def get(self, request):
-        '''
-            Get to retrieve data filtered by dates 
-        '''   
+            #Get to retrieve data filtered by dates 
         #print('Inside get request')
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
@@ -110,9 +108,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
     
     #@permission_classes(IsAuthenticated)
     def create(self, request, *args, **kwargs):  
-        '''
-            Post request to create new income object
-        '''                      
+            #Post request to create new income object
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
             return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
@@ -163,9 +159,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
     
     def update(self,request,*args,**kwargs):
-        '''
-            Update log object with specified PK
-        '''
+            #Update log object with specified PK
         authUserLog = self.get_object()
         request.data['user'] = authUserLog.user
         # Serialize the income data with the updated data from request
@@ -179,3 +173,4 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
         else:
             # Return error response if serializer data is invalid
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+'''
