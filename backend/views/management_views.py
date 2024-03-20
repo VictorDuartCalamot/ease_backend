@@ -102,9 +102,9 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         '''
            Get single expense object with specified PK
         '''      
-        print(self)  
-        print(request)
-        print(object)
+        #print(self)  
+        #print(request)
+        #print(object)
         expense = Expense.objects.filter(user=request.user.id,id=pk)
         print(expense)
         serializer = ExpenseSerializer(expense) 
