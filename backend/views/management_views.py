@@ -106,11 +106,14 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         print(request)
         print(object)
         expense = Expense.objects.filter(user=request.user.id,id=object.pk)
+        print(expense)
+        serializer = ExpenseSerializer(expense) 
+        print(serializer.data)
         # Retrieve the expense object based on the primary key (pk)
-        if expense:
-            return Response(expense, status=status.HTTP_200_OK)
+        if serializer.data:
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response(expense.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
     
