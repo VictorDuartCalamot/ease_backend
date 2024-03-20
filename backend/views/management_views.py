@@ -104,7 +104,8 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         '''      
         print(self)  
         print(request)
-        expense = Expense.objects.filter(user=request.user.id,id=object.id)
+        print(object)
+        expense = Expense.objects.filter(user=request.user.id,id=object.pk)
         # Retrieve the expense object based on the primary key (pk)
         if expense:
             return Response(expense, status=status.HTTP_200_OK)
