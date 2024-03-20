@@ -98,22 +98,22 @@ class ExpenseDetailView(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]  
 
-    def get(self,request,pk):
+    def get(self,request):
         '''
            Get single expense object with specified PK
         '''      
-        #print(self)  
-        #print(request)
-        #print(object)
-        expense = Expense.objects.filter(user=request.user.id,id=pk)
-        print(expense)
-        serializer = ExpenseSerializer(expense) 
-        print(serializer.data)
+        print(self)  
+        print(request)
+        print(object)
+        #expense = Expense.objects.filter()
+        #print(expense)
+        #serializer = ExpenseSerializer(expense) 
+        #print(serializer.data)
         # Retrieve the expense object based on the primary key (pk)
-        if serializer.data:
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        #if serializer.data:
+        #    return Response(serializer.data, status=status.HTTP_200_OK)
+        #else:
+        #    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
     
