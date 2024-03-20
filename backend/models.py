@@ -41,3 +41,33 @@ class Expense(models.Model):
         super().delete(*args, **kwargs)
         remove_perm('change_expense', user, self)
         remove_perm('delete_expense', user, self)
+
+class Income(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    #_id = models.CharField(('income_id'), max_length=50, unique=True,primary_key=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.CharField(max_length=100)
+    creation_date = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    permissions = [
+            ("can_view_income", "Can view income"),
+            ("can_add_income", "Can add income"),
+            ("can_change_income", "Can change income"),
+            ("can_delete_income", "Can delete income"),
+        ]    
+    
+    def save(self, *args, **kwargs):
+        # Call the parent save method to save the expense first
+        super().save(*args, **kwargs)
+        
+        # Assign permissions to the user who created the income
+        assign_perm('change_income', self.user, self)
+        assign_perm('delete_income', self.user, self)
+
+    def delete(self, *args, **kwargs):
+        # Remove permissions when income is deleted
+        user = self.user
+        super().delete(*args, **kwargs)
+        remove_perm('change_income', user, self)
+        remove_perm('delete_income', user, self)        
