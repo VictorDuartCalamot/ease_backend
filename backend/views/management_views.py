@@ -106,10 +106,10 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         print(self)  
         print(request)
         print(object)
-        #expense = Expense.objects.filter()
+        expense = Expense.objects.filter(id=pk,user=request.user.id)
         #print(expense)
-        #serializer = ExpenseSerializer(expense) 
-        #print(serializer.data)
+        serializer = ExpenseSerializer(expense,Many=False) 
+        print(serializer.data)
         # Retrieve the expense object based on the primary key (pk)
         #if serializer.data:
         #    return Response(serializer.data, status=status.HTTP_200_OK)
