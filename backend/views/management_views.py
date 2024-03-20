@@ -98,7 +98,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]  
 
-    def get_objectByPK(self,request):
+    def get(self,request):
         '''
            Get single expense object with specified PK
         '''      
