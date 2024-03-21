@@ -15,6 +15,8 @@ class AuthUserLogs(models.Model):
 class Expense(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     #_id = models.CharField(('expense_id'), max_length=50, unique=True,primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     creation_date = models.DateField()
@@ -45,6 +47,8 @@ class Expense(models.Model):
 class Income(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     #_id = models.CharField(('income_id'), max_length=50, unique=True,primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     creation_date = models.DateField()

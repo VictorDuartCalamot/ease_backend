@@ -57,7 +57,7 @@ def registerUser(request):
         message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-'''
+
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
     serializer_class = AuthUserLogsSerializer
@@ -135,7 +135,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
            
         try:
         # Retrieve the income object based on the primary key (pk) and user
-            authUserLog = AuthUserLogs.objects.get(id=pk, user=request.user.id)
+            authUserLog = AuthUserLogs.objects.get(id=pk)
         except authUserLog.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
             return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)
@@ -173,4 +173,3 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
         else:
             # Return error response if serializer data is invalid
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-'''
