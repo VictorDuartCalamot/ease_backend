@@ -41,19 +41,19 @@ class ExpenseSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = Expense
-        fields = ['id','title','description','category','amount','creation_date','user']
+        fields = ['id','title','description','category','amount','creation_date','creation_time','user']
         read_only_fields = ['id']
 
 class IncomeSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = Income
-        fields = ['id','title','description','category','amount','creation_date','user']
+        fields = ['id','title','description','category','amount','creation_date','creation_time','user']
         read_only_fields = ['id']        
 
 
 class AuthUserLogsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUserLogs
-        fields = ['id','user','creation_date','successful','description']
+        fields = ['id','user','creation_date','creation_time','platform_OS','successful','description']
         read_only_fields = ['id']

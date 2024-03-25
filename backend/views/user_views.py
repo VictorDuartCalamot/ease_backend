@@ -13,6 +13,7 @@ from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from datetime import datetime
 from django.utils import timezone
+from django.db.models import Q
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -70,36 +71,54 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
+        start_time_str = request.query_params.get('start_time')
+        end_time_str = request.query_params.get('end_time')
+        
         #print(start_date_str,'-',end_date_str)
 
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
+            start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
+            end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else timezone.now().time()
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         
         # Ensure start_date is not after end_date
-        if start_date and end_date and start_date > end_date:
+        if (start_date and end_date) and (start_date > end_date):
             return Response({'error': 'Start date cannot be after end date.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        if (start_time and end_time) and (start_time > end_time):
+            return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
+        
         # Filter authUserLog based on date range
         authUserLog = AuthUserLogs.objects.filter(user=request.user.id)
-        
+                # Construct Q objects to handle combined date and time filtering
+        date_query = Q()
         if start_date is not None and end_date is not None:
-            #print('Inside both fullfilled values')
             if start_date == end_date:
-                #print('Both are the same dates')
-                authUserLog = AuthUserLogs.filter(creation_date=start_date)
+                date_query &= Q(creation_date__date=start_date)
             else:
-                #print('Different dates, range')
-                authUserLog = authUserLog.filter(creation_date__range=[start_date, end_date])
+                date_query &= Q(creation_date__date__range=[start_date, end_date])
         elif start_date is not None:
-            #print('Start date is fullfilled')
-            authUserLog = authUserLog.filter(creation_date__gte=start_date)
+            date_query &= Q(creation_date__date__gte=start_date)
         elif end_date is not None:   
-            #print('End date is fullfilled')         
-            authUserLog = authUserLog.filter(creation_date__lte=end_date)
+            date_query &= Q(creation_date__date__lte=end_date)
+
+        time_query = Q()
+        if start_time is not None and end_time is not None:
+            if start_time == end_time:
+                time_query &= Q(creation_date__time=start_time)
+            else:
+                time_query &= Q(creation_date__time__range=[start_time, end_time])
+        elif start_time is not None:
+            time_query &= Q(creation_date__time__gte=start_time)
+        elif end_time is not None:   
+            time_query &= Q(creation_date__time__lte=end_time)
+
+        # Apply combined date and time filtering
+        authUserLog = authUserLog.filter(date_query & time_query)
         #print('Filtered authUserLog:', authUserLog)        
         # Serialize the authUserLog
         serializer = AuthUserLogs.serializer(authUserLog, many=True)        

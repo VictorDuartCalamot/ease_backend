@@ -8,7 +8,7 @@ from backend.permissions import IsOwnerOrReadOnly
 from backend.serializers import ExpenseSerializer, IncomeSerializer
 from backend.models import Expense, Income
 from django.utils import timezone
-
+from django.db.models import Q
 #Expenses
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
@@ -19,41 +19,54 @@ class ExpenseListView(viewsets.ModelViewSet):
         '''
             Get to retrieve data filtered by dates 
         '''   
-        #print('Inside get request')
-        # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
+        start_time_str = request.query_params.get('start_time')
+        end_time_str = request.query_params.get('end_time')
         #print(start_date_str,'-',end_date_str)
 
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
+            start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
+            end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else timezone.now().time()
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         
         # Ensure start_date is not after end_date
-        if start_date and end_date and start_date > end_date:
+        if (start_date and end_date) and (start_date > end_date):
             return Response({'error': 'Start date cannot be after end date.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        if (start_time and end_time) and (start_time > end_time):
+            return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
+        
         # Filter expenses based on date range
         expenses = Expense.objects.filter(user=request.user.id)
-        
+        date_query = Q()
         if start_date is not None and end_date is not None:
-            #print('Inside both fullfilled values')
             if start_date == end_date:
-                #print('Both are the same dates')
-                expenses = expenses.filter(creation_date=start_date)
+                date_query &= Q(creation_date__date=start_date)
             else:
-                #print('Different dates, range')
-                expenses = expenses.filter(creation_date__range=[start_date, end_date])
+                date_query &= Q(creation_date__date__range=[start_date, end_date])
         elif start_date is not None:
-            #print('Start date is fullfilled')
-            expenses = expenses.filter(creation_date__gte=start_date)
+            date_query &= Q(creation_date__date__gte=start_date)
         elif end_date is not None:   
-            #print('End date is fullfilled')         
-            expenses = expenses.filter(creation_date__lte=end_date)
-        #print('Filtered expenses:', expenses)        
+            date_query &= Q(creation_date__date__lte=end_date)
+
+        time_query = Q()
+        if start_time is not None and end_time is not None:
+            if start_time == end_time:
+                time_query &= Q(creation_date__time=start_time)
+            else:
+                time_query &= Q(creation_date__time__range=[start_time, end_time])
+        elif start_time is not None:
+            time_query &= Q(creation_date__time__gte=start_time)
+        elif end_time is not None:   
+            time_query &= Q(creation_date__time__lte=end_time)
+                                 
+        # Apply combined date and time filtering
+        authUserLog = authUserLog.filter(date_query & time_query)
         # Serialize the expenses
         serializer = ExpenseSerializer(expenses, many=True)        
         # Return a JSON response containing the serialized expenses
@@ -151,38 +164,53 @@ class IncomeListView(viewsets.ModelViewSet):
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
+        start_time_str = request.query_params.get('start_time')
+        end_time_str = request.query_params.get('end_time')
         #print(start_date_str,'-',end_date_str)
 
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
+            start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
+            end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else timezone.now().time()
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         
         # Ensure start_date is not after end_date
-        if start_date and end_date and start_date > end_date:
+        if (start_date and end_date) and (start_date > end_date):
             return Response({'error': 'Start date cannot be after end date.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        if (start_time and end_time) and (start_time > end_time):
+            return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
+        
         # Filter income based on date range
         income = Income.objects.filter(user=request.user.id)
         
+        date_query = Q()
         if start_date is not None and end_date is not None:
-            #print('Inside both fullfilled values')
             if start_date == end_date:
-                #print('Both are the same dates')
-                income = income.filter(creation_date=start_date)
+                date_query &= Q(creation_date__date=start_date)
             else:
-                #print('Different dates, range')
-                income = income.filter(creation_date__range=[start_date, end_date])
+                date_query &= Q(creation_date__date__range=[start_date, end_date])
         elif start_date is not None:
-            #print('Start date is fullfilled')
-            income = income.filter(creation_date__gte=start_date)
+            date_query &= Q(creation_date__date__gte=start_date)
         elif end_date is not None:   
-            #print('End date is fullfilled')         
-            income = income.filter(creation_date__lte=end_date)
-        #print('Filtered Income:', income)        
-        # Serialize the Income
+            date_query &= Q(creation_date__date__lte=end_date)
+
+        time_query = Q()
+        if start_time is not None and end_time is not None:
+            if start_time == end_time:
+                time_query &= Q(creation_date__time=start_time)
+            else:
+                time_query &= Q(creation_date__time__range=[start_time, end_time])
+        elif start_time is not None:
+            time_query &= Q(creation_date__time__gte=start_time)
+        elif end_time is not None:   
+            time_query &= Q(creation_date__time__lte=end_time)
+                                 
+        # Apply combined date and time filtering
+        authUserLog = authUserLog.filter(date_query & time_query)
         serializer = IncomeSerializer(income, many=True)        
         # Return a JSON response containing the serialized Income
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -8,6 +8,8 @@ class AuthUserLogs(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     creation_date = models.DateField()
+    creation_time = models.TimeField()
+    platform_OS = models.CharField(max_length=50)
     successful = models.BooleanField(default=False)
     description = models.CharField(max_length=50)
     
@@ -20,6 +22,7 @@ class Expense(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     creation_date = models.DateField()
+    creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     permissions = [
@@ -52,6 +55,7 @@ class Income(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     creation_date = models.DateField()
+    creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     permissions = [
