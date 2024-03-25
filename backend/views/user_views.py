@@ -17,7 +17,7 @@ from django.db.models import Q
 from backend.utils import filter_by_date_time
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
+    def validate(self, request,attrs):
         try:
             data = super().validate(attrs)            
             serializer = UserSerializerWithToken(self.user).data
@@ -25,9 +25,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
                 data[k] = v
 
             username = self.user.username
+            AuthUserLogsListView.createLogWithLogin(request.query_params.get('OS'),True,self.user.id)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
         except AuthenticationFailed:
+            AuthUserLogsListView.createLogWithLogin(request.query_params.get('OS'),False,self.user.id)
             print('Intento de inicio de sesión fallido')
             raise
             
@@ -91,7 +93,34 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         serializer = AuthUserLogs.serializer(authUserLog, many=True)        
         # Return a JSON response containing the serialized authUserLog
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+    def createLogWithLogin(OS,isSuccess,user_id):
+        # Get the current date and time
+        date = datetime.now()
+        # Convert the date and time to string in ISO format and extract date and time separately
+        new_date = date.isoformat()[:10]
+        new_time = date.isoformat()[11:19]
+        data = {             
+            'user': user_id,
+            'creation_date': new_date,
+            'creation_time': new_time,
+            'platform_OS': OS,
+            'successful': isSuccess,
+            'description': '',
+        }        
+        if isSuccess:
+            data.description = 'Login Successful'
+            serializer = AuthUserLogsSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()            
+        else:
+            
+            data.description = 'Login Failed'
+            serializer = AuthUserLogsSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+
+
+        return         
     #@permission_classes(IsAuthenticated)
     def create(self, request, *args, **kwargs):  
             #Post request to create new income object
