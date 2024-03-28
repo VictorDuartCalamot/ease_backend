@@ -18,10 +18,11 @@ from backend.utils import filter_by_date_time
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
-        try:
+        print(self,attrs)
+        try:            
             data1 = attrs
             print(data1,'fi312r3')            
-            data = super().validate(attrs.get('username','password'))            
+            data = super().validate(attrs)            
             print('auauaua',data,attrs.get('OS'))
             serializer = UserSerializerWithToken(self.user).data
             for k, v in serializer.items():
