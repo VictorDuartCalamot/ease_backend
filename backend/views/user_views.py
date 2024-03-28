@@ -22,7 +22,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         try: 
 
             data1 = attrs
-            print(data1,'fi312r3',self.data.OS)            
+            print(data1,'fi312r3',self.data['OS'])            
             data = super().validate(attrs)            
             print('auauaua',data,attrs.get('OS'))
             serializer = UserSerializerWithToken(self.user).data
