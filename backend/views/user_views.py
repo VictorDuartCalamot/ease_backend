@@ -20,9 +20,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         try:
             data1 = attrs
-            print(data1)            
+            print(data1,'fi312r3')            
             data = super().validate(attrs.get('username','password'))            
-            print(data,attrs.get('OS'))
+            print('auauaua',data,attrs.get('OS'))
             serializer = UserSerializerWithToken(self.user).data
             for k, v in serializer.items():
                 data[k] = v
