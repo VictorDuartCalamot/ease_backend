@@ -17,7 +17,7 @@ from django.db.models import Q
 from backend.utils import filter_by_date_time
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, request,attrs):
+    def validate(self,attrs):
         try:
             print(attrs)            
             data = super().validate(attrs.get('username','password'))            
