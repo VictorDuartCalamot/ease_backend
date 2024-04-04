@@ -19,16 +19,16 @@ from backend.utils import filter_by_date_time
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         try:             
-            print('fi312r3',self.context.get('data'),'----',attrs)            
+            #print('fi312r3',self,'----',attrs)            
             data = super().validate(attrs)            
-            print('auauaua',data,attrs.get('os'))
+            #print('auauaua',data,attrs.get('os'))
             
             serializer = UserSerializerWithToken(self.user).data
             for k, v in serializer.items():
                 data[k] = v
 
             username = self.user.username
-            print('??????????????????????????',self.user)
+            #print('??????????????????????????',self.user)
             #AuthUserLogsListView.createLogWithLogin(request.query_params.get('OS'),True,self.user.id)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
