@@ -21,11 +21,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         try:             
             print(self)
             print('::::::::::::::::::::::::::::::::::::::')
-            print(self.context)
+            print(self.data)
             print('::::::::::::::::::::::::::::::::::::::')  
-            print(self.context.data)          
-            print('::::::::::::::::::::::::::::::::::::::')
-            print(self.context.data.get('os'))  
+                      
+            #print('::::::::::::::::::::::::::::::::::::::')
+            #print(self.context.data.get('os'))  
             #print('fi312r3',self,'----',attrs)            
             data = super().validate(attrs)            
             #print('auauaua',data,attrs.get('os'))
