@@ -1,23 +1,28 @@
 from django.contrib.auth.models import User
 from django.db import models
-from backend.utils import generate_random_id
 import uuid
+from guardian.shortcuts import assign_perm,remove_perm
 #Income/Expense models
-"""
-class auth_user_logs(models.Model):
+
+class AuthUserLogs(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField()
+    creation_date = models.DateField()
+    creation_time = models.TimeField()
+    platform_OS = models.CharField(max_length=50)
     successful = models.BooleanField(default=False)
     description = models.CharField(max_length=50)
-    """
-
+    
     
 class Expense(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     #_id = models.CharField(('expense_id'), max_length=50, unique=True,primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     creation_date = models.DateField()
+    creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     permissions = [
@@ -26,3 +31,51 @@ class Expense(models.Model):
             ("can_change_expense", "Can change expense"),
             ("can_delete_expense", "Can delete expense"),
         ]    
+    
+    def save(self, *args, **kwargs):
+        # Call the parent save method to save the expense first
+        super().save(*args, **kwargs)
+        
+        # Assign permissions to the user who created the expense
+        assign_perm('change_expense', self.user, self)
+        assign_perm('delete_expense', self.user, self)
+
+    def delete(self, *args, **kwargs):
+        # Remove permissions when expense is deleted
+        user = self.user
+        super().delete(*args, **kwargs)
+        remove_perm('change_expense', user, self)
+        remove_perm('delete_expense', user, self)
+
+class Income(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    #_id = models.CharField(('income_id'), max_length=50, unique=True,primary_key=True)
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.CharField(max_length=100)
+    creation_date = models.DateField()
+    creation_time = models.TimeField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    permissions = [
+            ("can_view_income", "Can view income"),
+            ("can_add_income", "Can add income"),
+            ("can_change_income", "Can change income"),
+            ("can_delete_income", "Can delete income"),
+        ]    
+    
+    def save(self, *args, **kwargs):
+        # Call the parent save method to save the expense first
+        super().save(*args, **kwargs)
+        
+        # Assign permissions to the user who created the income
+        assign_perm('change_income', self.user, self)
+        assign_perm('delete_income', self.user, self)
+
+    def delete(self, *args, **kwargs):
+        # Remove permissions when income is deleted
+        user = self.user
+        super().delete(*args, **kwargs)
+        remove_perm('change_income', user, self)
+        remove_perm('delete_income', user, self)        
