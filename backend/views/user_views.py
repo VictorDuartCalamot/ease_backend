@@ -22,13 +22,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         try:             
             print('fi312r3',attrs,self.data)            
             data = super().validate(attrs)            
-            print('auauaua',data,attrs.get('OS'))
+            print('auauaua',data,attrs.get('os'))
             serializer = UserSerializerWithToken(self.user).data
             for k, v in serializer.items():
                 data[k] = v
 
             username = self.user.username
-            #print(request.query_params.get('OS'),self.user.id)
+            print('??????????????????????????',data.os,self.user.id)
             #AuthUserLogsListView.createLogWithLogin(request.query_params.get('OS'),True,self.user.id)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
