@@ -17,12 +17,12 @@ from django.db.models import Q
 from backend.utils import filter_by_date_time
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self,attrs):
-        print(attrs)
+    def validate(self,attrs):        
         try:             
             print('fi312r3',attrs,self.data)            
             data = super().validate(attrs)            
             print('auauaua',data,attrs.get('os'))
+            
             serializer = UserSerializerWithToken(self.user).data
             for k, v in serializer.items():
                 data[k] = v
