@@ -19,7 +19,7 @@ from backend.utils import filter_by_date_time
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         try:             
-            print('fi312r3',attrs)            
+            print('fi312r3',self,'----',attrs)            
             data = super().validate(attrs)            
             print('auauaua',data,attrs.get('os'))
             
