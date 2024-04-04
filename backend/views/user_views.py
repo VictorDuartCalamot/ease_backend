@@ -21,7 +21,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         try:             
             print(self)
             print('::::::::::::::::::::::::::::::::::::::')
-            print(self.data)
+            print(self.context['request'].data.get('os'))
             print('::::::::::::::::::::::::::::::::::::::')  
                       
             #print('::::::::::::::::::::::::::::::::::::::')
