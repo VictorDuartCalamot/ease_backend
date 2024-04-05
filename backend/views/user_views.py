@@ -18,17 +18,9 @@ from backend.utils import filter_by_date_time
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
-        try:             
-            print(self)
-            print('::::::::::::::::::::::::::::::::::::::')
-            print(self.context['request'].data.get('os'))
-            print('::::::::::::::::::::::::::::::::::::::')  
-                      
-            #print('::::::::::::::::::::::::::::::::::::::')
-            #print(self.context.data.get('os'))  
-            #print('fi312r3',self,'----',attrs)            
-            data = super().validate(attrs)            
-            #print('auauaua',data,attrs.get('os'))
+        try:        
+            print(self.user.id)
+            data = super().validate(attrs)                        
             
             serializer = UserSerializerWithToken(self.user).data
             for k, v in serializer.items():
@@ -36,12 +28,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
             username = self.user.username
             #print('??????????????????????????',self.user)
-            #AuthUserLogsListView.createLogWithLogin(request.query_params.get('OS'),True,self.user.id)
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
         except AuthenticationFailed:
             #print(request.query_params.get('OS'),self.user.id)
-            #AuthUserLogsListView.createLogWithLogin(request.query_params.get('OS'),False,self.user.id)
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
             print('Intento de inicio de sesión fallido')
             raise
             
@@ -130,8 +122,6 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             serializer = AuthUserLogsSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
-
-
         return         
     #@permission_classes(IsAuthenticated)
     def create(self, request, *args, **kwargs):  
