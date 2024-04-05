@@ -19,7 +19,7 @@ from backend.utils import filter_by_date_time
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         try:        
-            print(self.user.id)
+            print("Inside try catch - \n",self.user)
             data = super().validate(attrs)                        
             
             serializer = UserSerializerWithToken(self.user).data
@@ -28,12 +28,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
             username = self.user.username
             #print('??????????????????????????',self.user)
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
         except AuthenticationFailed:
+            print("Failed - \n",self.user)
             #print(request.query_params.get('OS'),self.user.id)
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user)
             print('Intento de inicio de sesión fallido')
             raise
             
