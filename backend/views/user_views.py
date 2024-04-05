@@ -30,12 +30,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             username = self.user.username
             
             print('??????????????????????????',self.user.id)
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user)
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
         except AuthenticationFailed:
             print("Failed - \n")#self.user
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user)
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
             print('Intento de inicio de sesión fallido')
             raise
             
