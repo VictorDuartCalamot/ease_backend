@@ -20,17 +20,16 @@ from django.core.exceptions import ValidationError
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
-        try:        
-            
-            data = super().validate(attrs)                        
-            
+        try:                    
+            data = super().validate(attrs)                                    
             serializer = UserSerializerWithToken(self.user).data
             print("Inside try catch - \n",self.user)
             for k, v in serializer.items():
                 data[k] = v
 
             username = self.user.username
-            print('??????????????????????????')
+            
+            print('??????????????????????????',self.user.id)
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
@@ -54,7 +53,7 @@ def registerUser(request):
     try:
         validate_password(password)
     except ValidationError as e:
-        return {'status': 'error', 'message': str(e)}
+        return Response(e,status=status.HTTP_400_BAD_REQUEST)
         
     try:
         user = User.objects.create(
@@ -105,6 +104,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         # Return a JSON response containing the serialized authUserLog
         return Response(serializer.data, status=status.HTTP_200_OK)
     def createLogWithLogin(OS,isSuccess,user_id):
+        print(OS,isSuccess,user_id)
         # Get the current date and time
         date = datetime.now()
         # Convert the date and time to string in ISO format and extract date and time separately
