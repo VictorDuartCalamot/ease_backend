@@ -30,8 +30,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
             return data
         except AuthenticationFailed as e:
-            print("Failed - \n")#self.user
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
+            print("Failed - \n",self,'--------',attrs)#self.user
+            #AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,)
             print('Intento de inicio de sesión fallido')
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
             
