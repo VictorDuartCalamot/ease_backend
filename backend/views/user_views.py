@@ -21,21 +21,21 @@ from django.core.exceptions import ValidationError
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         try:        
-            print("Inside try catch - \n",self.user)
+            
             data = super().validate(attrs)                        
             
             serializer = UserSerializerWithToken(self.user).data
+            print("Inside try catch - \n",self.user)
             for k, v in serializer.items():
                 data[k] = v
 
             username = self.user.username
-            #print('??????????????????????????',self.user)
+            print('??????????????????????????')
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
         except AuthenticationFailed:
-            print("Failed - \n",self.user)
-            #print(request.query_params.get('OS'),self.user.id)
+            print("Failed - \n")#self.user
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user)
             print('Intento de inicio de sesión fallido')
             raise
