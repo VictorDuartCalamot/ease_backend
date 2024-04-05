@@ -13,8 +13,10 @@ from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from datetime import datetime
 from django.utils import timezone
-from django.db.models import Q
+#from django.db.models import Q
 from backend.utils import filter_by_date_time
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
@@ -49,7 +51,11 @@ def registerUser(request):
     name = (data['name']).strip()
     last_name = (data['last_name']).strip()
     password = (data['password']).strip()
-
+    try:
+        validate_password(password)
+    except ValidationError as e:
+        return {'status': 'error', 'message': str(e)}
+        
     try:
         user = User.objects.create(
             first_name=name,
