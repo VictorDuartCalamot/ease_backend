@@ -19,22 +19,18 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self,attrs):        
+    def validate(self,attrs):
+        print("Entro?")        
         try:                    
             data = super().validate(attrs)                                    
-            serializer = UserSerializerWithToken(self.user).data
-            print("Inside try catch - \n",self.user)
+            serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
-                data[k] = v
-
-            username = self.user.username
-            
-            #print('??????????????????????????',self.user.id)
+                data[k] = v             
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
-            print(f'Inicio de sesión exitoso para el usuario: {username}')
+            print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
             return data
         except AuthenticationFailed:
-            #print("Failed - \n")#self.user
+            print("Failed - \n")#self.user
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
             print('Intento de inicio de sesión fallido')
             raise
@@ -117,8 +113,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             'platform_OS': OS,
             'successful': isSuccess,
             'description': '',
-        }        
-        print(data)
+        }                
         if isSuccess:
             data['description'] = 'Login Successful'
                                   
@@ -126,8 +121,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             data['description'] = 'Login Failed'
             
         serializer = AuthUserLogsSerializer(data=data)
-        if serializer.is_valid():
-                print("Is Valid")
+        if serializer.is_valid():                
                 serializer.save()  
         return         
     #@permission_classes(IsAuthenticated)
