@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken', 
     'backend',
     'guardian',
-    'corsheaders,
+    'corsheaders',
     
 
 ]
