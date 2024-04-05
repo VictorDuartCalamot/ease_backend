@@ -29,12 +29,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
             username = self.user.username
             
-            print('??????????????????????????',self.user.id)
+            #print('??????????????????????????',self.user.id)
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
             print(f'Inicio de sesión exitoso para el usuario: {username}')
             return data
         except AuthenticationFailed:
-            print("Failed - \n")#self.user
+            #print("Failed - \n")#self.user
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
             print('Intento de inicio de sesión fallido')
             raise
@@ -118,17 +118,17 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             'successful': isSuccess,
             'description': '',
         }        
+        print(data)
         if isSuccess:
-            data.description = 'Login Successful'
-            serializer = AuthUserLogsSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()            
-        else:
+            data['description'] = 'Login Successful'
+                                  
+        else:            
+            data['description'] = 'Login Failed'
             
-            data.description = 'Login Failed'
-            serializer = AuthUserLogsSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
+        serializer = AuthUserLogsSerializer(data=data)
+        if serializer.is_valid():
+                print("Is Valid")
+                serializer.save()  
         return         
     #@permission_classes(IsAuthenticated)
     def create(self, request, *args, **kwargs):  
