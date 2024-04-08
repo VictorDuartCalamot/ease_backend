@@ -25,27 +25,32 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
         return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
     
     # Filter based on date and time range
-    query = Q()
-    if start_date is not None and end_date is not None:
-        if start_date == end_date:
-            query &= Q(creation_date__date=start_date)
-        else:
-            query &= Q(creation_date__date__range=[start_date, end_date])
-    elif start_date is not None:
-        query &= Q(creation_date__date__gte=start_date)
-    elif end_date is not None:   
-        query &= Q(creation_date__date__lte=end_date)
+    if (start_date or end_date):
+        date_query = Q()
+        if start_date is not None and end_date is not None:
+            if start_date == end_date:
+                date_query &= Q(creation_date__date=start_date)
+            else:
+                date_query &= Q(creation_date__date__range=[start_date, end_date])
+        elif start_date is not None:
+            date_query &= Q(creation_date__date__gte=start_date)
+        elif end_date is not None:   
+            date_query &= Q(creation_date__date__lte=end_date)
+        queryset = queryset.filter(date_query)
 
-    time_query = Q()
-    if start_time is not None and end_time is not None:
-        if start_time == end_time:
-            time_query &= Q(creation_date__time=start_time)
-        else:
-            time_query &= Q(creation_date__time__range=[start_time, end_time])
-    elif start_time is not None:
-        time_query &= Q(creation_date__time__gte=start_time)
-    elif end_time is not None:   
-        time_query &= Q(creation_date__time__lte=end_time)
-                                 
+    if (start_time or end_time):
+        time_query = Q()
+        if start_time is not None and end_time is not None:
+            if start_time == end_time:
+                time_query &= Q(creation_date__time=start_time)
+            else:
+                time_query &= Q(creation_date__time__range=[start_time, end_time])
+        elif start_time is not None:
+            time_query &= Q(creation_date__time__gte=start_time)
+        elif end_time is not None:   
+            time_query &= Q(creation_date__time__lte=end_time)
+        queryset = queryset.filter(time_query)                                     
+        # Extract time component from datetime field
+        
     # Apply combined date and time filtering
-    return queryset.filter(query & time_query)
+    return queryset
