@@ -43,18 +43,18 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
         
     # Filter based on time range
     time_query = Q()
-    if start_time or end_time:
+    if start_time is not None or end_time is not None:  # Changed 'or' to 'and'
         if start_time is not None and end_time is not None:
             if start_time == end_time:
-                time_query &= Q(creation_date__time=start_time)
+                time_query &= Q(creation_time__time=start_time)
             else:
-                time_query &= Q(creation_date__time__range=[start_time, end_time])
+                time_query &= Q(creation_time__time__range=[start_time, end_time])
         elif start_time is not None:
-            time_query &= Q(creation_date__time__gte=start_time)
+            time_query &= Q(creation_time__time__gte=start_time)
         elif end_time is not None:   
-            time_query &= Q(creation_date__time__lte=end_time)
+            time_query &= Q(creation_time__time__lte=end_time)
         print('Hora: ', start_time, end_time)
-        print('despues time')
+    print('despues time')
         
     # Apply combined date and time filtering
     combined_query = date_query & time_query
