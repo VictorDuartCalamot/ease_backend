@@ -27,8 +27,7 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
     print('2nda phase')
     # Filter based on date and time range
     date_query = Q()
-    if (start_date or end_date):
-        
+    if start_date or end_date:
         if start_date is not None and end_date is not None:
             if start_date == end_date:
                 date_query &= Q(creation_date__date=start_date)
@@ -38,11 +37,13 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
             date_query &= Q(creation_date__date__gte=start_date)
         elif end_date is not None:   
             date_query &= Q(creation_date__date__lte=end_date)
-        print('Query: ',date_query)
-    print('despues date query')        
-    time_query = Q()
-    if (start_time or end_time):
+        print('Query: ', date_query)
         
+    print('despues date query')
+        
+    # Filter based on time range
+    time_query = Q()
+    if start_time or end_time:
         if start_time is not None and end_time is not None:
             if start_time == end_time:
                 time_query &= Q(creation_date__time=start_time)
@@ -52,10 +53,10 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
             time_query &= Q(creation_date__time__gte=start_time)
         elif end_time is not None:   
             time_query &= Q(creation_date__time__lte=end_time)
-        print('Hora: ',start_time,end_time)
-        queryset = queryset.filter(time_query) 
-    print('despues time query')                                    
-        # Extract time component from datetime field
-    print(queryset.filter(date_query & time_query))        
+        print('Hora: ', start_time, end_time)
+        print('despues time')
+        
     # Apply combined date and time filtering
-    return queryset.filter(date_query & time_query)
+    combined_query = date_query & time_query
+    print(queryset.filter(combined_query))
+    return queryset.filter(combined_query)
