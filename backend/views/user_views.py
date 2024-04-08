@@ -20,9 +20,10 @@ from django.core.exceptions import ValidationError
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
-        print("Entro?")
-        print(self,attrs)        
-        try:                                        
+        print("Entro?")        
+        try:                                
+            emailToLower = attrs.get('username', '').strip().lower()  
+            attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
