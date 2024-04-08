@@ -17,6 +17,7 @@ def generate_random_id(prefix):
 
 
 def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
+    print('Entro para filtrar 2')
     # Ensure start_date is not after end_date
     if (start_date and end_date) and (start_date > end_date):
         return Response({'error': 'Start date cannot be after end date.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -24,28 +25,36 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
     if (start_time and end_time) and (start_time > end_time):
         return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
     
-    # Filter based on date and time range
-    query = Q()
-    if start_date is not None and end_date is not None:
-        if start_date == end_date:
-            query &= Q(creation_date__date=start_date)
-        else:
-            query &= Q(creation_date__date__range=[start_date, end_date])
-    elif start_date is not None:
-        query &= Q(creation_date__date__gte=start_date)
-    elif end_date is not None:   
-        query &= Q(creation_date__date__lte=end_date)
-
+    print('2nda phase')
+    # Filter based on date range
+    date_query = Q()
+    if start_date or end_date:
+        if start_date is not None and end_date is not None:
+            if start_date == end_date:
+                date_query &= Q(creation_date=start_date)
+            else:
+                date_query &= Q(creation_date__range=[start_date, end_date])
+        elif start_date is not None:
+            date_query &= Q(creation_date__gte=start_date)
+        elif end_date is not None:   
+            date_query &= Q(creation_date__lte=end_date)
+        print('Date Query: ', date_query)
+        
+    print('despues date query')
+        
+    # Filter based on time range
     time_query = Q()
-    if start_time is not None and end_time is not None:
+    if start_time is not None or end_time is not None:
         if start_time == end_time:
-            time_query &= Q(creation_date__time=start_time)
+            time_query &= Q(creation_time=start_time)
         else:
-            time_query &= Q(creation_date__time__range=[start_time, end_time])
-    elif start_time is not None:
-        time_query &= Q(creation_date__time__gte=start_time)
-    elif end_time is not None:   
-        time_query &= Q(creation_date__time__lte=end_time)
-                                 
+            time_query &= Q(creation_time__range=[start_time, end_time])
+    print('Time Query: ', time_query)
+    print('Hora: ', start_time, end_time)
+    print('despues time')
+        
     # Apply combined date and time filtering
-    return queryset.filter(query & time_query)
+    combined_query = date_query & time_query
+    print(combined_query)
+    print(queryset.filter(combined_query))
+    return queryset.filter(combined_query)

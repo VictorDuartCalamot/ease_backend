@@ -26,19 +26,22 @@ class ExpenseListView(viewsets.ModelViewSet):
         start_time_str = request.query_params.get('start_time')
         end_time_str = request.query_params.get('end_time')
         #print(start_date_str,'-',end_date_str)
-
+        print(end_date_str,start_date_str,start_time_str,end_time_str)
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
-            end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else timezone.now().time()
+            end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+        print('Paso a filtrar?')
+        expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
         
-        expenses= filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
+        print(expenses_queryset)        
         # Serialize the expenses
-        serializer = ExpenseSerializer(expenses, many=True)        
+        serializer = ExpenseSerializer(expenses_queryset, many=True)
+        print('Serializer ok?', serializer.data)        
         # Return a JSON response containing the serialized expenses
         return Response(serializer.data, status=status.HTTP_200_OK)
         
@@ -137,13 +140,13 @@ class IncomeListView(viewsets.ModelViewSet):
         start_time_str = request.query_params.get('start_time')
         end_time_str = request.query_params.get('end_time')
         #print(start_date_str,'-',end_date_str)
-
+        print(end_date_str,start_date_str,start_time_str,end_time_str)
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
-            end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else timezone.now().time()
+            end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -210,7 +213,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
         except Income.DoesNotExist:
             return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
 
-    
+    #TODO: Fixear fecha hora para que no se sobreescriba
     def update(self, request, *args,**kwargs):
 
         '''
