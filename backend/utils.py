@@ -17,6 +17,7 @@ def generate_random_id(prefix):
 
 
 def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
+    print('Entro para filtrar 2')
     # Ensure start_date is not after end_date
     if (start_date and end_date) and (start_date > end_date):
         return Response({'error': 'Start date cannot be after end date.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -36,6 +37,7 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
             date_query &= Q(creation_date__date__gte=start_date)
         elif end_date is not None:   
             date_query &= Q(creation_date__date__lte=end_date)
+        print('Fecha',start_date,end_date)
         queryset = queryset.filter(date_query)
 
     if (start_time or end_time):
@@ -49,8 +51,10 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
             time_query &= Q(creation_date__time__gte=start_time)
         elif end_time is not None:   
             time_query &= Q(creation_date__time__lte=end_time)
+        print('Hora: ',start_time,end_time)
         queryset = queryset.filter(time_query)                                     
         # Extract time component from datetime field
         
+    print(queryset)
     # Apply combined date and time filtering
     return queryset
