@@ -58,5 +58,6 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
         
     # Apply combined date and time filtering
     combined_query = date_query & time_query
+    print(combined_query)
     print(queryset.filter(combined_query))
     return queryset.filter(combined_query)
