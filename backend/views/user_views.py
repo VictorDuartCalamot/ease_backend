@@ -21,8 +21,10 @@ from django.core.exceptions import ValidationError
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         print("Entro?")        
-        try:                    
-            data = super().validate(attrs)                                    
+        try:                                
+            emailToLower = attrs.get('username', '').strip().lower()  
+            attrs['username'] = emailToLower 
+            data = super().validate(attrs)                                                                        
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
                 data[k] = v             
@@ -30,11 +32,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
             return data
         except AuthenticationFailed as e:
-            print("Failed - \n",self,'--------',attrs)#self.user
-            #AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,)
-            print('Intento de inicio de sesión fallido')
-            #return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
-            raise ValidationError(detail=str(e))
+            print("Failed - \n",self.user.id,'--------',attrs)#self.user
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
+            print('Intento de inicio de sesión fallido')            
+            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)
             
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -76,15 +77,14 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
 
     #@permission_classes(permission_classes=[IsAuthenticated, IsAdminUser])
     def get(self, request):
-            #Get to retrieve data filtered by dates 
-        #print('Inside get request')
+        '''
+            Get to retrieve data filtered by dates 
+        '''
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
-        end_time_str = request.query_params.get('end_time')
-        
-        #print(start_date_str,'-',end_date_str)
+        end_time_str = request.query_params.get('end_time')                
 
         # Convert date strings to datetime objects, handling potential errors
         try:
@@ -192,3 +192,33 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
         else:
             # Return error response if serializer data is invalid
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+'''class AdminManagement(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated,IsAdminUser]
+    def createUserWithRoles(request):
+        data = request.data
+        email = (data['email']).strip().lower()
+        name = (data['name']).strip()
+        last_name = (data['last_name']).strip()
+        password = (data['password']).strip()
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            return Response(e,status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            user = User.objects.create(
+                first_name=name,
+                last_name=last_name,
+                username=email,
+                email=email,
+                is_Staff=data.is_Staff,
+                is_Admin=data.is_Admin,
+                password=make_password(password)
+            )
+            serializer = UserSerializerWithToken(user, many=False)
+            print(f'Usuario registrado con éxito: {email}.')
+            return Response(serializer.data)
+        except Exception as e:
+            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)'''
