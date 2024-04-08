@@ -22,10 +22,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         print("Entro?")        
         try:                    
-            data = super().validate(attrs) 
-            print(data['email'])
-            data['email'] =  (self.user.email).strip().lower()  
-            print(data['email'])                                           
+            data = super().validate(attrs)             
+            print(data)
+            data['email'] =  (self.context['request'].data.get('email')).strip().lower()  
+            print(data['email'])                                
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
                 data[k] = v             
