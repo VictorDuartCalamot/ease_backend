@@ -22,10 +22,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         print("Entro?")        
         try:                    
-            data = super().validate(attrs)             
-            print(data)
-            data['email'] =  (self.context['request'].data.get('email')).strip().lower()  
-            print(data['email'])                                
+            data = super().validate(attrs)                      
+            emailToLowercase = (self.context['request'].data.get('email', '')).strip().lower()  
+            data['email'] = emailToLowercase                           
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
                 data[k] = v             
@@ -194,3 +193,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
         else:
             # Return error response if serializer data is invalid
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AdminManagement(viewsets.ModelViewSet):
+    
