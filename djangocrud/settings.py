@@ -31,14 +31,9 @@ INSTALLED_APPS = [
     'rest_framework',   
     'rest_framework.authtoken', 
     'backend',
-<<<<<<< HEAD
     'guardian',    
     'corsheaders',
 
-=======
-    'guardian',
-    'corsheaders',    
->>>>>>> 91033cff83d67d28d5f1c0384fe22e133645a801
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -86,12 +81,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
-<<<<<<< HEAD
     'corsheaders.middleware.CorsMiddleware',
-=======
-
-    'corsheaders.middleware.CorsMiddleware',    
->>>>>>> 91033cff83d67d28d5f1c0384fe22e133645a801
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
