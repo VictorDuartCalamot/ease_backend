@@ -196,5 +196,31 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AdminManagement(viewsets.ModelViewSet):
-    
+'''class AdminManagement(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated,IsAdminUser]
+    def createUserWithRoles(request):
+        data = request.data
+        email = (data['email']).strip().lower()
+        name = (data['name']).strip()
+        last_name = (data['last_name']).strip()
+        password = (data['password']).strip()
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            return Response(e,status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            user = User.objects.create(
+                first_name=name,
+                last_name=last_name,
+                username=email,
+                email=email,
+                is_Staff=data.is_Staff,
+                is_Admin=data.is_Admin,
+                password=make_password(password)
+            )
+            serializer = UserSerializerWithToken(user, many=False)
+            print(f'Usuario registrado con éxito: {email}.')
+            return Response(serializer.data)
+        except Exception as e:
+            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)'''
