@@ -24,7 +24,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         try:                    
             data = super().validate(attrs)                      
             emailToLowercase = (self.context['request'].data.get('email', '')).strip().lower()  
-            data['email'] = emailToLowercase                           
+            data['email'] = emailToLowercase
+            print(data)                           
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
                 data[k] = v             
