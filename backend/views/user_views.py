@@ -22,10 +22,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         print("Entro?")        
         try:                    
+            print(attrs.get('email', '').strip().lower())
             email = attrs.get('email', '').strip().lower()  
             attrs['email'] = email  
-            data = super().validate(attrs)                                  
-            print(data)                           
+            data = super().validate(attrs)                                                                        
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
                 data[k] = v             
@@ -78,15 +78,14 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
 
     #@permission_classes(permission_classes=[IsAuthenticated, IsAdminUser])
     def get(self, request):
-            #Get to retrieve data filtered by dates 
-        #print('Inside get request')
+        '''
+            Get to retrieve data filtered by dates 
+        '''
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
-        end_time_str = request.query_params.get('end_time')
-        
-        #print(start_date_str,'-',end_date_str)
+        end_time_str = request.query_params.get('end_time')                
 
         # Convert date strings to datetime objects, handling potential errors
         try:
