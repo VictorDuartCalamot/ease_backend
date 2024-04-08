@@ -23,7 +23,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         print("Entro?")        
         try:                    
             data = super().validate(attrs) 
-            data['email'] =  data['email'].strip().lower()                                 
+            print(data['email'])
+            data['email'] =  (self.user.email).strip().lower()  
+            print(data['email'])                                           
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
                 data[k] = v             
