@@ -33,8 +33,6 @@ INSTALLED_APPS = [
     'backend',
     'guardian',
     'corsheaders',    
-    
-
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -82,6 +80,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+
     'corsheaders.middleware.CorsMiddleware',    
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
