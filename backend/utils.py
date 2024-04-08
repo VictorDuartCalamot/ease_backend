@@ -55,6 +55,6 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
         print('Hora: ',start_time,end_time)
         queryset = queryset.filter(time_query)                                     
         # Extract time component from datetime field
-            
+    print(queryset.filter(date_query & time_query))        
     # Apply combined date and time filtering
     return queryset.filter(date_query & time_query)
