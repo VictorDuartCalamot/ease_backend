@@ -22,7 +22,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         print("Entro?")        
         try:                    
-            data = super().validate(attrs)                                    
+            data = super().validate(attrs) 
+            data['email'] =  data['email'].strip().lower()                                 
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
                 data[k] = v             
@@ -30,10 +31,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
             return data
         except AuthenticationFailed as e:
-            print("Failed - \n",self,'--------',attrs)#self.user
-            #AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,)
-            print('Intento de inicio de sesión fallido')
-            #return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
+            print("Failed - \n",self.user.id,'--------',attrs)#self.user
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
+            print('Intento de inicio de sesión fallido')            
             raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)
             
 
