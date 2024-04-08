@@ -33,7 +33,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             print("Failed - \n",self,'--------',attrs)#self.user
             #AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,)
             print('Intento de inicio de sesión fallido')
-            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
+            #return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError(detail=str(e))
             
 
 class MyTokenObtainPairView(TokenObtainPairView):
