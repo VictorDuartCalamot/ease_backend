@@ -36,10 +36,11 @@ class ExpenseListView(viewsets.ModelViewSet):
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         print('Paso a filtrar?')
-        expenses= filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
-        print(expenses)
+        expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
+        
+        print(expenses_queryset)        
         # Serialize the expenses
-        serializer = ExpenseSerializer(expenses, many=True)
+        serializer = ExpenseSerializer(expenses_queryset, many=True)
         print('Serializer ok?', serializer.data)        
         # Return a JSON response containing the serialized expenses
         return Response(serializer.data, status=status.HTTP_200_OK)
