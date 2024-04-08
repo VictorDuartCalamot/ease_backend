@@ -31,8 +31,9 @@ INSTALLED_APPS = [
     'rest_framework',   
     'rest_framework.authtoken', 
     'backend',
-    'guardian',
-    'corsheaders',    
+    'guardian',    
+    'corsheaders',
+
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -80,8 +81,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
-
-    'corsheaders.middleware.CorsMiddleware',    
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
