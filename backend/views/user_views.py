@@ -13,30 +13,27 @@ from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from datetime import datetime
 from django.utils import timezone
-from django.db.models import Q
+#from django.db.models import Q
 from backend.utils import filter_by_date_time
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self,attrs):        
-        try:             
-            #print('fi312r3',self,'----',attrs)            
-            data = super().validate(attrs)            
-            #print('auauaua',data,attrs.get('os'))
-            
-            serializer = UserSerializerWithToken(self.user).data
+    def validate(self,attrs):
+        print("Entro?")        
+        try:                    
+            data = super().validate(attrs)                                    
+            serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
-                data[k] = v
-
-            username = self.user.username
-            #print('??????????????????????????',self.user)
-            #AuthUserLogsListView.createLogWithLogin(request.query_params.get('OS'),True,self.user.id)
-            print(f'Inicio de sesión exitoso para el usuario: {username}')
+                data[k] = v             
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
+            print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
             return data
-        except AuthenticationFailed:
-            #print(request.query_params.get('OS'),self.user.id)
-            #AuthUserLogsListView.createLogWithLogin(request.query_params.get('OS'),False,self.user.id)
+        except AuthenticationFailed as e:
+            print("Failed - \n",self,'--------',attrs)#self.user
+            #AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,)
             print('Intento de inicio de sesión fallido')
-            raise
+            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
             
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -49,7 +46,11 @@ def registerUser(request):
     name = (data['name']).strip()
     last_name = (data['last_name']).strip()
     password = (data['password']).strip()
-
+    try:
+        validate_password(password)
+    except ValidationError as e:
+        return Response(e,status=status.HTTP_400_BAD_REQUEST)
+        
     try:
         user = User.objects.create(
             first_name=name,
@@ -99,6 +100,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         # Return a JSON response containing the serialized authUserLog
         return Response(serializer.data, status=status.HTTP_200_OK)
     def createLogWithLogin(OS,isSuccess,user_id):
+        print(OS,isSuccess,user_id)
         # Get the current date and time
         date = datetime.now()
         # Convert the date and time to string in ISO format and extract date and time separately
@@ -111,20 +113,16 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             'platform_OS': OS,
             'successful': isSuccess,
             'description': '',
-        }        
+        }                
         if isSuccess:
-            data.description = 'Login Successful'
-            serializer = AuthUserLogsSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()            
-        else:
+            data['description'] = 'Login Successful'
+                                  
+        else:            
+            data['description'] = 'Login Failed'
             
-            data.description = 'Login Failed'
-            serializer = AuthUserLogsSerializer(data=data)
-            if serializer.is_valid():
-                serializer.save()
-
-
+        serializer = AuthUserLogsSerializer(data=data)
+        if serializer.is_valid():                
+                serializer.save()  
         return         
     #@permission_classes(IsAuthenticated)
     def create(self, request, *args, **kwargs):  
