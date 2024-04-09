@@ -86,8 +86,10 @@ def blockUser(userID):
     if (query.count() >=3):
         print('Ha sobrepasado los logins fallidos posibles ! ! !')
         userObject['is_active'] = False
+        print(userObject)
         serializer = UserSerializer(userObject)
-        if serializer.is_valid():            
+        if serializer.is_valid():
+            print('Serializer valid?')            
             serializer.save()
             return Response(status=status.HTTP_403_FORBIDDEN, body='The account has been blocked because of several unsuccessful login attempts.')
         
