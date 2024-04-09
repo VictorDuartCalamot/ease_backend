@@ -23,7 +23,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         emailToLower = attrs.get('username', '').strip().lower() 
         User = get_user_model()
-        user = User.objects.get()
+        user = self.get_object()
         print(User)
         print(user)
         print("Entro?")        
