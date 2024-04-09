@@ -82,7 +82,7 @@ def blockUser(userID):
     new_time = three_minutes_ago.time().isoformat()[:8]
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
     if (query.count() >=3):
-        print(list)
+        print('Ha sobrepasado los logins fallidos posibles ! ! !')
     
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
