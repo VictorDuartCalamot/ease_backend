@@ -11,13 +11,12 @@ from rest_framework.exceptions import AuthenticationFailed
 from backend.models import AuthUserLogs
 from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
-from datetime import datetime
+from datetime import datetime,timedelta
 from django.utils import timezone
-#from django.db.models import Q
 from backend.utils import filter_by_date_time, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-
+from django.db.models import Q
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
@@ -73,8 +72,16 @@ def registerUser(request):
 
 def blockUser(userID):
     '''Block user (Is_Active field to False)'''
-    userObject = User.objects.get(id=userID)
-    
+    #userObject = User.objects.get(id=userID)
+    currentDate = datetime.now()
+    three_minutes_ago = currentDate - timedelta(minutes=3)
+
+    # Convert the date and time to strings in ISO format and extract date and time separately
+    new_date = three_minutes_ago.date().isoformat()
+    new_time = three_minutes_ago.time().isoformat()[:8]
+    query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()])
+    list=AuthUserLogsSerializer(query,Many=True)
+    print(list)
     
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
