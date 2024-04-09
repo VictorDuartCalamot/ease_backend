@@ -17,6 +17,7 @@ from backend.utils import filter_by_date_time, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db.models import Q
+from backend.permissions import PermissionLevel
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
@@ -215,9 +216,9 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-'''class AdminManagement(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated,IsAdminUser]
-    def createUserWithRoles(request):
+class SuperAdminManagementDetailView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated,IsAdminUser,PermissionLevel]
+    def createUserWithRoles(self,request):
         data = request.data
         email = (data['email']).strip().lower()
         name = (data['name']).strip()
@@ -242,4 +243,4 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             print(f'Usuario registrado con éxito: {email}.')
             return Response(serializer.data)
         except Exception as e:
-            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)'''
+            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)

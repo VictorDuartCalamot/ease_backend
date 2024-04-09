@@ -1,5 +1,6 @@
 from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
+from backend.utils import getUserObjectByEmail
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow owners of an object to delete it.
@@ -16,3 +17,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
         else:
             raise PermissionDenied("You do not have permission to delete this expense.")
+        
+class PermissionLevel(permissions.BasePermission):
+    '''Check permissions for user'''
+    def isSuperUser(self,request):
+        '''Check if user is super user'''
+        print(self.user)
+        userObj = getUserObjectByEmail(self.user)
+        if (userObj.get('is_superuser') == True):
+            return True
+        else:
+            raise PermissionDenied("You do not have enough permission.")
