@@ -21,10 +21,11 @@ from django.contrib.auth import get_user_model
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
+        print(self,attrs)
         emailToLower = attrs.get('username', '').strip().lower() 
         User = get_user_model()  
-             
-        print(User.pk)
+        User.objects.get()    
+        print(User)
         print("Entro?")        
         try:                                
             #emailToLower = attrs.get('username', '').strip().lower()  
@@ -38,8 +39,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             return data
         except AuthenticationFailed as e:
 
-            print("Failed - \n",user.id,'--------',attrs)#self.user
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,user.id)
+            print("Failed - \n",User.pk,'--------',attrs)#self.user
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,User.pk)
             print('Intento de inicio de sesión fallido')            
             raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)
             
