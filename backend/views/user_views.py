@@ -24,9 +24,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         print(self,attrs)
         emailToLower = attrs.get('username', '').strip().lower()                 
         print("Entro?") 
-        userquery = User.objects.filter(email=emailToLower)
+        userquery = User.objects.filter(email=str(emailToLower))
         print(userquery)
-        result = UserSerializer(userquery, Many=False)
+        result = UserSerializer(userquery)
         print(result)
         try:                                
             #emailToLower = attrs.get('username', '').strip().lower()  
