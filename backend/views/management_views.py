@@ -52,7 +52,9 @@ class ExpenseListView(viewsets.ModelViewSet):
         '''              
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
-            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
+            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)  
+        if (request.data['amount'] <= 0):
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                      
         #Insert userID into the request.data array
         request.data['user'] = request.user.id                        
         # Create a serializer instance with the data in the array
@@ -110,7 +112,9 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         '''
         # Retrieve the expense object
         expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
-        request.data['user'] = request.user.id
+        if (request.data['amount'] <= 0):
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
+        request.data['user'] = request.user.id        
         request.data['creation_date'] = expense.creation_date
         request.data['creation_time'] = expense.creation_time
         # Serialize the expense data with the updated data from request
@@ -166,8 +170,12 @@ class IncomeListView(viewsets.ModelViewSet):
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
             return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
+        if (request.data['amount'] <= 0):
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
+
         #Insert userID into the request.data array
-        request.data['user'] = request.user.id                        
+        request.data['user'] = request.user.id
+        
         # Create a serializer instance with the data in the array
         serializer = IncomeSerializer(data=request.data) 
         #Check if the serializer is valid
