@@ -61,7 +61,10 @@ def registerUser(request):
             last_name=last_name,
             username=email,
             email=email,
-            password=make_password(password)
+            password=make_password(password),
+            is_staff=False,
+            is_active=True,
+            is_superuser=False            
         )
         serializer = UserSerializerWithToken(user, many=False)
         print(f'Usuario registrado con éxito: {email}.')
