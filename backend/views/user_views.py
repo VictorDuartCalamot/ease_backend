@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status,viewsets
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from backend.serializers import UserSerializerWithToken
+from backend.serializers import UserSerializerWithToken, UserSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.exceptions import AuthenticationFailed
@@ -22,12 +22,12 @@ from django.contrib.auth import get_user_model
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         print(self,attrs)
-        emailToLower = attrs.get('username', '').strip().lower() 
-        user = User.objects.get(email=emailToLower)
-        print(user)
-
-        print(User)
-        print("Entro?")        
+        emailToLower = attrs.get('username', '').strip().lower()                 
+        print("Entro?") 
+        userquery = User.objects.filter(email=emailToLower)
+        print(userquery)
+        result = UserSerializer(userquery, Many=False)
+        print(result)
         try:                                
             #emailToLower = attrs.get('username', '').strip().lower()  
             attrs['username'] = emailToLower 
