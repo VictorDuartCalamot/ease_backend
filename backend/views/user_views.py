@@ -85,13 +85,10 @@ def blockUser(userID):
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
     if (query.count() >=3):
         print('Ha sobrepasado los logins fallidos posibles ! ! !')
-        userObject['is_active'] = False
-        print(userObject)
-        serializer = UserSerializer(userObject)
-        if serializer.is_valid():
-            print('Serializer valid?')            
-            serializer.save()
-            return Response(status=status.HTTP_403_FORBIDDEN, body='The account has been blocked because of several unsuccessful login attempts.')
+        userObject.is_active = False                                          
+        userObject.save()
+        print('Saved??!!')
+        return Response({'detail':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
         
     
 class AuthUserLogsListView(viewsets.ModelViewSet):
