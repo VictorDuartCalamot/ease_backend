@@ -23,6 +23,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
         print(userObject)
+        if (userObject.get('is_active') == False):
+            return Response(status=status.HTTP_403_FORBIDDEN, body='The account is blocked. Contact your administrator for further information.')
         try:                                
             #emailToLower = attrs.get('username', '').strip().lower()  
             attrs['username'] = emailToLower 
@@ -61,10 +63,7 @@ def registerUser(request):
             last_name=last_name,
             username=email,
             email=email,
-            password=make_password(password),
-            is_staff=False,
-            is_active=True,
-            is_superuser=False            
+            password=make_password(password)            
         )
         serializer = UserSerializerWithToken(user, many=False)
         print(f'Usuario registrado con éxito: {email}.')
@@ -86,6 +85,12 @@ def blockUser(userID):
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
     if (query.count() >=3):
         print('Ha sobrepasado los logins fallidos posibles ! ! !')
+        userObject['is_active'] = False
+        serializer = UserSerializer(userObject)
+        if serializer.is_valid():            
+            serializer.save()
+            return Response(status=status.HTTP_403_FORBIDDEN, body='The account has been blocked because of several unsuccessful login attempts.')
+        
     
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
