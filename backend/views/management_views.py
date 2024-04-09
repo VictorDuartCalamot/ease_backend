@@ -25,8 +25,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
         end_time_str = request.query_params.get('end_time')
-        #print(start_date_str,'-',end_date_str)
-        print(end_date_str,start_date_str,start_time_str,end_time_str)
+        #print(start_date_str,'-',end_date_str)        
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
@@ -35,13 +34,14 @@ class ExpenseListView(viewsets.ModelViewSet):
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
-        print('Paso a filtrar?')
+        
+        #print(f'Start date {start_date}, end date: {end_date}, start time: {start_time}, end time: {end_time}')
         expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
         
         print(expenses_queryset)        
         # Serialize the expenses
         serializer = ExpenseSerializer(expenses_queryset, many=True)
-        print('Serializer ok?', serializer.data)        
+        #print('Serializer ok?', serializer.data)        
         # Return a JSON response containing the serialized expenses
         return Response(serializer.data, status=status.HTTP_200_OK)
         
@@ -52,7 +52,9 @@ class ExpenseListView(viewsets.ModelViewSet):
         '''              
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
-            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
+            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)  
+        if (request.data['amount'] <= 0):
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                      
         #Insert userID into the request.data array
         request.data['user'] = request.user.id                        
         # Create a serializer instance with the data in the array
@@ -110,7 +112,11 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         '''
         # Retrieve the expense object
         expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
-        request.data['user'] = request.user.id
+        if (request.data['amount'] <= 0):
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
+        request.data['user'] = request.user.id        
+        request.data['creation_date'] = expense.creation_date
+        request.data['creation_time'] = expense.creation_time
         # Serialize the expense data with the updated data from request
         serializer = ExpenseSerializer(expense, data=request.data)
         
@@ -164,8 +170,12 @@ class IncomeListView(viewsets.ModelViewSet):
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
             return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
+        if (request.data['amount'] <= 0):
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
+
         #Insert userID into the request.data array
-        request.data['user'] = request.user.id                        
+        request.data['user'] = request.user.id
+        
         # Create a serializer instance with the data in the array
         serializer = IncomeSerializer(data=request.data) 
         #Check if the serializer is valid
@@ -222,6 +232,8 @@ class IncomeDetailView(viewsets.ModelViewSet):
         # Retrieve the income object
         income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
         request.data['user'] = request.user.id
+        request.data['creation_date'] = income.creation_date
+        request.data['creation_time'] = income.creation_time
         # Serialize the income data with the updated data from request
         serializer = IncomeSerializer(income, data=request.data)
         
