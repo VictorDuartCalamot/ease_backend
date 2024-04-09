@@ -36,6 +36,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         except ValueError:
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         print('Paso a filtrar?')
+        print(f'Start date {start_date}, end date: {end_date}, start time: {start_time}, end time: {end_time}')
         expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
         
         print(expenses_queryset)        
