@@ -29,6 +29,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         #print(userquery)
         result = UserSerializer(user).data
         print(result)
+        print(result.get('id'))
         try:                                
             #emailToLower = attrs.get('username', '').strip().lower()  
             attrs['username'] = emailToLower 
@@ -78,7 +79,11 @@ def registerUser(request):
         message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-
+def blockUser(userID):
+    '''Block user (Is_Active field to False)'''
+    userObject = User.objects.get(id=userID)
+    
+    
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
     serializer_class = AuthUserLogsSerializer
