@@ -23,8 +23,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):
         print(self,attrs)
         emailToLower = attrs.get('username', '').strip().lower() 
-        User = get_user_model()  
-        User.objects.get()    
+        user = User.objects.get(email=emailToLower)
+        print(user)
+
         print(User)
         print("Entro?")        
         try:                                
