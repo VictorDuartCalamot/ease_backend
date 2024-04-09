@@ -25,7 +25,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         User = get_user_model()
         user = User.objects.get()
         print(User)
-        print(User)
         print(user)
         print("Entro?")        
         try:                                
