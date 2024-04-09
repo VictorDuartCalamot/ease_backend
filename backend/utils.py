@@ -49,6 +49,11 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
             time_query &= Q(creation_time=start_time)
         else:
             time_query &= Q(creation_time__range=[start_time, end_time])
+    elif start_date is not None:
+        time_query &= Q(creation_time__gte=start_time)
+    elif end_date is not None:   
+        time_query &= Q(creation_time__lte=end_time)
+        
     print('Time Query: ', time_query)
     print('Hora: ', start_time, end_time)
     print('despues time')
