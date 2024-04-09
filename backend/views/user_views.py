@@ -22,7 +22,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
-        #print(userObject.get('id'))
+        print(userObject)
         try:                                
             #emailToLower = attrs.get('username', '').strip().lower()  
             attrs['username'] = emailToLower 
@@ -33,8 +33,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
             print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
             return data
-        except AuthenticationFailed as e:
+        except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
+            blockUser(userObject.get('id'))
             print('Intento de inicio de sesión fallido')            
             raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)
             
@@ -72,16 +73,16 @@ def registerUser(request):
 
 def blockUser(userID):
     '''Block user (Is_Active field to False)'''
-    #userObject = User.objects.get(id=userID)
+    userObject = User.objects.get(id=userID)
     currentDate = datetime.now()
     three_minutes_ago = currentDate - timedelta(minutes=3)
 
     # Convert the date and time to strings in ISO format and extract date and time separately
     new_date = three_minutes_ago.date().isoformat()
     new_time = three_minutes_ago.time().isoformat()[:8]
-    query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()])
-    list=AuthUserLogsSerializer(query,Many=True)
-    print(list)
+    query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
+    if (query.count() >=3):
+        print(list)
     
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
