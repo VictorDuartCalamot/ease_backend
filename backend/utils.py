@@ -8,7 +8,11 @@ from datetime import datetime
 from django.utils import timezone
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework.exceptions import AuthenticationFailed
 
+from backend.serializers import UserSerializer
 def generate_random_id(prefix):
     random_part = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
     timestamp = int(time.time())
@@ -64,3 +68,12 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
     print(combined_query)
     print(queryset.filter(combined_query))
     return queryset.filter(combined_query)
+
+def getUserObjectByEmail(email):
+    '''Return User Object'''    
+    try:
+        user = User.objects.get(email=email)    
+    except ObjectDoesNotExist:
+        # Handle the case where the user with the provided email does not exist
+        raise AuthenticationFailed(_('Invalid username or password'), code='invalid_credentials')    
+    return UserSerializer(user).data

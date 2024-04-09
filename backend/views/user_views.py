@@ -14,22 +14,16 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from datetime import datetime
 from django.utils import timezone
 #from django.db.models import Q
-from backend.utils import filter_by_date_time
+from backend.utils import filter_by_date_time, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.contrib.auth import get_user_model
+
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self,attrs):
-        print(self,attrs)
+    def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
-        print("Entro?") 
-        user = User.objects.get(email=emailToLower)
-        #userquery = User.objects.filter(email=str(emailToLower))
-        #print(userquery)
-        result = UserSerializer(user).data
-        print(result)
-        print(result.get('id'))
+        userObject = getUserObjectByEmail(emailToLower)
+        #print(userObject.get('id'))
         try:                                
             #emailToLower = attrs.get('username', '').strip().lower()  
             attrs['username'] = emailToLower 
@@ -41,9 +35,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
             return data
         except AuthenticationFailed as e:
-
-            print("Failed - \n",User.pk,'--------',attrs)#self.user
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,User.pk)
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             print('Intento de inicio de sesión fallido')            
             raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)
             
