@@ -272,12 +272,11 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
 
-    def deleteUser(self,pk):
-        print('Inside the deleteUser???')
+    def deleteUser(self,pk):        
         '''Being a superuser delete users from the database'''
         try:            
             user = User.objects.get(id=pk)            
-            user.delete()
+            User.objects.delete(user)
             return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)        
         except User.DoesNotExist:
                 return Response("User not found", status=status.HTTP_404_NOT_FOUND)
