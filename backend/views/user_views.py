@@ -222,7 +222,9 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     def getAllUsers(self,request):
         try:
             users = User.objects.all()
+            print(users)
             serializer = UserSerializerWithToken(users, many=True)
+            print(serializer.data)
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
