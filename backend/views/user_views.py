@@ -216,7 +216,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SuperAdminManagementDetailView(viewsets.ModelViewSet):
+class SuperAdminManagementListView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
 
     def getAllUsers(self,request):
@@ -267,7 +267,9 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
-    
+
+
+class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     def deleteUser(self,request,pk):
         '''Being a superuser delete users from the database'''
         try:
