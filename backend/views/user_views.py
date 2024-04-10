@@ -220,6 +220,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     def createUserWithRoles(self,request):
         print('----------------------------')
+        print(request.data)
         data = request.data
         email = (data['email']).strip().lower()
         name = (data['name']).strip()
