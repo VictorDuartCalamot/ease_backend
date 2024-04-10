@@ -220,6 +220,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
 
     def getAllUsers(self,request):
+        '''Get all users'''
         try:
             users = User.objects.all()
             print(users)
@@ -230,7 +231,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
     
     def createUserWithRoles(self,request):
-        print('----------------------------')
+        '''Create user with role'''        
         print(request.data,request.user)
         data = request.data
         email = (data['email']).strip().lower()
@@ -269,3 +270,27 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     
     def deleteUser(self,request,pk):
         '''Being a superuser delete users from the database'''
+        try:
+            user = User.objects.get(pk=pk)
+            user.delete()
+            return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)
+        except User.DoesNotExist:
+            return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+        
+    def updateUser(self,request,pk):
+        '''Being a superuser update user from the database'''
+        try:
+            user = User.objects.get(pk=pk)
+            serializer = UserSerializerWithToken(user, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
