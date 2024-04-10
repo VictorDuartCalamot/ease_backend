@@ -1,6 +1,6 @@
 from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
-from backend.utils import getUserObjectByEmail
+from django.contrib.auth import get_user_model
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow owners of an object to delete it.
@@ -18,15 +18,17 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         else:
             raise PermissionDenied("You do not have permission to delete this expense.")
         
+User = get_user_model()
 class PermissionLevel(permissions.BasePermission):
     '''Check permissions for user'''
-    print('Entered permission level stuff')
-    def isSuperUser(self,request):
-        print('SDAIFBHEUIBFU93BF1U2')
+    
+    def isSuperUser(self, user):
         '''Check if user is super user'''      
-        userObj = getUserObjectByEmail(request.user)
-        print(userObj)
-        if (userObj.get('is_superuser') == True):
+        if user.is_superuser:
             return True
         else:
-            raise PermissionDenied("You do not have enough permission.")
+            return False
+
+    def has_permission(self, request, view):
+        '''Check if user has permission for the request'''
+        return self.isSuperUser(request.user)

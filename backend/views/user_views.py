@@ -218,7 +218,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
-    
+
     def createUserWithRoles(self,request):
         print('----------------------------')
         print(request.data,request.user)
@@ -238,8 +238,8 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 last_name=last_name,
                 username=email,
                 email=email,
-                is_staff=data['is_staff'],
-                is_superuser=data['is_superuser'],
+                is_staff=data.get('is_staff', False),  # Default to False if not provided
+                is_superuser=data.get('is_superuser', False),  # Default to False if not provided
                 password=make_password(password)
             )
             print(user)
