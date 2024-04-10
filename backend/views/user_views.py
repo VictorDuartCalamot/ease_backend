@@ -219,6 +219,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
     def createUserWithRoles(self,request):
+        print('----------------------------')
         data = request.data
         email = (data['email']).strip().lower()
         name = (data['name']).strip()

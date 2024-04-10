@@ -20,7 +20,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         
 class PermissionLevel(permissions.BasePermission):
     '''Check permissions for user'''
-    def isSuperUser(self,request):
+    print('Entered permission level stuff')
+    def isSuperUser(self):
         '''Check if user is super user'''
         print(self.user)
         userObj = getUserObjectByEmail(self.user)
