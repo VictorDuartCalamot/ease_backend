@@ -219,12 +219,13 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
 
-    def getAllUsers(self):
-        query = User.objects.all()
-        print(query)
-        serializer = UserSerializer(query, Many=True)
-        print(serializer.data)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def getAllUsers(self,request):
+        try:
+            users = User.objects.all()
+            serializer = UserSerializerWithToken(users, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
     
     def createUserWithRoles(self,request):
         print('----------------------------')
