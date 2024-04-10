@@ -286,14 +286,14 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         '''Being a superuser update user from the database'''
         try:
             user = User.objects.get(id=pk)
+            if User.DoesNotExist:
+                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
             serializer = UserSerializerWithToken(user, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except User.DoesNotExist:
-            return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
