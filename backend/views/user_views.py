@@ -270,11 +270,13 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
 
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated,PermissionLevel]
+    
     def deleteUser(self,request,pk):
         '''Being a superuser delete users from the database'''
         try:
             print(User)
-            user = User.objects.get(pk=pk)            
+            user = User.objects.get(id=pk)            
             print(user)
             user.delete()
             return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)        
