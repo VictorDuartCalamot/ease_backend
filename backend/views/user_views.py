@@ -272,6 +272,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         '''Being a superuser delete users from the database'''
         try:
             user = User.objects.get(pk=pk)
+            print(user)
             user.delete()
             return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)
         except User.DoesNotExist:
