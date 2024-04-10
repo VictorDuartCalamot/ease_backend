@@ -217,7 +217,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated,IsAdminUser,PermissionLevel]
+    permission_classes = [IsAuthenticated,PermissionLevel]
     def createUserWithRoles(self,request):
         data = request.data
         email = (data['email']).strip().lower()
@@ -235,10 +235,11 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 last_name=last_name,
                 username=email,
                 email=email,
-                is_Staff=data.is_Staff,
-                is_Admin=data.is_Admin,
+                is_staff=data.is_staff,
+                is_superuser=data.is_superuser,
                 password=make_password(password)
             )
+            print(user)
             serializer = UserSerializerWithToken(user, many=False)
             print(f'Usuario registrado con éxito: {email}.')
             return Response(serializer.data)
