@@ -227,6 +227,14 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         name = (data['name']).strip()
         last_name = (data['last_name']).strip()
         password = (data['password']).strip()
+        if data['is_staff'] is not None:
+            is_staff = data['is_staff']
+        else:
+            is_staff = False
+        if data['is_superuser'] is not None:
+            is_superuser = data['is_superuser']
+        else:
+            is_superuser = False
         try:
             validate_password(password)
         except ValidationError as e:
@@ -238,8 +246,8 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 last_name=last_name,
                 username=email,
                 email=email,
-                is_staff=data.get('is_staff', False),  # Default to False if not provided
-                is_superuser=data.get('is_superuser', False),  # Default to False if not provided
+                is_staff=is_staff,  # Default to False if not provided
+                is_superuser=is_superuser,  # Default to False if not provided
                 password=make_password(password)
             )
             print(user)
