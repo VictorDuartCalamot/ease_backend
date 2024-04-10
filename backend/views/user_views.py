@@ -230,7 +230,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             validate_password(password)
         except ValidationError as e:
             return Response(e,status=status.HTTP_400_BAD_REQUEST)
-        print(request.data.is_staff,request.data.is_superuser)
+        print(data['is_staff'],data['is_superuser'])
         try:
             user = User.objects.create(
                 first_name=name,
