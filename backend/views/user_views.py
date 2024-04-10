@@ -220,7 +220,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
     def createUserWithRoles(self,request):
         print('----------------------------')
-        print(request.data)
+        print(request.data,request.user)
         data = request.data
         email = (data['email']).strip().lower()
         name = (data['name']).strip()
@@ -230,7 +230,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             validate_password(password)
         except ValidationError as e:
             return Response(e,status=status.HTTP_400_BAD_REQUEST)
-        print(data['is_staff'],data['is_superuser'])
+        
         try:
             user = User.objects.create(
                 first_name=name,
