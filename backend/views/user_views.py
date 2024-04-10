@@ -237,8 +237,8 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 last_name=last_name,
                 username=email,
                 email=email,
-                is_staff=data.is_staff,
-                is_superuser=data.is_superuser,
+                is_staff=data['is_staff'],
+                is_superuser=data['is_superuser'],
                 password=make_password(password)
             )
             print(user)
