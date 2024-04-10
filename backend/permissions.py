@@ -22,12 +22,11 @@ class PermissionLevel(permissions.BasePermission):
     '''Check permissions for user'''
     print('Entered permission level stuff')
     def isSuperUser(self,request):
-        '''Check if user is super user'''
-              
-        print(request.user.is_superuser)
-        userObj = getUserObjectByEmail(self)
+        print('SDAIFBHEUIBFU93BF1U2')
+        '''Check if user is super user'''      
+        userObj = getUserObjectByEmail(request.user)
         print(userObj)
-        if (request.user.is_superuser == True):
+        if (userObj.get('is_superuser') == True):
             return True
         else:
             raise PermissionDenied("You do not have enough permission.")
