@@ -273,6 +273,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     def deleteUser(self,request,pk):
         '''Being a superuser delete users from the database'''
         try:
+            print(User)
             user = User.objects.get(pk=pk)            
             print(user)
             user.delete()
