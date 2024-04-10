@@ -23,8 +23,8 @@ class PermissionLevel(permissions.BasePermission):
     print('Entered permission level stuff')
     def isSuperUser(self):
         '''Check if user is super user'''
-        print(self.user)
-        userObj = getUserObjectByEmail(self.user)
+        print(self)
+        userObj = getUserObjectByEmail(self)
         if (userObj.get('is_superuser') == True):
             return True
         else:
