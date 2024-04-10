@@ -3,6 +3,7 @@ from backend.views import user_views as user_views
 
 
 urlpatterns = [
-    path('management/user/', user_views.SuperAdminManagementDetailView.as_view({'post':'createUserWithRoles'}), name='superuser-tools'),
+    path('superadmin/user/', user_views.SuperAdminManagementDetailView.as_view({'get':'getAllUsers','post':'createUserWithRoles'}), name='superuser-tools'),
+    path('superadmin/user/<uuid:pk>/', user_views.SuperAdminManagementDetailView.as_view({'delete':'createUserWithRoles','update':''}), name='superuser-tools'),
     
 ]

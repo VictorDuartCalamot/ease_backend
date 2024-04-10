@@ -219,6 +219,13 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
 
+    def getAllUsers(self):
+        query = User.objects.all()
+        print(query)
+        serializer = UserSerializer(query, Many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
     def createUserWithRoles(self,request):
         print('----------------------------')
         print(request.data,request.user)
@@ -256,3 +263,6 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
+    
+    def deleteUser(self,request,pk):
+        '''Being a superuser delete users from the database'''
