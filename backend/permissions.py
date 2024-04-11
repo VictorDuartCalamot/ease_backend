@@ -22,6 +22,5 @@ User = get_user_model()
 class PermissionLevel(permissions.BasePermission):
     '''Check permissions for user'''        
     def has_permission(self, request, view):
-        print(request.user.is_superadmin)
-        print(bool(request.user and request.user.is_superadmin))
+        print(request.user.is_superadmin)        
         return bool(request.user and request.user.is_superadmin)
