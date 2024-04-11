@@ -269,7 +269,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
-    #permission_classes = [IsAuthenticated,PermissionLevel]
+    permission_classes = [PermissionLevel]#IsAuthenticated
 
     def deleteUser(self,pk):        
         '''Being a superuser delete users from the database'''
