@@ -18,9 +18,21 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         else:
             raise PermissionDenied("You do not have permission to delete this expense.")
         
-User = get_user_model()
+
 class PermissionLevel(permissions.BasePermission):
-    '''Check permissions for user'''        
+    '''Check permissions for user'''
+    
+    def isSuperUser(self, user):
+        '''Check if user is super user'''      
+        return user.is_superuser
+
     def has_permission(self, request, view):
-        print(request.user.is_superadmin)        
-        return bool(request.user and request.user.is_superadmin)
+        '''Check if user has permission for the request'''
+        user = request.user
+        print(f'Checking permissions for user: {user}')
+        if self.isSuperUser(user):
+            print('User is a superuser.')
+            return True
+        else:
+            print('User is not a superuser.')
+            return False
