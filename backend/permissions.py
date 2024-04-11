@@ -20,20 +20,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         
 User = get_user_model()
 class PermissionLevel(permissions.BasePermission):
-    '''Check permissions for user'''
-    
-    def isSuperUser(self, user):
-        '''Check if user is super user'''      
-        return user.is_superuser
-
+    '''Check permissions for user'''        
     def has_permission(self, request, view):
-        '''Check if user has permission for the request'''
-        print(f'Checking permissions for user: {self}')
-        user = request.user
-        print(f'Checking permissions for user: {user}')
-        if self.isSuperUser(user):
-            print('User is a superuser.')
-            return True
-        else:
-            print('User is not a superuser.')
-            return False
+        print(request.user.is_superadmin)
+        print(bool(request.user and request.user.is_superadmin))
+        return bool(request.user and request.user.is_superadmin)
