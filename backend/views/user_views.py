@@ -4,25 +4,30 @@ from rest_framework.response import Response
 from rest_framework import status,viewsets
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from backend.serializers import UserSerializerWithToken
+from backend.serializers import UserSerializerWithToken, UserSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.exceptions import AuthenticationFailed
 from backend.models import AuthUserLogs
 from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
-from datetime import datetime
+from datetime import datetime,timedelta
 from django.utils import timezone
-#from django.db.models import Q
-from backend.utils import filter_by_date_time
+from backend.utils import filter_by_date_time, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from django.db.models import Q
+from backend.permissions import PermissionLevel
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self,attrs):
-        print("Entro?")        
+    def validate(self,attrs):        
+        emailToLower = attrs.get('username', '').strip().lower()                 
+        userObject = getUserObjectByEmail(emailToLower)
+        print(userObject)
+        if (userObject.get('is_active') == False):
+            return Response({'detail':'The account is blocked. Contact your administrator for further information.'},status=status.HTTP_403_FORBIDDEN, )
         try:                                
-            emailToLower = attrs.get('username', '').strip().lower()  
+            #emailToLower = attrs.get('username', '').strip().lower()  
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
             serializer = UserSerializerWithToken(self.user).data            
@@ -31,9 +36,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
             print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
             return data
-        except AuthenticationFailed as e:
-            print("Failed - \n",self.user.id,'--------',attrs)#self.user
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)
+        except AuthenticationFailed as e:            
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
+            blockUser(userObject.get('id'))
             print('Intento de inicio de sesión fallido')            
             raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)
             
@@ -59,7 +64,7 @@ def registerUser(request):
             last_name=last_name,
             username=email,
             email=email,
-            password=make_password(password)
+            password=make_password(password)            
         )
         serializer = UserSerializerWithToken(user, many=False)
         print(f'Usuario registrado con éxito: {email}.')
@@ -69,7 +74,24 @@ def registerUser(request):
         message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
+def blockUser(userID):
+    '''Block user (Is_Active field to False)'''
+    userObject = User.objects.get(id=userID)
+    currentDate = datetime.now()
+    three_minutes_ago = currentDate - timedelta(minutes=3)
 
+    # Convert the date and time to strings in ISO format and extract date and time separately
+    new_date = three_minutes_ago.date().isoformat()
+    new_time = three_minutes_ago.time().isoformat()[:8]
+    query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
+    if (query.count() >=3):
+        print('Ha sobrepasado los logins fallidos posibles ! ! !')
+        userObject.is_active = False                                          
+        userObject.save()
+        print('Saved??!!')
+        return Response({'detail':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
+        
+    
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
     serializer_class = AuthUserLogsSerializer
@@ -194,14 +216,36 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-'''class AdminManagement(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated,IsAdminUser]
-    def createUserWithRoles(request):
+class SuperAdminManagementListView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated,PermissionLevel]
+
+    def getAllUsers(self,request):
+        '''Get all users'''
+        try:
+            users = User.objects.all()
+            #print(users)
+            serializer = UserSerializerWithToken(users, many=True)
+            #print(serializer.data)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+    
+    def createUserWithRoles(self,request):
+        '''Create user with role'''        
+        #print(request.data,request.user)
         data = request.data
         email = (data['email']).strip().lower()
         name = (data['name']).strip()
         last_name = (data['last_name']).strip()
         password = (data['password']).strip()
+        if data['is_staff'] is not None:
+            is_staff = data['is_staff']
+        else:
+            is_staff = False
+        if data['is_superuser'] is not None:
+            is_superuser = data['is_superuser']
+        else:
+            is_superuser = False
         try:
             validate_password(password)
         except ValidationError as e:
@@ -213,12 +257,41 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
                 last_name=last_name,
                 username=email,
                 email=email,
-                is_Staff=data.is_Staff,
-                is_Admin=data.is_Admin,
+                is_staff=is_staff,  # Default to False if not provided
+                is_superuser=is_superuser,  # Default to False if not provided
                 password=make_password(password)
             )
+            print(user)
             serializer = UserSerializerWithToken(user, many=False)
             print(f'Usuario registrado con éxito: {email}.')
             return Response(serializer.data)
         except Exception as e:
-            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)'''
+            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
+
+class SuperAdminManagementDetailView(viewsets.ModelViewSet):
+    permission_classes = [PermissionLevel]#IsAuthenticated,
+
+    def deleteUser(self,pk):        
+        '''Being a superuser delete users from the database'''
+        try:  
+            print('He entrado!')          
+            user = User.objects.get(id=pk)            
+            user.delete()
+            return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)        
+        except User.DoesNotExist:
+                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        
+    def updateUser(self,request,pk):
+        '''Being a superuser update user from the database'''
+        try:
+            user = User.objects.get(id=pk)
+            
+            serializer = UserSerializerWithToken(user, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+        except User.DoesNotExist:
+                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+

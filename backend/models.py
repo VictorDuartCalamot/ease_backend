@@ -79,3 +79,19 @@ class Income(models.Model):
         super().delete(*args, **kwargs)
         remove_perm('change_income', user, self)
         remove_perm('delete_income', user, self)        
+
+'''
+class Category(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
+    hexColor = models.CharField(max_length=7)
+class SubCategory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    hexColor = models.CharField(max_length=7)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+'''
