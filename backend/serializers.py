@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username', 'email', 'name', 'is_staff','is_active','is_superuser']
+        fields = ['id', '_id', 'username', 'email', 'name', 'is_staff','is_active','is_superuser','first_name','last_name']
 
     def get__id(self, obj):
         return obj.id
