@@ -269,13 +269,13 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
-    permission_classes = [PermissionLevel]#IsAuthenticated,
+    permission_classes = [IsAuthenticated,PermissionLevel]
 
     def deleteUser(self,pk):        
         '''Being a superuser delete users from the database'''
         try:  
-            print('He entrado!')          
-            user = User.objects.get(id=pk)            
+            print('He entrado!?')                      
+            user = User.objects.get(pk=pk)            
             user.delete()
             return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)        
         except User.DoesNotExist:
