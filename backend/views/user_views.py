@@ -271,7 +271,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
 
-    def deleteUser(self,pk):        
+    def deleteUser(self,request,pk):        
         '''Being a superuser delete users from the database'''
         try:  
             print('He entrado!?')                      
