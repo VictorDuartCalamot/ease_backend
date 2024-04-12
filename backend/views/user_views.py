@@ -272,12 +272,9 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
 
     def deleteUser(self,request,pk):        
-        '''Being a superuser delete users from the database'''
-        print('entro????')
-        try:  
-            print('He entrado!?')                                   
-            user = User.objects.get(id=pk) 
-            print('He pillao el user ? ? ? ?',user)
+        '''Being a superuser delete users from the database'''        
+        try:                                       
+            user = User.objects.get(id=pk)             
             user.delete()                                  
             return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)        
         except User.DoesNotExist:
@@ -286,6 +283,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     def updateUser(self,request,pk):
         '''Being a superuser update user from the database'''
         try:
+            print(self,request,pk)
             user = self.get_object()
             print(user)
             serializer = UserSerializerWithToken(user, data=request.data)
