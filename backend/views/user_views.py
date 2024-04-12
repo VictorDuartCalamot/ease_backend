@@ -286,9 +286,9 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     def updateUser(self,request,pk):
         '''Being a superuser update user from the database'''
         try:
-            user = User.objects.get(id=pk)
-            
-            serializer = UserSerializerWithToken(user, data=request.data, partial=True)
+            user = self.get_object()
+            print(user)
+            serializer = UserSerializerWithToken(user, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
