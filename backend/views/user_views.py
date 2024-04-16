@@ -296,8 +296,12 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     def BlockUnblockUser(self,request,pk):
         '''Being a superuser update user from the database'''
         try:
+            print(user)
             user = User.objects.get(id=pk) 
+            print(user.data)
             data = user.data
+            print(data)
+            print(request.data)
             data['is_active'] = request.data['is_active']
             serializer = UserSerializer(user, data=data)
             if serializer.is_valid():
