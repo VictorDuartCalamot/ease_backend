@@ -293,3 +293,17 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         except User.DoesNotExist:
                 return Response("User not found", status=status.HTTP_404_NOT_FOUND)
 
+    def BlockUnblockUser(self,request,pk):
+        '''Being a superuser update user from the database'''
+        try:
+            user = User.objects.get(id=pk) 
+            data = user.data
+            data['is_active'] = request.data['is_active']
+            serializer = UserSerializer(user, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+        except User.DoesNotExist:
+                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
