@@ -50,7 +50,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def registerUser(request):
     data = request.data
     email = (data['email']).strip().lower()
-    name = (data['name']).strip()
+    name = (data['first_name']).strip()
     last_name = (data['last_name']).strip()
     password = (data['password']).strip()
     try:
