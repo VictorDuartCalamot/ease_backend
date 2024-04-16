@@ -271,6 +271,8 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,PermissionLevel]
 
+    def getSingleUser(self, request):
+        a=''
     def deleteUser(self,request,pk):        
         '''Being a superuser delete users from the database'''        
         try:              
@@ -298,10 +300,9 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         try:
             print('Req data ',request.data)            
             user = User.objects.get(id=pk) 
-            print('User: ',user)
-            
-            print('UserData ',user.data)
-            data = user.data
+            serializer = UserSerializer(user)        
+            print('UserData ',serializer.data)
+            data = serializer.data
             print('data data ',data)            
             data['is_active'] = request.data['is_active']
             print('data data again changed ', data)
