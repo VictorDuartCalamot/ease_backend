@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', '_id', 'username', 'email', 'is_staff','is_active','is_superuser','first_name','last_name']
 
-        read_only_fields = ['id','_id','username','email']
+        #read_only_fields = ['id','_id','username','email']
     def get__id(self, obj):
         return obj.id
 
