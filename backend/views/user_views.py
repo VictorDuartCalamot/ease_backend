@@ -285,8 +285,16 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     def updateUser(self,request,pk):
         '''Being a superuser update user from the database'''
         try:
-            user = User.objects.get(id=pk)                        
-            serializer = UserSerializer(user, data=request.data)
+            user = User.objects.get(id=pk)
+            serializer = UserSerializer(user)
+            data = serializer.data
+            if request.data['first_name'] is not None:data['first_name'] = request.data['first_name']
+            if request.data['last_name'] is not None:data['last_name'] = request.data['last_name']
+            if request.data['email'] is not None:data['email'] = request.data['email']
+            if request.data['is_staff'] is not None:data['is_staff'] = request.data['is_staff']
+            if request.data['is_superuser'] is not None:data['is_superuser'] = request.data['is_superuser']
+            if request.data['is_active'] is not None:data['is_active'] = request.data['is_active']
+            serializer = UserSerializer(user, data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
@@ -297,15 +305,11 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
 
     def blockUnblockUser(self,request,pk):
         '''Being a superuser update user from the database'''
-        try:
-            print('Req data ',request.data)            
+        try:                     
             user = User.objects.get(id=pk) 
-            serializer = UserSerializer(user)        
-            print('UserData ',serializer.data)
-            data = serializer.data
-            print('data data ',data)            
-            data['is_active'] = request.data['is_active']
-            print('data data again changed ', data)
+            serializer = UserSerializer(user)                    
+            data = serializer.data            
+            data['is_active'] = request.data['is_active']               
             serializer = UserSerializer(user, data=data)
             if serializer.is_valid():
                 serializer.save()
