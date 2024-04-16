@@ -5,13 +5,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Expense, Income, AuthUserLogs
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField(read_only=True)
+    #name = serializers.SerializerMethodField(read_only=True)
     _id = serializers.SerializerMethodField(read_only=True)
     #isAdmin = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username', 'email','name', 'is_staff','is_active','is_superuser','first_name','last_name']
+        fields = ['id', '_id', 'username', 'email', 'is_staff','is_active','is_superuser','first_name','last_name']
 
         #read_only_fields = ['id','_id','username','email']
     def get__id(self, obj):
