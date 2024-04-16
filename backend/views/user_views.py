@@ -293,7 +293,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         except User.DoesNotExist:
                 return Response("User not found", status=status.HTTP_404_NOT_FOUND)
 
-    def BlockUnblockUser(self,request,pk):
+    def blockUnblockUser(self,request,pk):
         '''Being a superuser update user from the database'''
         try:
             print(user)
