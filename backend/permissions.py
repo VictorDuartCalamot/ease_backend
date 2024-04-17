@@ -39,13 +39,6 @@ class IsSuperUser(permissions.BasePermission):
             return False
     
 class HasEnoughPerms(permissions.BasePermission):
-    def has_permission(self, request, view):
-        print('Inside has permission def')
-        # This method is called for global permission checks.
-        # You can perform checks here that are not specific to any object.
-        # For example, you can check if the user is authenticated.
-        return request.user.is_authenticated
-
     def has_object_permission(self, request, view, obj):
         print('Inside has object permission def')
         # This method is called for object-level permission checks.
