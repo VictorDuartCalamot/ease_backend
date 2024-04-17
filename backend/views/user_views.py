@@ -17,7 +17,7 @@ from backend.utils import filter_by_date_time, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-from backend.permissions import PermissionLevel
+from backend.permissions import HasEnoughPerms
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
@@ -217,7 +217,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 
 
 class SuperAdminManagementListView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated,PermissionLevel]
+    permission_classes = [IsAuthenticated,HasEnoughPerms]
 
     def getAllUsers(self,request):
         '''Get all users'''
@@ -269,7 +269,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated,PermissionLevel]
+    permission_classes = [IsAuthenticated,HasEnoughPerms]
 
     def getSingleUser(self, request):
         a=''
