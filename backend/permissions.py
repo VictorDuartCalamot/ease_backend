@@ -42,7 +42,8 @@ class HasEnoughPerms(permissions.BasePermission):
     def has_enough_permission(self, request, obj):
         # Get the user model
         User = get_user_model()
-
+        print(request.user)
+        print(obj)
         # Check if the request.user is a superuser
         is_superuser = request.user.is_superuser
 
