@@ -39,13 +39,21 @@ class IsSuperUser(permissions.BasePermission):
             return False
     
 class HasEnoughPerms(permissions.BasePermission):
-    print('hallo()&_&(_*&(_()?)(?)(??))')
-    def has_enough_permission(self, request, obj):
-        print('do i go in? !!??!?!!')
+    def has_permission(self, request, view):
+        print('Inside has permission def')
+        # This method is called for global permission checks.
+        # You can perform checks here that are not specific to any object.
+        # For example, you can check if the user is authenticated.
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        print('Inside has object permission def')
+        # This method is called for object-level permission checks.
+        # You can perform checks here that are specific to the object being accessed.
+
         # Get the user model
         User = get_user_model()
-        print(request.user)
-        print(obj)
+
         # Check if the request.user is a superuser
         is_superuser = request.user.is_superuser
 
@@ -56,17 +64,16 @@ class HasEnoughPerms(permissions.BasePermission):
         else:
             is_staff = getattr(obj, 'is_staff', False)
 
-        # Superusers can manage anything
-        if is_superuser:
-            print('wawaawawawaw')
-            return True
-        # Staff members can manage users (with lower permissions) but not other staff members or superusers
-        elif is_staff:
-            # Check if the request.user is also a staff member
-            return not request.user.is_superuser
-        # Regular users (non-staff) cannot manage other staff members or superusers
-        else:
+        # Regular users (non-staff) cannot manage other users
+        if not request.user.is_staff:
             return False
+
+        # Staff members can manage users but not other staff members or superusers
+        if is_staff:
+            return not is_superuser and not request.user.is_superuser
+
+        # Superusers can manage anything
+        return True
 
                 
             
