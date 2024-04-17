@@ -43,6 +43,7 @@ class HasEnoughPerms(permissions.BasePermission):
         print('Inside has object permission def')
         print(request.user)
         print(obj)
+        return True
 
                 
             
