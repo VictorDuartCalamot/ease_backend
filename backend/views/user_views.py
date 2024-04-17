@@ -269,7 +269,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated,HasEnoughPerms.has_enough_permission]
+    permission_classes = [IsAuthenticated,HasEnoughPerms]
 
     def getSingleUser(self, request):
         a=''

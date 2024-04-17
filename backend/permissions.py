@@ -39,6 +39,7 @@ class IsSuperUser(permissions.BasePermission):
             return False
     
 class HasEnoughPerms(permissions.BasePermission):
+    print('hallo()&_&(_*&(_()?)(?)(??))')
     def has_enough_permission(self, request, obj):
         # Get the user model
         User = get_user_model()
