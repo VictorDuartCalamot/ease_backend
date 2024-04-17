@@ -41,6 +41,7 @@ class IsSuperUser(permissions.BasePermission):
 class HasEnoughPerms(permissions.BasePermission):
     print('hallo()&_&(_*&(_()?)(?)(??))')
     def has_enough_permission(self, request, obj):
+        print('do i go in? !!??!?!!')
         # Get the user model
         User = get_user_model()
         print(request.user)
@@ -57,6 +58,7 @@ class HasEnoughPerms(permissions.BasePermission):
 
         # Superusers can manage anything
         if is_superuser:
+            print('wawaawawawaw')
             return True
         # Staff members can manage users (with lower permissions) but not other staff members or superusers
         elif is_staff:
