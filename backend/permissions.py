@@ -26,8 +26,7 @@ class IsSuperUser(permissions.BasePermission):
         return user.is_superuser
 
     def has_permission(self, request, view):
-        '''Check if user has permission for the request'''
-        print(request)
+        '''Check if user has permission for the request'''        
         user = request.user
         print(f'Checking permissions for user: {user}')
         if self.isSuperUser(user):

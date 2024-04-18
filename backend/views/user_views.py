@@ -273,7 +273,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated,HasEnoughPerms]    
+    permission_classes = [IsAuthenticated,IsSuperUser]    
 
     def getSingleUser(self, request):
         a=''
