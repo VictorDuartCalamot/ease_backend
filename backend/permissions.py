@@ -7,7 +7,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     
     """
     def has_permission(self, request, view):
-        return bool(request.user and request.user.is_authenticated)
+        return request.user.is_authenticated
     
     def has_object_permission(self, request, view, obj):
         # Allow GET, HEAD, and OPTIONS requests.        
@@ -41,7 +41,7 @@ class HasEnoughPerms(permissions.BasePermission):
     print('Entra siquiera? ? ? ? ?')
     '''Rule to check if user has enough permissions'''
     def has_permission(self, request, view):
-        return bool(request.user and request.user.is_authenticated)
+        return request.user.is_authenticated
     def has_object_permission(self, request, view, obj):
         print('Pero entra dentro??')
         
