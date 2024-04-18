@@ -217,6 +217,8 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 
 
 class SuperAdminManagementListView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     permission_classes = [IsAuthenticated,HasEnoughPerms]
 
     def getAllUsers(self,request):
@@ -269,6 +271,8 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     permission_classes = [HasEnoughPerms,IsAuthenticated]    
 
     def getSingleUser(self, request):
