@@ -39,26 +39,35 @@ class IsSuperUser(permissions.BasePermission):
             print('User is not a superuser.')
             return False
     
+
+
+'''
+def isSuperUser(self, user):
+    
+    return user.is_superuser
+def isStaff(self, user): 
+    return user.is_staff
+        '''
 class HasEnoughPerms(permissions.BasePermission):    
     '''Rule to check if user has enough permissions'''
-    def isSuperUser(self, user):
-        '''Check if user is super user'''      
-        return user.is_superuser
-    def isStaff(self, user):
-        '''Check if user is super user'''      
-        return user.is_staff
+    
         
-    def has_permission(self, request, view,pk):
-        user = request.user
-        userObj = User.objects.get(id=pk)
-        serializer = UserSerializer(userObj)  
-        print(serializer.data)
-        if self.isSuperUser(user):            
-            print('User is a super user')
+    def has_permission(self, request, view):
+        user_pk = view.kwargs.get('pk')
+        try:
+            user = User.objects.get(pk=user_pk)
+            serializer = UserSerializer(user)
+            print(serializer.data)
+        except User.DoesNotExist:
+            return False
+        
+        # Check if the user is a superuser or staff member
+        if request.user.is_superuser:
+            print('User is a superuser.')
             return True
-        elif self.isStaff(user):
-            print('User is a staff user')
+        elif request.user.is_staff:
+            print('User is a staff member.')
             return True
         else:
-            print('User is not a super user or staff user')
+            print('User is neither a superuser nor a staff member.')
             return False
