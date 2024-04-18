@@ -66,8 +66,12 @@ class HasEnoughPerms(permissions.BasePermission):
             print('User is a superuser.')
             return True
         elif request.user.is_staff:
-            print('User is a staff member.')
-            return True
+            if serializer.data.get('is_superuser') == False or serializer.data.get('is_staff') == False:
+                print('Staff tried to modify a staff or superuser')
+                return False
+            else:
+                print('User is a staff member. Modifying a user')
+                return True                        
         else:
             print('User is neither a superuser nor a staff member.')
             return False
