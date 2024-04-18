@@ -46,10 +46,11 @@ class HasEnoughPerms(permissions.BasePermission):
         print('Obj.user: ',obj.user.is_superuser,obj.user.is_staff,obj.user.is_active)
         print('request.user', request.user.is_superuser,request.user.is_staff,request.user.is_active)
         # Check if the user is the owner of the expense.
-        if obj.user == request.user:
+        
+        if request.user.is_superuser:
+            return True
+        elif request.user.is_staff and (obj.user.is_superuser or obj.user.is_staff) == False:
             return True
         else:
-            raise PermissionDenied("You do not have permission to delete this expense.")
-
-                
-            
+            return False
+        
