@@ -6,6 +6,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     Custom permission to only allow owners of an object to delete it.
     
     """
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated)
+    
     def has_object_permission(self, request, view, obj):
         # Allow GET, HEAD, and OPTIONS requests.        
         # Check if the user is the owner of the expense.
@@ -37,6 +40,8 @@ class IsSuperUser(permissions.BasePermission):
 class HasEnoughPerms(permissions.BasePermission):
     print('Entra siquiera? ? ? ? ?')
     '''Rule to check if user has enough permissions'''
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated)
     def has_object_permission(self, request, view, obj):
         print('Pero entra dentro??')
         
