@@ -39,11 +39,19 @@ class IsSuperUser(permissions.BasePermission):
             return False
     
 class HasEnoughPerms(permissions.BasePermission):
+    '''Rule to check if user has enough permissions'''
     def has_object_permission(self, request, view, obj):
-        print('Inside has object permission def')
-        print(request.user)
-        print(obj)
-        return True
+        
+        # Allow GET, HEAD, and OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        print('Obj.user: ',obj.user.is_superuser,obj.user.is_staff,obj.user.is_active)
+        print('request.user', request.user.is_superuser,request.user.is_staff,request.user.is_active)
+        # Check if the user is the owner of the expense.
+        if obj.user == request.user:
+            return True
+        else:
+            raise PermissionDenied("You do not have permission to delete this expense.")
 
                 
             
