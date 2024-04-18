@@ -39,12 +39,11 @@ class IsSuperUser(permissions.BasePermission):
             return False
     
 class HasEnoughPerms(permissions.BasePermission):
+    print('Entra siquiera? ? ? ? ?')
     '''Rule to check if user has enough permissions'''
     def has_object_permission(self, request, view, obj):
         
-        # Allow GET, HEAD, and OPTIONS requests.        
-        print('Obj.user: ',obj.user.is_superuser,obj.user.is_staff,obj.user.is_active)
-        print('request.user', request.user.is_superuser,request.user.is_staff,request.user.is_active)
+        # Allow GET, HEAD, and OPTIONS requests.                
         # Check if the user is the owner of the expense.
         
         if request.user.is_superuser:
