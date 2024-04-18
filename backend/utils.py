@@ -11,8 +11,8 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import AuthenticationFailed
-
 from backend.serializers import UserSerializer
+
 def generate_random_id(prefix):
     random_part = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
     timestamp = int(time.time())
