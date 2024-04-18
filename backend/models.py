@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 import uuid
-#from guardian.shortcuts import assign_perm,remove_perm
+from guardian.shortcuts import assign_perm,remove_perm
 #Income/Expense models
 
 class AuthUserLogs(models.Model):

@@ -31,16 +31,15 @@ INSTALLED_APPS = [
     'rest_framework',   
     'rest_framework.authtoken', 
     'backend',
-    
+    'guardian',    
     'corsheaders',
 
 ]
-#'guardian',    
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # this is default
-    
+    'guardian.backends.ObjectPermissionBackend',
 )
-#'guardian.backends.ObjectPermissionBackend',
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',        
