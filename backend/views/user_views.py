@@ -17,7 +17,7 @@ from backend.utils import filter_by_date_time, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-from backend.permissions import HasEnoughPerms
+from backend.permissions import HasEnoughPerms,IsSuperUser,IsOwnerOrReadOnly
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
@@ -273,7 +273,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [HasEnoughPerms,IsAuthenticated]    
+    permission_classes = [IsAuthenticated,HasEnoughPerms]    
 
     def getSingleUser(self, request):
         a=''
@@ -307,7 +307,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         except User.DoesNotExist:
                 return Response("User not found", status=status.HTTP_404_NOT_FOUND)
 
-    def blockUnblockUser(self,request,pk):
+    def blockUnblockUser(self,request,pk):        
         '''Being a superuser update user from the database'''
         try:                     
             user = User.objects.get(id=pk) 

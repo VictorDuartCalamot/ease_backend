@@ -37,9 +37,9 @@ class IsSuperUser(permissions.BasePermission):
             print('User is not a superuser.')
             return False
     
-class HasEnoughPerms(permissions.BasePermission):
-    print('Entra siquiera? ? ? ? ?')
+class HasEnoughPerms(permissions.BasePermission):    
     '''Rule to check if user has enough permissions'''
+    print('Entra siquiera? ? ? ? ?')
     def has_permission(self, request, view):
         return request.user.is_authenticated
     def has_object_permission(self, request, view, obj):
