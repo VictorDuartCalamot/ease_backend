@@ -42,6 +42,7 @@ class HasEnoughPerms(permissions.BasePermission):
     print('Entra siquiera? ? ? ? ?')
     '''Rule to check if user has enough permissions'''
     def has_object_permission(self, request, view, obj):
+        print('Pero entra dentro??')
         
         # Allow GET, HEAD, and OPTIONS requests.                
         # Check if the user is the owner of the expense.
