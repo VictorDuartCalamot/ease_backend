@@ -13,7 +13,20 @@ class AuthUserLogs(models.Model):
     successful = models.BooleanField(default=False)
     description = models.CharField(max_length=50)
     
+class Category(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
+    hexColor = models.CharField(max_length=7)
     
+class SubCategory(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    hexColor = models.CharField(max_length=7)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+   
 class Expense(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     #_id = models.CharField(('expense_id'), max_length=50, unique=True,primary_key=True)
@@ -24,8 +37,8 @@ class Expense(models.Model):
     creation_date = models.DateField()
     creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #category = models.ForeignKey(Category)
-    #sub_category = models.ForeignKey(SubCategory)
+    category = models.ForeignKey(Category)
+    sub_category = models.ForeignKey(SubCategory)
 
     permissions = [
             ("can_view_expense", "Can view expense"),
@@ -59,8 +72,8 @@ class Income(models.Model):
     creation_date = models.DateField()
     creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #category = models.ForeignKey(Category)
-    #sub_category = models.ForeignKey(SubCategory)
+    category = models.ForeignKey(Category)
+    sub_category = models.ForeignKey(SubCategory)
 
     permissions = [
             ("can_view_income", "Can view income"),
@@ -84,18 +97,5 @@ class Income(models.Model):
         remove_perm('change_income', user, self)
         remove_perm('delete_income', user, self)        
 
-'''
-class Category(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
-    hexColor = models.CharField(max_length=7)
-class SubCategory(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
-    hexColor = models.CharField(max_length=7)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-'''
+
