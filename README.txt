@@ -13,3 +13,20 @@ pip freeze > requirements.txt
 
 #Api root url
 https://easeapi.onrender.com/
+
+Archivos creados/modificados:
+
+#djangocrud
+djangocrud/settings.py
+djangocrud/urls.py
+
+#backend
+backend/utils.py
+backend/serializers.py
+backend/permissions.py
+backend/models.py
+backend/views/management_views.py
+backend/views/user_views.py
+backend/urls/admin_urls.py
+backend/urls/management_urls.py
+backend/urls/user_urls.py

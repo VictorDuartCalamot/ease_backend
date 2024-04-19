@@ -11,25 +11,26 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import AuthenticationFailed
-
 from backend.serializers import UserSerializer
+
 def generate_random_id(prefix):
     random_part = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
     timestamp = int(time.time())
     date_part = datetime.now().strftime('%d%m%y')
     return f"{prefix}{random_part}{timestamp}{date_part}"
 
-
-def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
-    print('Entro para filtrar 2')
+#Funcion para crear filtros de query por fecha y tiempo
+def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):    
+    '''
+        Returns queries for the given date and time 
+    '''
     # Ensure start_date is not after end_date
     if (start_date and end_date) and (start_date > end_date):
         return Response({'error': 'Start date cannot be after end date.'}, status=status.HTTP_400_BAD_REQUEST)
 
     if (start_time and end_time) and (start_time > end_time):
         return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
-    
-    print('2nda phase')
+        
     # Filter based on date range
     date_query = Q()
     if start_date or end_date:
@@ -42,9 +43,9 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
             date_query &= Q(creation_date__gte=start_date)
         elif end_date is not None:   
             date_query &= Q(creation_date__lte=end_date)
-        print('Date Query: ', date_query)
+        #print('Date Query: ', date_query)
         
-    print('despues date query')
+    #print('despues date query')
         
     # Filter based on time range
     time_query = Q()
@@ -59,18 +60,19 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
             time_query &= Q(creation_time__gte=start_time)            
         elif end_time is not None:   
             time_query &= Q(creation_time__lte=end_time)
-    print('Time Query: ', time_query)
-    print('Hora: ', start_time, end_time)
-    print('despues time')
+    #print('Time Query: ', time_query)
+    #print('Hora: ', start_time, end_time)
+    #print('despues time')
         
     # Apply combined date and time filtering
     combined_query = date_query & time_query
-    print(combined_query)
-    print(queryset.filter(combined_query))
+    #print(combined_query)
+    #print(queryset.filter(combined_query))
     return queryset.filter(combined_query)
 
+#Funcion para recuperar el usuario utilizando el email)
 def getUserObjectByEmail(email):
-    '''Return User Object'''    
+    '''Returns User Object by email'''    
     try:
         user = User.objects.get(email=email)    
     except ObjectDoesNotExist:
