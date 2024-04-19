@@ -1,6 +1,9 @@
 from django.urls import path
 from backend.views import user_views as user_views
 
+'''
+Este archivo es para tener los endpoints delos usuarios
+'''
 
 urlpatterns = [
     path('login/', user_views.MyTokenObtainPairView.as_view(),

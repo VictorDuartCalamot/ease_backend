@@ -9,8 +9,13 @@ from backend.serializers import ExpenseSerializer, IncomeSerializer
 from backend.models import Expense, Income
 from django.utils import timezone
 from django.db.models import Q
-
 from backend.utils import filter_by_date_time
+
+
+'''
+Este archivo es para las vistas de gastos e ingresos.
+'''
+
 #Expenses
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()

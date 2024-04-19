@@ -17,17 +17,24 @@ from backend.utils import filter_by_date_time, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db.models import Q
-from backend.permissions import HasEnoughPerms,IsSuperUser,IsOwnerOrReadOnly
+from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 
+'''
+Este archivo es para las vistas de usuarios, admins y superadmins
+'''
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    #This login function validates the username(email) and password, to reduce problems, the username gets put in lowercase,
+    # then we check if the user is blocked or not. Even if it is or not we create a new log and in case there are too many failed login attempts, the account will get blocked.
+    # Funcion para login que valida el username y el password, el username lo pongo en minusculas para no tener problemas con caracteres.
+    # Compruebo que el usuario no este bloqueado, y una vez todo esta correcto da login. 
+    # Tanto si el login es correcto como no se creara un log de inicio de sesion.
     def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
         print(userObject)
         if (userObject.get('is_active') == False):
             return Response({'detail':'The account is blocked. Contact your administrator for further information.'},status=status.HTTP_403_FORBIDDEN, )
-        try:                                
-            #emailToLower = attrs.get('username', '').strip().lower()  
+        try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
             serializer = UserSerializerWithToken(self.user).data            
@@ -45,7 +52,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-
+#Function to register a user and create a token
+#Funcion para registrar un usuario y crear un token.
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
@@ -74,12 +82,14 @@ def registerUser(request):
         message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
+# Funcion para bloquear un usuario. 
+# En esta funcion, cuando el usuario tiene mas de 3 logins seguidos fallidos en un rango de 3 minutos se le bloqueara la cuenta.
+# (El campo "is_active" se pone en False)
 def blockUser(userID):
     '''Block user (Is_Active field to False)'''
     userObject = User.objects.get(id=userID)
     currentDate = datetime.now()
     three_minutes_ago = currentDate - timedelta(minutes=3)
-
     # Convert the date and time to strings in ISO format and extract date and time separately
     new_date = three_minutes_ago.date().isoformat()
     new_time = three_minutes_ago.time().isoformat()[:8]
@@ -95,10 +105,8 @@ def blockUser(userID):
 class AuthUserLogsListView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
     serializer_class = AuthUserLogsSerializer
-    permission_classes = [IsAuthenticated]
-
-    #@permission_classes(permission_classes=[IsAuthenticated, IsAdminUser])
-    def get(self, request):
+    permission_classes = [IsAuthenticated,HasMorePermsThanUser]    
+    def get(self, request):        
         '''
             Get to retrieve data filtered by dates 
         '''
@@ -122,7 +130,11 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         serializer = AuthUserLogs.serializer(authUserLog, many=True)        
         # Return a JSON response containing the serialized authUserLog
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
     def createLogWithLogin(OS,isSuccess,user_id):
+        '''
+        
+        '''
         print(OS,isSuccess,user_id)
         # Get the current date and time
         date = datetime.now()
@@ -168,7 +180,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
 class AuthUserLogsDetailView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
     serializer_class = AuthUserLogsSerializer
-    permission_classes = [IsAuthenticated,IsAdminUser]
+    permission_classes = [IsAuthenticated,HasMorePermsThanUser]
 
     def get(self,request,pk):
         
@@ -186,14 +198,9 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
         #print(serializer.data)        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def delete(self, request, pk):
-        
-            #Delete income object with specified PK 
-
-        #print('Inside delete request')
+    def delete(self, request, pk):                    
         try:
-            authUserLog = AuthUserLogs.objects.get(pk=pk)
-            #print(income)
+            authUserLog = AuthUserLogs.objects.get(pk=pk)            
             authUserLog.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AuthUserLogs.DoesNotExist:
@@ -219,21 +226,24 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 class SuperAdminManagementListView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated,HasEnoughPerms]
+    permission_classes = [IsAuthenticated,HasMorePermsThanUser]
 
     def getAllUsers(self,request):
         '''Get all users'''
         try:
-            users = User.objects.all()
-            #print(users)
-            serializer = UserSerializerWithToken(users, many=True)
-            #print(serializer.data)
+            users = User.objects.all()            
+            serializer = UserSerializerWithToken(users, many=True)            
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
     
     def createUserWithRoles(self,request):
-        '''Create user with role'''        
+        '''
+            Create user with role 
+            SuperUser can create users with any roles
+            Staff can only create users and staff             
+            
+        '''        
         #print(request.data,request.user)
         data = request.data
         email = (data['email']).strip().lower()
@@ -244,8 +254,12 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             is_staff = data['is_staff']
         else:
             is_staff = False
+        
         if data['is_superuser'] is not None:
-            is_superuser = data['is_superuser']
+            if request.user.is_Staff and data['is_superuser']:
+                return Response(status=status.HTTP_403_FORBIDDEN)
+            else:
+                is_superuser = data['is_superuser']
         else:
             is_superuser = False
         try:
@@ -275,8 +289,12 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated,HasEnoughPerms]    
 
-    def getSingleUser(self, request):
-        a=''
+    def getSingleUser(self, request,pk):
+        '''Get data from single user'''
+        user = User.objects.get(id=pk) 
+        serializer = UserSerializer(user)                    
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
     def deleteUser(self,request,pk):        
         '''Being a superuser delete users from the database'''        
         try:              

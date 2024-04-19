@@ -61,18 +61,28 @@ class IsSuperUser(permissions.BasePermission):
         else:
             print('User is not a superuser.')
             return False
-    
+
+class HasMorePermsThanUser(permissions.BasePermission):
+    '''Check permissions for user'''    
+    def isSuperUser(self, user):
+        '''Check if user is super user'''      
+        return user.is_superuser
+    def isStaff(self,user):
+        return user.is_staff
+    def has_permission(self, request, view):
+        '''Check if user has permission for the request'''        
+        user = request.user
+        print(f'Checking permissions for user: {user}')
+        if self.isSuperUser(user) or self.isStaff:
+            print('User is a superuser or staff.')
+            return True
+        else:
+            print('User is not a superuser or staff.')
+            return False  
 
 
-'''
-def isSuperUser(self, user):
-    
-    return user.is_superuser
-def isStaff(self, user): 
-    return user.is_staff
-        '''
 class HasEnoughPerms(permissions.BasePermission):    
-    '''Checks user permission and object permission'''            
+    '''Checks user permission and object(User) permission'''            
     def has_permission(self, request, view):
         user_pk = view.kwargs.get('pk')
         try:
