@@ -43,7 +43,7 @@ class Expense(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
 
-    permissions = [
+    '''permissions = [
             ("can_view_expense", "Can view expense"),
             ("can_add_expense", "Can add expense"),
             ("can_change_expense", "Can change expense"),
@@ -56,20 +56,8 @@ class Expense(models.Model):
         super().save(*args, **kwargs)        
         # Assign permissions to the user who created the expense
         assign_perm('change_expense', self.user, self)
-        assign_perm('delete_expense', self.user, self)
+        assign_perm('delete_expense', self.user, self)'''
 
-    
-    '''def delete(self, *args, **kwargs):
-        # Remove permissions when expense is deleted
-        try:
-            user = self.user
-            super().delete(*args, **kwargs)
-            remove_perm('change_expense', user, self)
-            remove_perm('delete_expense', user, self)
-        except Exception as e:
-            logger.error(f"Error deleting expense: {e}")
-            # Handle the error appropriately, such as raising or logging it
-            raise'''
 
 class Income(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -84,7 +72,7 @@ class Income(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
 
-    permissions = [
+    '''permissions = [
             ("can_view_income", "Can view income"),
             ("can_add_income", "Can add income"),
             ("can_change_income", "Can change income"),
@@ -97,14 +85,8 @@ class Income(models.Model):
         
         # Assign permissions to the user who created the income
         assign_perm('change_income', self.user, self)
-        assign_perm('delete_income', self.user, self)
-
-    '''def delete(self, *args, **kwargs):
-        # Remove permissions when income is deleted
-        user = self.user
-        super().delete(*args, **kwargs)
-        remove_perm('change_income', user, self)
-        remove_perm('delete_income', user, self)  '''      
+        assign_perm('delete_income', self.user, self)'''
+   
 
 
 
