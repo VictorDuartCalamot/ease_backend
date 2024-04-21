@@ -66,7 +66,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         #Check if the serializer is valid
         if serializer.is_valid():            
             serializer.save()  # Save the expense object to the database
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             #print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
@@ -100,7 +100,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             Delete expense object with specified PK 
         '''        
         try:
-            expense = Expense.objects.get(pk=pk) 
+            expense = self.get_object(pk) 
             print('pre delete')           
             expense.delete()
             print('still deletes it?')
@@ -128,7 +128,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         if serializer.is_valid():
             # Save the updated expense object
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -184,7 +184,7 @@ class IncomeListView(viewsets.ModelViewSet):
         #Check if the serializer is valid
         if serializer.is_valid():            
             serializer.save()  # Save the income object to the database
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             #print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
@@ -241,7 +241,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
         if serializer.is_valid():
             # Save the updated income object
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -277,7 +277,7 @@ class CategoryListView(viewsets.ModelViewSet):
         #Check if the serializer is valid
         if serializer.is_valid():            
             serializer.save()  # Save the income object to the database
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             #print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
@@ -302,7 +302,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         #print(income)
         serializer = CategorySerializer(category) 
         #print(serializer.data)        
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     
     def delete(self, request, pk):
         '''
@@ -333,7 +333,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         if serializer.is_valid():
             # Save the updated income object
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -368,7 +368,7 @@ class SubCategoryListView(viewsets.ModelViewSet):
         if serializer.is_valid(): 
             print('es valido')           
             serializer.save()  # Save the income object to the database
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             #print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
@@ -422,7 +422,7 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
         if serializer.is_valid():
             # Save the updated income object
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
