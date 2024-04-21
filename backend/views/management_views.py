@@ -397,10 +397,9 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
         if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
         try:
-            subCategory = SubCategory.objects.get(pk=pk) 
-            serializer = SubCategorySerializer(subCategory)           
-            print(serializer.data)
-            subCategory.delete()            
+            subCategory = SubCategory.objects.get(pk=pk)             
+            subCategory.delete()
+            print('post delete')            
             return Response(status=status.HTTP_204_NO_CONTENT)
         except SubCategory.DoesNotExist:
             return Response("SubCategory not found.", status=status.HTTP_404_NOT_FOUND)
