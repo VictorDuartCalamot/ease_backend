@@ -31,6 +31,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             serializer = obj_serializer(obj)            
 
             if serializer.data['user'] == request.user.id:
+                print('Owner')
                 return True
             else:
                 return False        
