@@ -68,18 +68,24 @@ class ExpenseListView(viewsets.ModelViewSet):
         #Check if the serializer is valid
         if serializer.is_valid():            
             with transaction.atomic():
-            # Save the expense object to the database
-                serializer.save()
-            # Ensure the transaction is committed
-                transaction.on_commit(lambda: self.after_create(serializer.instance))
+                # Save the expense object to the database
+                instance = serializer.save()
+                print("Created expense instance:", instance)  # Debug print
+                # Ensure the transaction is committed
+                transaction.on_commit(lambda: self.after_create(instance))
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            #print(serializer.errors)  # Print out the errors for debugging
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+            # Print out the errors for debugging
+            print("Serializer errors:", serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+
     def after_create(self, instance):
         '''
         Perform actions after the expense object is created
         '''
+        if instance is None:
+            print("Error: Expense instance is None in after_create")  # Log an error message
+            return
         # Assign permissions to the user who created the expense
         assign_perm('change_expense', instance.user, instance)
         assign_perm('delete_expense', instance.user, instance)
