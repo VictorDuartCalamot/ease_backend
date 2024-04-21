@@ -14,26 +14,24 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     def has_permission(self, request, view):
         # Determine the type of object (income or expense) based on the view name
         model = view.get_view_name().lower().split()
-        obj_pk = view.kwargs.get('pk')
         if 'income' in model[0]:
-            try:
-                obj = Income.objects.get(pk=obj_pk)
-                serializer = IncomeSerializer(obj)
-                print(serializer.data)
-            except Income.DoesNotExist:
-                print('income failed?')
-                return False
+            obj_model = Income
+            obj_serializer = IncomeSerializer
         elif 'expense' in model[0]:
-            try:
-                obj = Expense.objects.get(pk=obj_pk)
-                serializer = ExpenseSerializer(obj)
-                print(serializer.data)
-            except Expense.DoesNotExist:
-                print('expense failed?')
-                return False
+            obj_model = Expense
+            obj_serializer = ExpenseSerializer
         else:
             # If the object type cannot be determined, deny permission
-            return False                           
+            return False
+        
+        # Retrieve the object based on the primary key (pk) from the request URL        
+        obj_pk = view.kwargs.get('pk')       
+        try:
+            obj = obj_model.objects.get(pk=obj_pk)
+            serializer = obj_serializer(obj)
+            print(serializer.data)
+        except obj_model.DoesNotExist:
+            return False                
     
     def has_object_permission(self, request, view, obj): 
         print('pasa por aqui??')   
