@@ -25,9 +25,12 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return False
         
         # Retrieve the object based on the primary key (pk) from the request URL        
-        user_pk = view.kwargs.get('pk')       
+        obj_pk = view.kwargs.get('pk')       
         try:
-            obj = obj_model.objects.get(pk=user_pk)
+            print(obj_pk)
+            print(obj_model.objects.get(pk=obj_pk))            
+            obj = obj_model.objects.get(pk=obj_pk)
+            print(obj_serializer(obj))
             serializer = obj_serializer(obj)
             print(serializer.data)
         except obj_model.DoesNotExist:
