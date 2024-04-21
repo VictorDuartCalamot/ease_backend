@@ -269,12 +269,11 @@ class CategoryListView(viewsets.ModelViewSet):
         # If the income object does not exist for the specified user, return a 404 Not Found response
             return Response({'error': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
 
-    def create(self,request):
-        print(request.user, request.user.is_staff , request.user.is_superuser) 
-        print(HasMorePermsThanUser)
-        if HasMorePermsThanUser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)    
-        if request.user.is_staff == False or request.user.is_superuser == False:
+    def create(self,request):   
+        '''
+        Create new category
+        '''       
+        if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)    
         serializer = CategorySerializer(data=request.data) 
         #Check if the serializer is valid
@@ -311,7 +310,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         '''
             Delete income object with specified PK 
         '''
-        if request.user.is_staff == False or request.user.is_superuser == False:
+        if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
         try:
             category = Category.objects.get(pk=pk)            
@@ -324,7 +323,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         '''
             Update income object with specified PK
         '''
-        if request.user.is_staff == False or request.user.is_superuser == False:
+        if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)
         # Retrieve the income object
         category = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
