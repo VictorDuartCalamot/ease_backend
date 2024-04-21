@@ -23,8 +23,9 @@ from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    #This login function validates the username(email) and password, to reduce problems, the username gets put in lowercase,
+    # This login function validates the username(email) and password, to reduce problems, the username gets put in lowercase,
     # then we check if the user is blocked or not. Even if it is or not we create a new log and in case there are too many failed login attempts, the account will get blocked.
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     # Funcion para login que valida el username y el password, el username lo pongo en minusculas para no tener problemas con caracteres.
     # Compruebo que el usuario no este bloqueado, y una vez todo esta correcto da login. 
     # Tanto si el login es correcto como no se creara un log de inicio de sesion.
@@ -52,6 +53,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
 #Function to register a user and create a token
 #Funcion para registrar un usuario y crear un token.
 @api_view(['POST'])
@@ -82,23 +85,22 @@ def registerUser(request):
         message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-# Funcion para bloquear un usuario. 
-# En esta funcion, cuando el usuario tiene mas de 3 logins seguidos fallidos en un rango de 3 minutos se le bloqueara la cuenta.
-# (El campo "is_active" se pone en False)
+# Funtion to block the user.
+# In this function when the user has tried to log-in more than 3 times in a range of 3 minutes, the account will be blocked (field "is_active" = false )
 def blockUser(userID):
     '''Block user (Is_Active field to False)'''
     userObject = User.objects.get(id=userID)
     currentDate = datetime.now()
     three_minutes_ago = currentDate - timedelta(minutes=3)
     # Convert the date and time to strings in ISO format and extract date and time separately
+    #Convierte la fecha y hora en strings al formato ISO y los extrae de forma separada
     new_date = three_minutes_ago.date().isoformat()
     new_time = three_minutes_ago.time().isoformat()[:8]
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
     if (query.count() >=3):
-        print('Ha sobrepasado los logins fallidos posibles ! ! !')
+        #print('Ha sobrepasado los logins fallidos posibles ! ! !')
         userObject.is_active = False                                          
-        userObject.save()
-        print('Saved??!!')
+        userObject.save()        
         return Response({'detail':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
         
     
@@ -110,13 +112,13 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         '''
             Get to retrieve data filtered by dates 
         '''
-        # Get query parameters for date range
+        # Get query parameters for date range        
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
         end_time_str = request.query_params.get('end_time')                
 
-        # Convert date strings to datetime objects, handling potential errors
+        # Convert date strings to datetime objects, handling potential errors        
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
@@ -133,7 +135,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
     
     def createLogWithLogin(OS,isSuccess,user_id):
         '''
-        
+            Creates a log with all the data
         '''
         print(OS,isSuccess,user_id)
         # Get the current date and time
@@ -158,13 +160,11 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         serializer = AuthUserLogsSerializer(data=data)
         if serializer.is_valid():                
                 serializer.save()  
-        return         
-    #@permission_classes(IsAuthenticated)
-    def create(self, request, *args, **kwargs):  
-            #Post request to create new income object
-        # Ensure the user is authenticated
-        if not request.user.is_authenticated:
-            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
+
+    def create(self, request, *args, **kwargs): 
+        '''
+        Function to manually create a log
+        '''                                      
         #Insert userID into the request.data array
         request.data['user'] = request.user.id                        
         # Create a serializer instance with the data in the array
@@ -183,22 +183,20 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,HasMorePermsThanUser]
 
     def get(self,request,pk):
-        
-           #Get single income object with specified PK
-           
+        '''
+           Get single income object with specified PK
+        ''' 
         try:
         # Retrieve the income object based on the primary key (pk) and user
-            authUserLog = AuthUserLogs.objects.get(id=pk)
+            authUserLog = AuthUserLogs.objects.get(pk=pk)
         except authUserLog.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        #print(income)
-        serializer = AuthUserLogsSerializer(authUserLog) 
-        #print(serializer.data)        
+            return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)                
+        serializer = AuthUserLogsSerializer(authUserLog)         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def delete(self, request, pk):                    
+    def delete(self, request, pk):
+        '''Delete a log with specified PK'''                    
         try:
             authUserLog = AuthUserLogs.objects.get(pk=pk)            
             authUserLog.delete()
@@ -207,7 +205,9 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
     
     def update(self,request,*args,**kwargs):
-            #Update log object with specified PK
+        '''
+        Update log with specified PK
+        '''
         authUserLog = self.get_object()
         request.data['user'] = authUserLog.user
         # Serialize the income data with the updated data from request
@@ -223,7 +223,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SuperAdminManagementListView(viewsets.ModelViewSet):
+class SuperAdminManagementListView(viewsets.ModelViewSet):    
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated,HasMorePermsThanUser]
@@ -243,8 +243,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             SuperUser can create users with any roles
             Staff can only create users and staff             
             
-        '''        
-        print('entro?')
+        '''                
         data = request.data
         email = (data['email']).strip().lower()
         first_name = (data['first_name']).strip()
@@ -265,8 +264,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         try:
             validate_password(password)
         except ValidationError as e:
-            return Response(e,status=status.HTTP_400_BAD_REQUEST)
-        print('antes de crear nada')
+            return Response(e,status=status.HTTP_400_BAD_REQUEST)        
         try:
             user = User.objects.create(
                 first_name=first_name,
