@@ -49,15 +49,15 @@ class Expense(models.Model):
             ("can_delete_expense", "Can delete expense"),
         ]    
     
+    
     def save(self, *args, **kwargs):
         # Call the parent save method to save the expense first
-        super().save(*args, **kwargs)
-        
+        super().save(*args, **kwargs)        
         # Assign permissions to the user who created the expense
         assign_perm('change_expense', self.user, self)
         assign_perm('delete_expense', self.user, self)
 
-    def delete(self, *args, **kwargs):
+    '''def delete(self, *args, **kwargs):
         # Remove permissions when expense is deleted
         try:
             user = self.user
@@ -67,7 +67,7 @@ class Expense(models.Model):
         except Exception as e:
             logger.error(f"Error deleting expense: {e}")
             # Handle the error appropriately, such as raising or logging it
-            raise
+            raise'''
 
 class Income(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
