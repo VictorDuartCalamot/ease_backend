@@ -42,14 +42,14 @@ class ExpenseSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = Expense
-        fields = ['id','title','description','amount','creation_date','creation_time','user','category','sub_category']
+        fields = ['id','title','description','amount','creation_date','creation_time','user','category','subCategory']
         read_only_fields = ['id']
 
 class IncomeSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = Income
-        fields = ['id','title','description','amount','creation_date','creation_time','user','category','sub_category']
+        fields = ['id','title','description','amount','creation_date','creation_time','user','category','subCategory']
         read_only_fields = ['id']        
 
 
@@ -59,12 +59,14 @@ class AuthUserLogsSerializer(serializers.ModelSerializer):
         fields = ['id','user','creation_date','creation_time','platform_OS','successful','description']
         read_only_fields = ['id']
         
-class CategoriesSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+        read_only_fields = ['id']
 
-class SubCategoriesSerializer(serializers.ModelSerializer):
+class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
         fields = '__all__'
+        read_only_fields = ['id']
