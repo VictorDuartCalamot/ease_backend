@@ -38,7 +38,7 @@ class Expense(models.Model):
     creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    subCategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
 
     permissions = [
             ("can_view_expense", "Can view expense"),
@@ -73,7 +73,7 @@ class Income(models.Model):
     creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    subCategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
 
     permissions = [
             ("can_view_income", "Can view income"),
