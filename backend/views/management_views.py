@@ -98,13 +98,11 @@ class ExpenseDetailView(viewsets.ModelViewSet):
     def delete(self, request, pk):
         '''
             Delete expense object with specified PK 
-        '''
-        #print('Inside delete request')
+        '''        
         try:
-            expense = Expense.objects.get(pk=pk)
-            #print(expense)
+            expense = Expense.objects.get(pk=pk)            
             expense.delete()
-            return Response({"message":"Expense deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:
             return Response("Expense not found.", status=status.HTTP_404_NOT_FOUND)
 
@@ -215,13 +213,11 @@ class IncomeDetailView(viewsets.ModelViewSet):
     def delete(self, request, pk):
         '''
             Delete income object with specified PK 
-        '''
-        #print('Inside delete request')
+        '''        
         try:
-            income = Income.objects.get(pk=pk)
-            #print(income)
+            income = Income.objects.get(pk=pk)            
             income.delete()
-            return Response({"message":"Income deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+            return Response( status=status.HTTP_204_NO_CONTENT)
         except Income.DoesNotExist:
             return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
 
@@ -315,7 +311,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         try:
             category = Category.objects.get(pk=pk)            
             category.delete()
-            return Response({"message":"Category deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except Category.DoesNotExist:
             return Response("Category not found.", status=status.HTTP_404_NOT_FOUND)
         
@@ -404,8 +400,8 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
             subCategory = SubCategory.objects.get(pk=pk) 
             serializer = SubCategorySerializer(subCategory)           
             print(serializer.data)
-            subCategory.delete()
-            return Response({"message":"SubCategory deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+            subCategory.delete()            
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except SubCategory.DoesNotExist:
             return Response("SubCategory not found.", status=status.HTTP_404_NOT_FOUND)
         
