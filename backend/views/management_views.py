@@ -100,9 +100,9 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             Delete expense object with specified PK 
         '''        
         try:
-            expense = self.get_object(pk) 
+            obj_to_delete = Expense.objects.get(pk=pk) 
             print('pre delete')           
-            expense.delete()
+            obj_to_delete.delete()
             print('still deletes it?')
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:
