@@ -102,6 +102,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         try:
             expense = Expense.objects.get(pk=pk)            
             expense.delete()
+            print('still deletes it?')
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:
             return Response("Expense not found.", status=status.HTTP_404_NOT_FOUND)

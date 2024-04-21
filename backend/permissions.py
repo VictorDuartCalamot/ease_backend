@@ -28,28 +28,15 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         obj_pk = view.kwargs.get('pk')       
         try:
             obj = obj_model.objects.get(pk=obj_pk)
-            serializer = obj_serializer(obj)
-            print(serializer.data)  
-            print(serializer.data['user'])
-            print(serializer.data.get('user'))
-            print(request.user.id)
+            serializer = obj_serializer(obj)            
 
             if serializer.data['user'] == request.user.id:
                 return True
             else:
                 return False        
-        except obj_model.DoesNotExist:
-            print('??')
+        except obj_model.DoesNotExist:            
             return False                
-    
-    def has_object_permission(self, request, view, obj): 
-        print('pasa por aqui??')   
-        # Check if the user is the owner of the object.        
-        if obj.user == request.user or obj.user_id == request.user.id:
-            return True
-        else:
-            print('fr?')
-            raise PermissionDenied("You do not have enough permissions.")
+        
         
 
 class IsSuperUser(permissions.BasePermission):
