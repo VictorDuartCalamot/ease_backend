@@ -21,6 +21,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
                 serializer = IncomeSerializer(obj)
                 print(serializer.data)
             except Income.DoesNotExist:
+                print('income failed?')
                 return False
         elif 'expense' in model[0]:
             try:
@@ -28,6 +29,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
                 serializer = ExpenseSerializer(obj)
                 print(serializer.data)
             except Expense.DoesNotExist:
+                print('expense failed?')
                 return False
         else:
             # If the object type cannot be determined, deny permission
