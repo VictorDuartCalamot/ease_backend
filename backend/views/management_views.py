@@ -270,7 +270,7 @@ class CategoryListView(viewsets.ModelViewSet):
             return Response({'error': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
 
     def create(self,request):
-        if request.user.is_staff == False or request.user.is_superuser == False:
+        if not HasMorePermsThanUser:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)               
         serializer = CategorySerializer(data=request.data) 
         #Check if the serializer is valid
