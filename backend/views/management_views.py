@@ -10,6 +10,8 @@ from backend.models import Expense, Income, Category, SubCategory
 from django.utils import timezone
 from django.db.models import Q
 from backend.utils import filter_by_date_time
+from django.db import transaction
+from guardian.shortcuts import assign_perm
 
 
 '''
@@ -65,12 +67,22 @@ class ExpenseListView(viewsets.ModelViewSet):
         serializer = ExpenseSerializer(data=request.data) 
         #Check if the serializer is valid
         if serializer.is_valid():            
-            serializer.save()  # Save the expense object to the database
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            with transaction.atomic():
+            # Save the expense object to the database
+                serializer.save()
+            # Ensure the transaction is committed
+                transaction.on_commit(lambda: self.after_create(serializer.instance))
+                return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             #print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
-        
+    def after_create(self, instance):
+        '''
+        Perform actions after the expense object is created
+        '''
+        # Assign permissions to the user who created the expense
+        assign_perm('change_expense', instance.user, instance)
+        assign_perm('delete_expense', instance.user, instance)
 class ExpenseDetailView(viewsets.ModelViewSet):
     '''
         View for requests with specific PK
