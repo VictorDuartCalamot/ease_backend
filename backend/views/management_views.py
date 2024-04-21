@@ -104,7 +104,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             expense = Expense.objects.get(pk=pk)
             #print(expense)
             expense.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({"message":"Expense deleted successfully"},status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:
             return Response("Expense not found.", status=status.HTTP_404_NOT_FOUND)
 
@@ -221,7 +221,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
             income = Income.objects.get(pk=pk)
             #print(income)
             income.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({"message":"Income deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except Income.DoesNotExist:
             return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
 
@@ -315,9 +315,9 @@ class CategoryDetailView(viewsets.ModelViewSet):
         try:
             category = Category.objects.get(pk=pk)            
             category.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response({"message":"Category deleted successfully"},status=status.HTTP_204_NO_CONTENT)
         except Category.DoesNotExist:
-            return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
+            return Response("Category not found.", status=status.HTTP_404_NOT_FOUND)
         
     def update(self, request, *args,**kwargs):
         '''
@@ -344,7 +344,34 @@ class SubCategoryListView(viewsets.ModelViewSet):
     queryset = SubCategory.objects.all()
     serializer_class = SubCategorySerializer
     permission_classes = [IsAuthenticated] 
-    '''Get,Create'''
+    '''Get,Create'''    
+    def get(self,request):
+        '''
+           Get all categories
+        '''      
+        try:
+        # Retrieve the income object based on the primary key (pk) and user
+            subCategory = SubCategory.objects.all()
+            serializer = SubCategorySerializer(subCategory, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Category.DoesNotExist:
+        # If the income object does not exist for the specified user, return a 404 Not Found response
+            return Response({'error': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
+
+    def create(self,request):   
+        '''
+        Create new category
+        '''       
+        if request.user.is_staff == False and request.user.is_superuser == False:
+            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)    
+        serializer = SubCategorySerializer(data=request.data) 
+        #Check if the serializer is valid
+        if serializer.is_valid():            
+            serializer.save()  # Save the income object to the database
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            #print(serializer.errors)  # Print out the errors for debugging
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
 
 class SubCategoryDetailView(viewsets.ModelViewSet):
     ''''''
@@ -352,3 +379,49 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
     serializer_class = SubCategorySerializer
     permission_classes = [IsAuthenticated] 
     '''Get,delete,update'''
+    def get(self,request,pk):
+        '''
+           Get single income object with specified PK
+        '''      
+        try:
+        # Retrieve the income object based on the primary key (pk) and user
+            subCategory = SubCategory.objects.get(id=pk)
+        except SubCategory.DoesNotExist:
+        # If the income object does not exist for the specified user, return a 404 Not Found response
+            return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)                
+        serializer = SubCategorySerializer(subCategory)              
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def delete(self, request, pk):
+        '''
+            Delete income object with specified PK 
+        '''
+        if request.user.is_staff == False and request.user.is_superuser == False:
+            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
+        try:
+            subCategory = SubCategory.objects.get(pk=pk)            
+            subCategory.delete()
+            return Response({"message":"SubCategory deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+        except SubCategory.DoesNotExist:
+            return Response("SubCategory not found.", status=status.HTTP_404_NOT_FOUND)
+        
+    def update(self, request, *args,**kwargs):
+        '''
+            Update income object with specified PK
+        '''
+        if request.user.is_staff == False and request.user.is_superuser == False:
+            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)
+        # Retrieve the income object
+        subCategory = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
+        
+        # Serialize the income data with the updated data from request
+        serializer = SubCategorySerializer(subCategory, data=request.data)
+        
+        # Validate the serializer data
+        if serializer.is_valid():
+            # Save the updated income object
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            # Return error response if serializer data is invalid
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

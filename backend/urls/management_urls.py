@@ -11,6 +11,9 @@ urlpatterns = [
     #Category
     path('category/', management_views.CategoryListView.as_view({'get':'get','post':'create'}), name='category-list'),
     path('category/<uuid:pk>/', management_views.CategoryDetailView.as_view({'get':'get','delete':'delete','put':'update'}), name='category-detail'),
+    #SubCategory
+    path('subcategory/', management_views.CategoryListView.as_view({'get':'get','post':'create'}), name='subcategory-list'),
+    path('subcategory/<uuid:pk>/', management_views.CategoryDetailView.as_view({'get':'get','delete':'delete','put':'update'}), name='subcategory-detail'),
 
 ]
 
