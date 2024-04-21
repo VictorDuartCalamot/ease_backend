@@ -244,10 +244,10 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             Staff can only create users and staff             
             
         '''        
-        #print(request.data,request.user)
+        print('entro?')
         data = request.data
         email = (data['email']).strip().lower()
-        name = (data['name']).strip()
+        first_name = (data['first_name']).strip()
         last_name = (data['last_name']).strip()
         password = (data['password']).strip()
         if data['is_staff'] is not None:
@@ -269,7 +269,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         
         try:
             user = User.objects.create(
-                first_name=name,
+                first_name=first_name,
                 last_name=last_name,
                 username=email,
                 email=email,
@@ -279,7 +279,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 password=make_password(password)
             )
             print(user)
-            serializer = UserSerializer(user, many=False)
+            serializer = UserSerializer(user)
             print(f'Usuario registrado con éxito: {email}.')
             return Response(serializer.data)
         except Exception as e:
