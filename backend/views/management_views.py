@@ -297,7 +297,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         '''      
         try:
         # Retrieve the income object based on the primary key (pk) and user
-            category = Category.objects.get(id=pk)
+            category = Category.objects.get(pk=pk)
         except Category.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
             return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)        
@@ -313,7 +313,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
         try:
-            category = Category.objects.get(id=pk)            
+            category = Category.objects.get(pk=pk)            
             category.delete()
             return Response({"message":"Category deleted successfully"},status=status.HTTP_204_NO_CONTENT)
         except Category.DoesNotExist:
@@ -401,7 +401,9 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
         if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
         try:
-            subCategory = SubCategory.objects.get(id=pk)            
+            subCategory = SubCategory.objects.get(pk=pk) 
+            serializer = SubCategorySerializer(subCategory)           
+            print(serializer.data)
             subCategory.delete()
             return Response({"message":"SubCategory deleted successfully"},status=status.HTTP_204_NO_CONTENT)
         except SubCategory.DoesNotExist:
