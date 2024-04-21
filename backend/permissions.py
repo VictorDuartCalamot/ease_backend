@@ -30,7 +30,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             obj = obj_model.objects.get(pk=obj_pk)
             serializer = obj_serializer(obj)
             print(serializer.data)
+            return True
         except obj_model.DoesNotExist:
+            print('??')
             return False                
     
     def has_object_permission(self, request, view, obj): 
