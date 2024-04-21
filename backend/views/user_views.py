@@ -256,7 +256,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             is_staff = False
         
         if data['is_superuser'] is not None:
-            if request.user.is_Staff and data['is_superuser']:
+            if request.user.is_staff and data['is_superuser']:
                 return Response(status=status.HTTP_403_FORBIDDEN)
             else:
                 is_superuser = data['is_superuser']
