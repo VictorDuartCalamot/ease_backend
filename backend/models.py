@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 import uuid
 from guardian.shortcuts import assign_perm,remove_perm
-from guardian.models import UserObjectPermission
+
 import logging
 #Income/Expense models
 logger = logging.getLogger(__name__)
@@ -58,9 +58,7 @@ class Expense(models.Model):
         assign_perm('change_expense', self.user, self)
         assign_perm('delete_expense', self.user, self)
 
-    def delete_object_permissions(sender, instance, **kwargs):
-        # Delete associated object permissions
-        UserObjectPermission.objects.filter(object_pk=str(instance.pk)).delete()
+    
     '''def delete(self, *args, **kwargs):
         # Remove permissions when expense is deleted
         try:
