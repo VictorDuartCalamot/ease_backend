@@ -32,11 +32,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         except obj_model.DoesNotExist:
             return False                
     
-    def has_object_permission(self, request, view, obj):    
+    def has_object_permission(self, request, view, obj): 
+        print('pasa por aqui??')   
         # Check if the user is the owner of the object.
+        print(obj.user,request.user,obj.user_id,request.user.id)
         if obj.user == request.user or obj.user_id == request.user.id:
             return True
         else:
+            print('fr?')
             raise PermissionDenied("You do not have enough permissions.")
         
 
