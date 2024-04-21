@@ -2,7 +2,9 @@ from django.contrib.auth.models import User
 from django.db import models
 import uuid
 from guardian.shortcuts import assign_perm,remove_perm
+import logging
 #Income/Expense models
+logger = logging.getLogger(__name__)
 
 class AuthUserLogs(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -57,10 +59,15 @@ class Expense(models.Model):
 
     def delete(self, *args, **kwargs):
         # Remove permissions when expense is deleted
-        user = self.user
-        super().delete(*args, **kwargs)
-        remove_perm('change_expense', user, self)
-        remove_perm('delete_expense', user, self)
+        try:
+            user = self.user
+            super().delete(*args, **kwargs)
+            remove_perm('change_expense', user, self)
+            remove_perm('delete_expense', user, self)
+        except Exception as e:
+            logger.error(f"Error deleting expense: {e}")
+            # Handle the error appropriately, such as raising or logging it
+            raise
 
 class Income(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
