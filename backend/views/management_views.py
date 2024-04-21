@@ -120,7 +120,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         try:
             expense = Expense.objects.get(pk=pk) 
             print(pk)
-            print(ExpenseSerializer(expense))
+            print(ExpenseSerializer(expense).data)
             print('pre delete')           
             expense.delete()
             print('still deletes it?')
