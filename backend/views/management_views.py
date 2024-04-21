@@ -220,8 +220,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
             return Response( status=status.HTTP_204_NO_CONTENT)
         except Income.DoesNotExist:
             return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
-
-    #TODO: Fixear fecha hora para que no se sobreescriba
+    
     def update(self, request, *args,**kwargs):
 
         '''
