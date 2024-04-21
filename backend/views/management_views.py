@@ -363,7 +363,8 @@ class SubCategoryListView(viewsets.ModelViewSet):
         Create new category
         '''       
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)    
+            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)  
+        print(request.data,SubCategorySerializer)  
         serializer = SubCategorySerializer(data=request.data) 
         #Check if the serializer is valid
         if serializer.is_valid():            
