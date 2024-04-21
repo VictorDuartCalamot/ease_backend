@@ -364,8 +364,7 @@ class SubCategoryListView(viewsets.ModelViewSet):
         '''       
         if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)          
-        serializer = SubCategorySerializer(data=request.data) 
-        print(serializer.data)
+        serializer = SubCategorySerializer(data=request.data)         
         #Check if the serializer is valid
         print('Antes de checkear si es valido')
         if serializer.is_valid(): 
