@@ -363,11 +363,13 @@ class SubCategoryListView(viewsets.ModelViewSet):
         Create new category
         '''       
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)  
-        print(request.data,SubCategorySerializer)  
+            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)          
         serializer = SubCategorySerializer(data=request.data) 
+        print(serializer.data)
         #Check if the serializer is valid
-        if serializer.is_valid():            
+        print('Antes de checkear si es valido')
+        if serializer.is_valid(): 
+            print('es valido')           
             serializer.save()  # Save the income object to the database
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
