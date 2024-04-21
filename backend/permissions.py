@@ -23,9 +23,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return False
         
         # Retrieve the object based on the primary key (pk) from the request URL        
-        user_pk = view.kwargs.get('pk')
-        print(user_pk)
-        print(obj_model)
+        user_pk = view.kwargs.get('pk')       
         try:
             obj = obj_model.objects.get(pk=user_pk)
             if obj_model == Income:
@@ -34,6 +32,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
                serializer =  ExpenseSerializer(obj)            
             print(serializer.data)
         except obj_model.DoesNotExist:
+            print('??')
             return False                
     
     def has_object_permission(self, request, view, obj): 
