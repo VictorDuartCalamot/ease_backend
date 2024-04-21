@@ -27,7 +27,10 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         print(user_pk)
         try:
             obj = obj_model.objects.get(pk=user_pk)
-            serializer = IncomeSerializer(obj) if obj_model == Income else ExpenseSerializer(obj)
+            if obj_model== Income:
+                serializer = IncomeSerializer(obj)
+            else:
+               serializer =  ExpenseSerializer(obj)            
             print(serializer.data)
         except obj_model.DoesNotExist:
             return False                
