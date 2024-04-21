@@ -13,10 +13,10 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     """
     def has_permission(self, request, view):
         # Determine the type of object (income or expense) based on the view name
-        print(view.get_view_name().lower().split())
-        if 'income' in view.get_view_name().lower().split():
+        model = view.get_view_name().lower().split()
+        if 'income' in model[0]:
             obj_model = Income
-        elif 'expense' in view.get_view_name().lower().split():
+        elif 'expense' in model[0]:
             obj_model = Expense
         else:
             # If the object type cannot be determined, deny permission
@@ -25,9 +25,10 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         # Retrieve the object based on the primary key (pk) from the request URL        
         user_pk = view.kwargs.get('pk')
         print(user_pk)
+        print(obj_model)
         try:
             obj = obj_model.objects.get(pk=user_pk)
-            if obj_model== Income:
+            if obj_model == Income:
                 serializer = IncomeSerializer(obj)
             else:
                serializer =  ExpenseSerializer(obj)            
