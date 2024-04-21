@@ -266,7 +266,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             validate_password(password)
         except ValidationError as e:
             return Response(e,status=status.HTTP_400_BAD_REQUEST)
-        
+        print('antes de crear nada')
         try:
             user = User.objects.create(
                 first_name=first_name,
@@ -278,8 +278,8 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 is_active=True,
                 password=make_password(password)
             )
-            print(user)
-            serializer = UserSerializer(user)
+            
+            serializer = UserSerializerWithToken(user)
             print(f'Usuario registrado con éxito: {email}.')
             return Response(serializer.data)
         except Exception as e:
