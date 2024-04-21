@@ -275,6 +275,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 email=email,
                 is_staff=is_staff,  # Default to False if not provided
                 is_superuser=is_superuser,  # Default to False if not provided
+                is_active=True,
                 password=make_password(password)
             )
             print(user)
