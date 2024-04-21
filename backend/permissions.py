@@ -16,8 +16,10 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         model = view.get_view_name().lower().split()
         if 'income' in model[0]:
             obj_model = Income
+            obj_serializer = IncomeSerializer
         elif 'expense' in model[0]:
             obj_model = Expense
+            obj_serializer = ExpenseSerializer
         else:
             # If the object type cannot be determined, deny permission
             return False
@@ -26,10 +28,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         user_pk = view.kwargs.get('pk')       
         try:
             obj = obj_model.objects.get(pk=user_pk)
-            if obj_model == Income:
-                serializer = IncomeSerializer(obj)
-            else:
-               serializer =  ExpenseSerializer(obj)            
+            serializer = obj_serializer(obj)
             print(serializer.data)
         except obj_model.DoesNotExist:
             print('??')
