@@ -12,7 +12,9 @@ from django.db.models import Q
 from backend.utils import filter_by_date_time
 from django.db import transaction
 from guardian.shortcuts import assign_perm
-
+from guardian.models import UserObjectPermission
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 '''
 Este archivo es para las vistas de gastos e ingresos.
@@ -112,14 +114,19 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         serializer = ExpenseSerializer(expense) 
         #print(serializer.data)        
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+    
+    @staticmethod
+    @receiver(pre_delete, sender=Expense)
+    def delete_object_permissions(sender, instance, **kwargs):
+        # Delete associated object permissions
+        UserObjectPermission.objects.filter(object_pk=str(instance.pk)).delete()   
+
     def delete(self, request, pk):
         '''
         Delete expense object with specified PK 
         '''        
         try:
             expense = Expense.objects.get(pk=pk)             
-            expense.delete_object_permissions()                       
             expense.delete()            
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:            
