@@ -313,7 +313,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
         try:
-            category = Category.objects.get(pk=pk)            
+            category = Category.objects.get(id=pk)            
             category.delete()
             return Response({"message":"Category deleted successfully"},status=status.HTTP_204_NO_CONTENT)
         except Category.DoesNotExist:
@@ -401,7 +401,7 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
         if request.user.is_staff == False and request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
         try:
-            subCategory = SubCategory.objects.get(pk=pk)            
+            subCategory = SubCategory.objects.get(id=pk)            
             subCategory.delete()
             return Response({"message":"SubCategory deleted successfully"},status=status.HTTP_204_NO_CONTENT)
         except SubCategory.DoesNotExist:
