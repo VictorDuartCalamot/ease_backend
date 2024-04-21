@@ -13,10 +13,10 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     """
     def has_permission(self, request, view):
         # Determine the type of object (income or expense) based on the view name
-        print(view.get_view_name().lower())
-        if 'income' in view.get_view_name().lower():
+        print(view.get_view_name().lower().split())
+        if 'income' in view.get_view_name().lower().split():
             obj_model = Income
-        elif 'expense' in view.get_view_name().lower():
+        elif 'expense' in view.get_view_name().lower().split():
             obj_model = Expense
         else:
             # If the object type cannot be determined, deny permission
