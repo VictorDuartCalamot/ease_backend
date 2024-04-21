@@ -279,7 +279,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 password=make_password(password)
             )
             print(user)
-            serializer = UserSerializerWithToken(user, many=False)
+            serializer = UserSerializer(user, many=False)
             print(f'Usuario registrado con éxito: {email}.')
             return Response(serializer.data)
         except Exception as e:
