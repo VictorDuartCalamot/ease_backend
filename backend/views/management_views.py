@@ -270,7 +270,7 @@ class CategoryListView(viewsets.ModelViewSet):
             return Response({'error': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
 
     def create(self,request):
-        if not request.user.is_staff or not request.user.is_superuser:
+        if request.user.is_staff == False or request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)               
         serializer = CategorySerializer(data=request.data) 
         #Check if the serializer is valid
@@ -307,7 +307,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         '''
             Delete income object with specified PK 
         '''
-        if not request.user.is_staff or not request.user.is_superuser:
+        if request.user.is_staff == False or request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
         try:
             category = Category.objects.get(pk=pk)            
@@ -320,7 +320,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         '''
             Update income object with specified PK
         '''
-        if not request.user.is_staff or not request.user.is_superuser:
+        if request.user.is_staff == False or request.user.is_superuser == False:
             return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)
         # Retrieve the income object
         category = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
