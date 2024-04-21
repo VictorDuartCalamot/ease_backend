@@ -29,16 +29,22 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         try:
             obj = obj_model.objects.get(pk=obj_pk)
             serializer = obj_serializer(obj)
-            print(serializer.data)
-            return True
+            print(serializer.data)  
+            print(serializer.data['user'])
+            print(serializer.data.get('user'))
+            print(request.user.id)
+
+            if serializer.data['user'] == request.user.id:
+                return True
+            else:
+                return False        
         except obj_model.DoesNotExist:
             print('??')
             return False                
     
     def has_object_permission(self, request, view, obj): 
         print('pasa por aqui??')   
-        # Check if the user is the owner of the object.
-        print(obj.user,request.user,obj.user_id,request.user.id)
+        # Check if the user is the owner of the object.        
         if obj.user == request.user or obj.user_id == request.user.id:
             return True
         else:
