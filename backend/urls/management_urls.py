@@ -8,7 +8,13 @@ urlpatterns = [
     #Income
     path('income/', management_views.IncomeListView.as_view({'get':'get','post':'create'}), name='income-list'),
     path('income/<uuid:pk>/', management_views.IncomeDetailView.as_view({'get':'get','delete':'delete','put':'update'}), name='income-detail'),
-    
+    #Category
+    path('category/', management_views.CategoryListView.as_view({'get':'get','post':'create'}), name='category-list'),
+    path('category/<uuid:pk>/', management_views.CategoryDetailView.as_view({'get':'get','delete':'delete','put':'update'}), name='category-detail'),
+    #SubCategory
+    path('subcategory/', management_views.SubCategoryListView.as_view({'get':'get','post':'create'}), name='subcategory-list'),
+    path('subcategory/<uuid:pk>/', management_views.SubCategoryDetailView.as_view({'get':'get','delete':'delete','put':'update'}), name='subcategory-detail'),
+
 ]
 
 
