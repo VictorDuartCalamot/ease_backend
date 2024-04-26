@@ -19,7 +19,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from rest_framework.authtoken.models import Token
-from .models import BlacklistedToken
+from backend.models import BlacklistedToken
 
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
