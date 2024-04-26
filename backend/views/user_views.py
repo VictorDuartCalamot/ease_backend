@@ -18,7 +18,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
-from django.contrib.auth import logout
+from rest_framework.authtoken.models import Token
+from .models import BlacklistedToken
 
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
@@ -91,8 +92,18 @@ class LogoutView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        logout(request)
-        return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
+        token = request.auth
+
+        if token:
+            # Blacklist the token
+            BlacklistedToken.objects.create(token=token)
+
+            # Delete the token
+            token.delete()
+
+            return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
     
 # Funtion to block the user.
 # In this function when the user has tried to log-in more than 3 times in a range of 3 minutes, the account will be blocked (field "is_active" = false )
