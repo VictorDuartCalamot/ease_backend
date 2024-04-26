@@ -99,7 +99,7 @@ class LogoutView(viewsets.ModelViewSet):
             BlacklistedToken.objects.create(token=token)
 
             # Delete the token
-            token.delete()
+            request.auth = None
 
             return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         else:
