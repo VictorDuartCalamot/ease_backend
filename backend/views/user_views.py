@@ -18,6 +18,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
+from django.contrib.auth import logout
 
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
@@ -85,6 +86,13 @@ def registerUser(request):
         message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
+
+class LogoutView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        logout(request)
+        return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
 # Funtion to block the user.
 # In this function when the user has tried to log-in more than 3 times in a range of 3 minutes, the account will be blocked (field "is_active" = false )
 def blockUser(userID):
@@ -232,7 +240,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         '''Get all users'''
         try:
             users = User.objects.all()            
-            serializer = UserSerializerWithToken(users, many=True)            
+            serializer = UserSerializer(users, many=True)            
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
