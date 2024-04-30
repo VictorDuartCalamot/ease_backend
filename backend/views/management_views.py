@@ -90,6 +90,7 @@ class ExpenseListView(viewsets.ModelViewSet):
             return
         # Assign permissions to the user who created the expense
         assign_perm('change_expense', instance.user, instance)
+        assign_perm('update_expense', instance.user, instance)
         assign_perm('delete_expense', instance.user, instance)
 class ExpenseDetailView(viewsets.ModelViewSet):
     '''
@@ -229,6 +230,7 @@ class IncomeListView(viewsets.ModelViewSet):
             return
         # Assign permissions to the user who created the expense
         assign_perm('change_income', instance.user, instance)
+        assign_perm('update_income', instance.user, instance)
         assign_perm('delete_income', instance.user, instance)     
 class IncomeDetailView(viewsets.ModelViewSet):
     '''
@@ -253,6 +255,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
         serializer = IncomeSerializer(income) 
         #print(serializer.data)        
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
     @staticmethod
     @receiver(pre_delete, sender=Expense)
     def delete_object_permissions(sender, instance, **kwargs):
@@ -280,17 +283,13 @@ class IncomeDetailView(viewsets.ModelViewSet):
         print('aaaa',income.data)       
         if (request.data['amount'] <= 0):
             return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
-        #print(income.data['creation_date'])
-        #print(income.data['creation_time'])
-        print(income.data.creation_date)
-        print(income.data.creation_time)
+        
         request.data['user'] = request.user.id
         request.data['creation_date'] = income.data.creation_date
         request.data['creation_time'] = income.data.creation_time
         # Serialize the income data with the updated data from request
         serializer = IncomeSerializer(income, data=request.data)
-        print(serializer,serializer.data)
-        
+        print(serializer,serializer.data)        
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated income object
