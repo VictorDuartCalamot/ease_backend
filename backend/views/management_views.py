@@ -147,8 +147,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         request.data.pop('creation_time', None)
         
         # Serialize the expense data with the updated data from request
-        serializer = ExpenseSerializer(expense, data=request.data)
-        print(serializer,serializer.data)
+        serializer = ExpenseSerializer(expense, data=request.data)        
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated expense object
@@ -286,8 +285,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
         request.data.pop('creation_date', None)
         request.data.pop('creation_time', None)
         # Serialize the income data with the updated data from request
-        serializer = IncomeSerializer(income, data=request.data)
-        print(serializer,serializer.data)        
+        serializer = IncomeSerializer(income, data=request.data)                
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated income object
