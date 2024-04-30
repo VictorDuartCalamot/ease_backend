@@ -138,12 +138,9 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             Update expense object with specified PK
         '''
         # Retrieve the expense object
-        expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
-        print(expense.data)
+        expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that                
         if (request.data['amount'] <= 0):
-            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
-        
-        
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                            
         # Serialize the expense data with the updated data from request
         serializer = ExpenseUpdateSerializer(expense, data=request.data)        
         # Validate the serializer data
