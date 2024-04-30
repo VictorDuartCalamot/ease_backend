@@ -209,7 +209,7 @@ class IncomeListView(viewsets.ModelViewSet):
             with transaction.atomic():
                 # Save the expense object to the database
                 instance = serializer.save()
-                print("Created expense instance:", instance)  # Debug print
+                print("Created income instance:", instance)  # Debug print
                 # Ensure the transaction is committed
                 transaction.on_commit(lambda: self.after_create(instance))
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
@@ -222,12 +222,14 @@ class IncomeListView(viewsets.ModelViewSet):
         '''
         Perform actions after the expense object is created
         '''
+        print('!')
         if instance is None:
             print("Error: Expense instance is None in after_create")  # Log an error message
             return
         # Assign permissions to the user who created the expense
         assign_perm('change_expense', instance.user, instance)
-        assign_perm('delete_expense', instance.user, instance)   
+        assign_perm('delete_expense', instance.user, instance) 
+        print('?')  
 class IncomeDetailView(viewsets.ModelViewSet):
 
     '''
