@@ -280,8 +280,8 @@ class IncomeDetailView(viewsets.ModelViewSet):
         print('aaaa',income.data)       
         if (request.data['amount'] <= 0):
             return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
-        print(income.data['creation_date'])
-        print(income.data['creation_time'])
+        #print(income.data['creation_date'])
+        #print(income.data['creation_time'])
         print(income.data.creation_date)
         print(income.data.creation_time)
         request.data['user'] = request.user.id
