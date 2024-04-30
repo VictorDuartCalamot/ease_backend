@@ -221,17 +221,14 @@ class IncomeListView(viewsets.ModelViewSet):
     def after_create(self, instance):
         '''
         Perform actions after the expense object is created
-        '''
-        print('!')
+        '''        
         if instance is None:
             print("Error: Income instance is None in after_create")  # Log an error message
             return
         # Assign permissions to the user who created the expense
         assign_perm('change_income', instance.user, instance)
-        assign_perm('delete_income', instance.user, instance) 
-        print('?')  
+        assign_perm('delete_income', instance.user, instance)     
 class IncomeDetailView(viewsets.ModelViewSet):
-
     '''
         View for requests with specific PK
     '''
