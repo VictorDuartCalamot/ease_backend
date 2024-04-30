@@ -257,7 +257,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     @staticmethod
-    @receiver(pre_delete, sender=Expense)
+    @receiver(pre_delete, sender=Income)
     def delete_object_permissions(sender, instance, **kwargs):
         # Delete associated object permissions
         UserObjectPermission.objects.filter(object_pk=str(instance.pk)).delete() 
