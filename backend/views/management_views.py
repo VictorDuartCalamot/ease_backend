@@ -143,8 +143,8 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         if (request.data['amount'] <= 0):
             return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
         request.data['user'] = request.user.id        
-        request.data['creation_date'] = expense.data.creation_date        
-        request.data['creation_time'] = expense.data.creation_time
+        request.data.pop('creation_date', None)
+        request.data.pop('creation_time', None)
         
         # Serialize the expense data with the updated data from request
         serializer = ExpenseSerializer(expense, data=request.data)
@@ -283,8 +283,8 @@ class IncomeDetailView(viewsets.ModelViewSet):
             return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
         
         request.data['user'] = request.user.id
-        request.data['creation_date'] = income.data.creation_date
-        request.data['creation_time'] = income.data.creation_time
+        request.data.pop('creation_date', None)
+        request.data.pop('creation_time', None)
         # Serialize the income data with the updated data from request
         serializer = IncomeSerializer(income, data=request.data)
         print(serializer,serializer.data)        
