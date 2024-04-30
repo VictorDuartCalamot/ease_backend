@@ -146,7 +146,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         request.data['creation_time'] = expense.creation_time
         # Serialize the expense data with the updated data from request
         serializer = ExpenseSerializer(expense, data=request.data)
-        
+        print(serializer,serializer.data)
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated expense object
@@ -275,11 +275,14 @@ class IncomeDetailView(viewsets.ModelViewSet):
         '''
         # Retrieve the income object
         income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
+        if (request.data['amount'] <= 0):
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
         request.data['user'] = request.user.id
         request.data['creation_date'] = income.creation_date
         request.data['creation_time'] = income.creation_time
         # Serialize the income data with the updated data from request
         serializer = IncomeSerializer(income, data=request.data)
+        print(serializer,serializer.data)
         
         # Validate the serializer data
         if serializer.is_valid():
