@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status,viewsets
 from rest_framework.permissions import IsAuthenticated
 from backend.permissions import IsOwnerOrReadOnly,HasMorePermsThanUser
-from backend.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer,SubCategorySerializer
+from backend.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer,SubCategorySerializer,IncomeUpdateSerializer,ExpenseUpdateSerializer
 from backend.models import Expense, Income, Category, SubCategory
 from django.utils import timezone
 from django.db.models import Q
@@ -142,12 +142,10 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         print(expense.data)
         if (request.data['amount'] <= 0):
             return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
-        request.data['user'] = request.user.id        
-        request.data.pop('creation_date', None)
-        request.data.pop('creation_time', None)
+        
         
         # Serialize the expense data with the updated data from request
-        serializer = ExpenseSerializer(expense, data=request.data)        
+        serializer = ExpenseUpdateSerializer(expense, data=request.data)        
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated expense object
@@ -278,13 +276,9 @@ class IncomeDetailView(viewsets.ModelViewSet):
         # Retrieve the income object
         income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that                
         if (request.data['amount'] <= 0):
-            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
-        
-        request.data['user'] = request.user.id
-        #request.data.pop('creation_date', None)
-        #request.data.pop('creation_time', None)
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                                    
         # Serialize the income data with the updated data from request
-        serializer = IncomeSerializer(income, data=request.data)                
+        serializer = IncomeUpdateSerializer(income, data=request.data)                
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated income object
