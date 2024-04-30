@@ -276,14 +276,13 @@ class IncomeDetailView(viewsets.ModelViewSet):
             Update income object with specified PK
         '''
         # Retrieve the income object
-        income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that 
-        print('aaaa',income.data)       
+        income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that                
         if (request.data['amount'] <= 0):
             return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
         
         request.data['user'] = request.user.id
-        request.data.pop('creation_date', None)
-        request.data.pop('creation_time', None)
+        #request.data.pop('creation_date', None)
+        #request.data.pop('creation_time', None)
         # Serialize the income data with the updated data from request
         serializer = IncomeSerializer(income, data=request.data)                
         # Validate the serializer data
