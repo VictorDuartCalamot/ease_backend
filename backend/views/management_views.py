@@ -89,8 +89,7 @@ class ExpenseListView(viewsets.ModelViewSet):
             print("Error: Expense instance is None in after_create")  # Log an error message
             return
         # Assign permissions to the user who created the expense
-        assign_perm('change_expense', instance.user, instance)
-        assign_perm('update_expense', instance.user, instance)
+        assign_perm('change_expense', instance.user, instance)        
         assign_perm('delete_expense', instance.user, instance)
 class ExpenseDetailView(viewsets.ModelViewSet):
     '''
@@ -229,8 +228,7 @@ class IncomeListView(viewsets.ModelViewSet):
             print("Error: Income instance is None in after_create")  # Log an error message
             return
         # Assign permissions to the user who created the expense
-        assign_perm('change_income', instance.user, instance)
-        assign_perm('update_income', instance.user, instance)
+        assign_perm('change_income', instance.user, instance)        
         assign_perm('delete_income', instance.user, instance)     
 class IncomeDetailView(viewsets.ModelViewSet):
     '''
