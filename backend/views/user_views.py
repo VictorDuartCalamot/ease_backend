@@ -273,31 +273,36 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
     def getAllUsers(self,request):
         '''Get all users'''
         try:
-            is_active = request.query_params.get('is_active')
-            is_staff = request.query_params.get('is_staff')
-            is_superuser = request.query_params.get('is_superuser')
-            start_date = request.query_params.get('start_date')
-            end_date = request.query_params.get('end_date')
-            print('Is active',is_active,'Is staff',is_staff,'Is superuser',is_superuser,'Start date',start_date,'End date',end_date)
+            is_active = request.query_params.get('is_active', None)
+            is_staff = request.query_params.get('is_staff', None)
+            is_superuser = request.query_params.get('is_superuser', None)
+            start_date = request.query_params.get('start_date', None)
+            end_date = request.query_params.get('end_date', None)
+            
+            print('Is active', is_active, 'Is staff', is_staff, 'Is superuser', is_superuser, 'Start date', start_date, 'End date', end_date)
+            
             # Start with an initial queryset that includes all users
             users_queryset = User.objects.all()
+            
             # Exclude Anonymous user
-            users_queryset = User.objects.exclude(id=1)
-            
-            
+            users_queryset = users_queryset.exclude(id=1)
             
             # Apply filters based on query parameters
             if is_active is not None:
+                print('Past is_active')
                 users_queryset = users_queryset.filter(is_active=is_active)
             if is_staff is not None:
+                print('Past is staff')
                 users_queryset = users_queryset.filter(is_staff=is_staff)
             if is_superuser is not None:
-                users_queryset = users_queryset.filter(is_superuser=is_superuser)
+                print('Past is superuser')
+                users_queryset = users_queryset.filter(is_superuser=is_superuser)            
             # Add filtering by datetime if provided
             if start_date is not None and end_date is not None:
+                print('Past dates')
                 # Assuming start_datetime and end_datetime are datetime objects
                 users_queryset = filter_by_date_time(users_queryset, start_date, end_date)
-            
+            print(users_queryset)
             # Serialize the queryset and return the response
             serializer = UserSerializer(users_queryset, many=True)
             return Response(serializer.data)
