@@ -276,9 +276,11 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             is_active = request.query_params.get('is_active')
             is_staff = request.query_params.get('is_staff')
             is_superuser = request.query_params.get('is_superuser')
-            start_datetime = request.query_params.get('start_datetime')
-            end_datetime = request.query_params.get('end_datetime')
-            
+            start_date = request.query_params.get('start_date')
+            end_date = request.query_params.get('end_date')
+            print('Is active',is_active,'Is staff',is_staff,'Is superuser',is_superuser,'Start date',start_date,'End date',end_date)
+            # Exclude Anonymous user
+            users_queryset = User.objects.exclude(id=1)
             # Start with an initial queryset that includes all users
             users_queryset = User.objects.all()
             
@@ -290,9 +292,9 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             if is_superuser is not None:
                 users_queryset = users_queryset.filter(is_superuser=is_superuser)
             # Add filtering by datetime if provided
-            if start_datetime is not None and end_datetime is not None:
+            if start_date is not None and end_date is not None:
                 # Assuming start_datetime and end_datetime are datetime objects
-                users_queryset = filter_by_date_time(users_queryset, start_datetime, end_datetime)
+                users_queryset = filter_by_date_time(users_queryset, start_date, end_date)
             
             # Serialize the queryset and return the response
             serializer = UserSerializer(users_queryset, many=True)
@@ -353,6 +355,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
 
     def getSingleUser(self, request,pk):
         '''Get data from single user'''
+        user = User.objects.exclude(id=1)
         user = User.objects.get(id=pk) 
         serializer = UserSerializer(user)                    
         return Response(serializer.data, status=status.HTTP_200_OK)
