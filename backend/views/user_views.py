@@ -279,7 +279,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             start_date = request.query_params.get('start_date', None)
             end_date = request.query_params.get('end_date', None)
             
-            print('Is active', is_activeValue, 'Is staff', is_staff, 'Is superuser', is_superuser, 'Start date', start_date, 'End date', end_date)
+            #print('Is active', is_activeValue, 'Is staff', is_staff, 'Is superuser', is_superuser, 'Start date', start_date, 'End date', end_date)
             
             # Start with an initial queryset that includes all users
             users_queryset = User.objects.all()
