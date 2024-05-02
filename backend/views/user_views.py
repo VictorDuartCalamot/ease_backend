@@ -276,10 +276,11 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             is_activeValue = request.query_params.get('is_active', None)
             is_staffValue = request.query_params.get('is_staff', None)
             is_superuserValue = request.query_params.get('is_superuser', None)
-            start_date = request.query_params.get('start_date', None)
-            end_date = request.query_params.get('end_date', None)
+            start_date_str = request.query_params.get('start_date', None)
+            end_date_str = request.query_params.get('end_date', None)
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
             
-            #print('Is active', is_activeValue, 'Is staff', is_staff, 'Is superuser', is_superuser, 'Start date', start_date, 'End date', end_date)
             
             # Start with an initial queryset that includes all users
             users_queryset = User.objects.all()
@@ -305,7 +306,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 is_staff_bool = True if is_superuserValue.lower() == 'true' else False
                 users_queryset = users_queryset.filter(is_superuser=is_staff_bool)            
             # Add filtering by datetime if provided
-            if start_date is not None and end_date is not None:
+            if start_date is not None or end_date is not None:
                 print('Past dates')
                 # Assuming start_datetime and end_datetime are datetime objects
                 users_queryset = filter_by_date_time(users_queryset, start_date, end_date)
