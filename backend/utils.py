@@ -30,7 +30,7 @@ def filter_by_date_time(queryset,start_datetime,end_datetime, start_date, end_da
 
     if (start_time and end_time) and (start_time > end_time):
         return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
-    
+    '''
     if start_datetime and end_datetime and start_datetime > end_datetime:
         return Response({'error': 'Start datetime cannot be after end datetime.'}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -42,7 +42,7 @@ def filter_by_date_time(queryset,start_datetime,end_datetime, start_date, end_da
             datetime_query &= Q(creation_datetime__gte=start_datetime)
         elif end_datetime is not None:   
             datetime_query &= Q(creation_datetime__lte=end_datetime) 
-               
+    '''
     # Filter based on date range
     date_query = Q()
     if start_date or end_date:
