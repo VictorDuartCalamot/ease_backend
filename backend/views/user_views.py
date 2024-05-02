@@ -20,6 +20,7 @@ from django.db.models import Q
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from rest_framework.authtoken.models import Token
 from backend.models import BlacklistedToken
+from django.contrib.auth.hashers import check_password
 
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
@@ -104,6 +105,27 @@ class LogoutView(viewsets.ModelViewSet):
             return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    try:
+        user_obj = User.objects.get(id=request.user.id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    current_password = request.data.get("current_password", "").strip()
+    new_password = request.data.get("new_password", "").strip()
+
+    # Check if the provided current password matches the one in the database
+    if not check_password(current_password, user_obj.password):
+        return Response({"error": "Incorrect current password."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Set the new password and save the user object
+    user_obj.set_password(new_password)
+    user_obj.save()
+
+    return Response({"message": "Password changed successfully."}, status=status.HTTP_200_OK)
     
 # Funtion to block the user.
 # In this function when the user has tried to log-in more than 3 times in a range of 3 minutes, the account will be blocked (field "is_active" = false )

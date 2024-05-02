@@ -12,4 +12,5 @@ urlpatterns = [
     path('logout/', user_views.LogoutView.as_view({'get':'get'}), name='logout'),
     path('loginLog/', user_views.AuthUserLogsListView.as_view({'get':'get','post':'create'}), name='log-list'),
     path('loginLog/<uuid:pk>/', user_views.AuthUserLogsDetailView.as_view({'get':'get','delete':'delete','put':'update'}), name='log-detail'),
+    path('changepwd/',user_views.change_password, name='change_password'),
 ]
