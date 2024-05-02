@@ -271,7 +271,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,HasMorePermsThanUser]
 
     def getAllUsers(self,request):
-        '''Get all users'''
+        '''Get all users with optional parameters'''
         try:
             is_activeValue = request.query_params.get('is_active', None)
             is_staffValue = request.query_params.get('is_staff', None)
@@ -289,34 +289,18 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             users_queryset = users_queryset.exclude(id=1)
             
             # Apply filters based on query parameters
-            if is_activeValue is not None:
-                print('Past is_active')
-                try:
-                    is_active_bool = True if is_activeValue.lower() == 'true' else False
-                    users_queryset = users_queryset.filter(is_active=is_active_bool)
-                except Exception as e:
-                    print(e)                
-                print('Post is_active',users_queryset)
-            if is_staffValue is not None:
-                print('Past is staff')
+            if is_activeValue is not None:                              
+                is_active_bool = True if is_activeValue.lower() == 'true' else False
+                users_queryset = users_queryset.filter(is_active=is_active_bool)                                   
+            if is_staffValue is not None:                
                 is_staff_bool = True if is_staffValue.lower() == 'true' else False
                 users_queryset = users_queryset.filter(is_staff=is_staff_bool)
-            if is_superuserValue is not None:
-                print('Past is superuser')
+            if is_superuserValue is not None:                
                 is_staff_bool = True if is_superuserValue.lower() == 'true' else False
                 users_queryset = users_queryset.filter(is_superuser=is_staff_bool)            
             # Add filtering by datetime if provided
-            if start_datetime is not None or end_datetime is not None:
-                print('Past dates')
-                # Assuming start_datetime and end_datetime are datetime objects
-                try:
-                    users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_datetime, end_datetime,'date_joined')
-                except Exception as e :
-                    print(e)
-
-
-            print(users_queryset)
-            # Serialize the queryset and return the response
+            if start_datetime is not None or end_datetime is not None:                                
+                users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_datetime, end_datetime,'date_joined')                                        
             serializer = UserSerializer(users_queryset, many=True)
             return Response(serializer.data)
         except Exception as e:
