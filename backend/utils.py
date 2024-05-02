@@ -20,9 +20,9 @@ def generate_random_id(prefix):
     return f"{prefix}{random_part}{timestamp}{date_part}"
 
 #Funcion para crear filtros de query por fecha y tiempo
-def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):    
+def filter_by_date_time(queryset, start_date, end_date, start_time, end_time,):    
     '''
-        Returns queries for the given date and time 
+        Returns queries for the given datetime, date and/or time 
     '''
     # Ensure start_date is not after end_date
     if (start_date and end_date) and (start_date > end_date):
@@ -30,7 +30,7 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
 
     if (start_time and end_time) and (start_time > end_time):
         return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
     # Filter based on date range
     date_query = Q()
     if start_date or end_date:
@@ -51,7 +51,7 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
     time_query = Q()
     if start_time or end_time:                
         if start_time is not None and end_time is not None:
-            print('Both not none',start_time,end_time)
+            #print('Both not none',start_time,end_time)
             if start_time == end_time:
                 time_query &= Q(creation_time=start_time)
             else:
@@ -66,9 +66,27 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time):
         
     # Apply combined date and time filtering
     combined_query = date_query & time_query
-    #print(combined_query)
-    #print(queryset.filter(combined_query))
     return queryset.filter(combined_query)
+
+def filter_by_datetime_with_custom_field(queryset, start_value, end_value,fieldname):  
+    '''Function to filter by datetime, date or time and using a custom field'''
+    if (start_value and end_value) and (start_value > end_value):
+        return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Filter based on date range
+    value_query = Q()
+    if start_value or end_value:
+        if start_value is not None and end_value is not None:
+            if start_value == end_value:
+                value_query &= Q(**{fieldname: start_value})
+            else:
+                value_query &= Q(**{f"{fieldname}__range": [start_value, end_value]})
+        elif start_value is not None:
+            value_query &= Q(**{f"{fieldname}__gte": start_value})
+        elif end_value is not None:   
+            value_query &= Q(**{f"{fieldname}__lte": end_value})
+    
+    return queryset.filter(value_query)
 
 #Funcion para recuperar el usuario utilizando el email)
 def getUserObjectByEmail(email):

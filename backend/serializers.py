@@ -45,6 +45,20 @@ class ExpenseSerializer(serializers.ModelSerializer):
         fields = ['id','title','description','amount','creation_date','creation_time','user','category','subcategory']
         read_only_fields = ['id']
 
+class ExpenseUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Expense
+        fields = ['title', 'description', 'amount', 'user', 'category', 'subcategory']
+        # Fields optional during update
+        extra_kwargs = {
+            'title': {'required': False},
+            'description': {'required': False},
+            'amount': {'required': False},
+            'user': {'required': False},
+            'category': {'required': False},
+            'subcategory': {'required': False}
+        }
+        
 class IncomeSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
@@ -52,7 +66,19 @@ class IncomeSerializer(serializers.ModelSerializer):
         fields = ['id','title','description','amount','creation_date','creation_time','user','category','subcategory']
         read_only_fields = ['id']        
 
-
+class IncomeUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Income
+        fields = ['title', 'description', 'amount', 'user', 'category', 'subcategory']
+        # Fields optional during update
+        extra_kwargs = {
+            'title': {'required': False},
+            'description': {'required': False},
+            'amount': {'required': False},
+            'user': {'required': False},
+            'category': {'required': False},
+            'subcategory': {'required': False}
+        }
 class AuthUserLogsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthUserLogs

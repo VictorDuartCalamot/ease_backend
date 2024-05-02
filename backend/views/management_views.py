@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status,viewsets
 from rest_framework.permissions import IsAuthenticated
 from backend.permissions import IsOwnerOrReadOnly,HasMorePermsThanUser
-from backend.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer,SubCategorySerializer
+from backend.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer,SubCategorySerializer,IncomeUpdateSerializer,ExpenseUpdateSerializer
 from backend.models import Expense, Income, Category, SubCategory
 from django.utils import timezone
 from django.db.models import Q
@@ -47,7 +47,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         #print(f'Start date {start_date}, end date: {end_date}, start time: {start_time}, end time: {end_time}')
         expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
         
-        print(expenses_queryset)        
+        #print(expenses_queryset)        
         # Serialize the expenses
         serializer = ExpenseSerializer(expenses_queryset, many=True)
         #print('Serializer ok?', serializer.data)        
@@ -89,7 +89,7 @@ class ExpenseListView(viewsets.ModelViewSet):
             print("Error: Expense instance is None in after_create")  # Log an error message
             return
         # Assign permissions to the user who created the expense
-        assign_perm('change_expense', instance.user, instance)
+        assign_perm('change_expense', instance.user, instance)        
         assign_perm('delete_expense', instance.user, instance)
 class ExpenseDetailView(viewsets.ModelViewSet):
     '''
@@ -138,15 +138,11 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             Update expense object with specified PK
         '''
         # Retrieve the expense object
-        expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
+        expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that                
         if (request.data['amount'] <= 0):
-            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
-        request.data['user'] = request.user.id        
-        request.data['creation_date'] = expense.creation_date
-        request.data['creation_time'] = expense.creation_time
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                            
         # Serialize the expense data with the updated data from request
-        serializer = ExpenseSerializer(expense, data=request.data)
-        
+        serializer = ExpenseUpdateSerializer(expense, data=request.data)        
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated expense object
@@ -172,7 +168,7 @@ class IncomeListView(viewsets.ModelViewSet):
         start_time_str = request.query_params.get('start_time')
         end_time_str = request.query_params.get('end_time')
         #print(start_date_str,'-',end_date_str)
-        print(end_date_str,start_date_str,start_time_str,end_time_str)
+        #print(end_date_str,start_date_str,start_time_str,end_time_str)
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
@@ -209,7 +205,7 @@ class IncomeListView(viewsets.ModelViewSet):
             with transaction.atomic():
                 # Save the expense object to the database
                 instance = serializer.save()
-                print("Created expense instance:", instance)  # Debug print
+                print("Created income instance:", instance)  # Debug print
                 # Ensure the transaction is committed
                 transaction.on_commit(lambda: self.after_create(instance))
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
@@ -221,15 +217,14 @@ class IncomeListView(viewsets.ModelViewSet):
     def after_create(self, instance):
         '''
         Perform actions after the expense object is created
-        '''
+        '''        
         if instance is None:
-            print("Error: Expense instance is None in after_create")  # Log an error message
+            print("Error: Income instance is None in after_create")  # Log an error message
             return
         # Assign permissions to the user who created the expense
-        assign_perm('change_expense', instance.user, instance)
-        assign_perm('delete_expense', instance.user, instance)   
+        assign_perm('change_income', instance.user, instance)        
+        assign_perm('delete_income', instance.user, instance)     
 class IncomeDetailView(viewsets.ModelViewSet):
-
     '''
         View for requests with specific PK
     '''
@@ -252,8 +247,9 @@ class IncomeDetailView(viewsets.ModelViewSet):
         serializer = IncomeSerializer(income) 
         #print(serializer.data)        
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
     @staticmethod
-    @receiver(pre_delete, sender=Expense)
+    @receiver(pre_delete, sender=Income)
     def delete_object_permissions(sender, instance, **kwargs):
         # Delete associated object permissions
         UserObjectPermission.objects.filter(object_pk=str(instance.pk)).delete() 
@@ -275,13 +271,11 @@ class IncomeDetailView(viewsets.ModelViewSet):
             Update income object with specified PK
         '''
         # Retrieve the income object
-        income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
-        request.data['user'] = request.user.id
-        request.data['creation_date'] = income.creation_date
-        request.data['creation_time'] = income.creation_time
+        income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that                
+        if (request.data['amount'] <= 0):
+            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                                    
         # Serialize the income data with the updated data from request
-        serializer = IncomeSerializer(income, data=request.data)
-        
+        serializer = IncomeUpdateSerializer(income, data=request.data)                
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated income object

@@ -13,13 +13,14 @@ from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from datetime import datetime,timedelta
 from django.utils import timezone
-from backend.utils import filter_by_date_time, getUserObjectByEmail
+from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from rest_framework.authtoken.models import Token
 from backend.models import BlacklistedToken
+from django.contrib.auth.hashers import check_password
 
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
@@ -50,9 +51,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
             print('Intento de inicio de sesión fallido')            
-            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)
-            
-
+            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)            
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -61,6 +60,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 #Funcion para registrar un usuario y crear un token.
 @api_view(['POST'])
 def registerUser(request):
+    '''Register new user'''
     data = request.data
     email = (data['email']).strip().lower()
     name = (data['first_name']).strip()
@@ -92,6 +92,7 @@ class LogoutView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        '''Logouts current user and blacklists the token'''
         token = request.auth
 
         if token:
@@ -105,6 +106,28 @@ class LogoutView(viewsets.ModelViewSet):
         else:
             return Response({"error": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    '''Change password for the current user'''
+    try:
+        user_obj = User.objects.get(id=request.user.id)
+    except User.DoesNotExist:
+        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    current_password = request.data.get("current_password", "").strip()
+    new_password = request.data.get("new_password", "").strip()
+
+    # Check if the provided current password matches the one in the database
+    if not check_password(current_password, user_obj.password):
+        return Response({"error": "Incorrect current password."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Set the new password and save the user object
+    user_obj.set_password(new_password)
+    user_obj.save()
+
+    return Response({"message": "Password changed successfully."}, status=status.HTTP_200_OK)
+    
 # Funtion to block the user.
 # In this function when the user has tried to log-in more than 3 times in a range of 3 minutes, the account will be blocked (field "is_active" = false )
 def blockUser(userID):
@@ -112,8 +135,8 @@ def blockUser(userID):
     userObject = User.objects.get(id=userID)
     currentDate = datetime.now()
     three_minutes_ago = currentDate - timedelta(minutes=3)
-    # Convert the date and time to strings in ISO format and extract date and time separately
-    #Convierte la fecha y hora en strings al formato ISO y los extrae de forma separada
+    # Transform the date and time to strings in ISO format and extract date and time separately
+    # Convierte la fecha y hora en strings al formato ISO y los extrae de forma separada
     new_date = three_minutes_ago.date().isoformat()
     new_time = three_minutes_ago.time().isoformat()[:8]
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
@@ -121,7 +144,7 @@ def blockUser(userID):
         #print('Ha sobrepasado los logins fallidos posibles ! ! !')
         userObject.is_active = False                                          
         userObject.save()        
-        return Response({'detail':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
+        return Response({'message':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
         
     
 class AuthUserLogsListView(viewsets.ModelViewSet):
@@ -130,7 +153,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,HasMorePermsThanUser]    
     def get(self, request):        
         '''
-            Get to retrieve data filtered by dates 
+            Retrieve data filtered by dates 
         '''
         # Get query parameters for date range        
         start_date_str = request.query_params.get('start_date')
@@ -155,9 +178,8 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
     
     def createLogWithLogin(OS,isSuccess,user_id):
         '''
-            Creates a log with all the data
-        '''
-        print(OS,isSuccess,user_id)
+            Creates a log with when a user tries to login
+        '''        
         # Get the current date and time
         date = datetime.now()
         # Convert the date and time to string in ISO format and extract date and time separately
@@ -204,7 +226,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 
     def get(self,request,pk):
         '''
-           Get single income object with specified PK
+           Get single log object with specified PK
         ''' 
         try:
         # Retrieve the income object based on the primary key (pk) and user
@@ -249,10 +271,37 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,HasMorePermsThanUser]
 
     def getAllUsers(self,request):
-        '''Get all users'''
+        '''Get all users with optional parameters'''
         try:
-            users = User.objects.all()            
-            serializer = UserSerializer(users, many=True)            
+            is_activeValue = request.query_params.get('is_active', None)
+            is_staffValue = request.query_params.get('is_staff', None)
+            is_superuserValue = request.query_params.get('is_superuser', None)
+            start_datetime_str = request.query_params.get('start_date', None)
+            end_datetime_str = request.query_params.get('end_date', None)
+            start_datetime = datetime.strptime(start_datetime_str, '%Y-%m-%d %H:%M:%S') if start_datetime_str else None
+            end_datetime = datetime.strptime(end_datetime_str, '%Y-%m-%d %H:%M:%S') if end_datetime_str else timezone.now()
+            
+            
+            # Start with an initial queryset that includes all users
+            users_queryset = User.objects.all()
+            
+            # Exclude Anonymous user
+            users_queryset = users_queryset.exclude(id=1)
+            
+            # Apply filters based on query parameters
+            if is_activeValue is not None:                              
+                is_active_bool = True if is_activeValue.lower() == 'true' else False
+                users_queryset = users_queryset.filter(is_active=is_active_bool)                                   
+            if is_staffValue is not None:                
+                is_staff_bool = True if is_staffValue.lower() == 'true' else False
+                users_queryset = users_queryset.filter(is_staff=is_staff_bool)
+            if is_superuserValue is not None:                
+                is_staff_bool = True if is_superuserValue.lower() == 'true' else False
+                users_queryset = users_queryset.filter(is_superuser=is_staff_bool)            
+            # Add filtering by datetime if provided
+            if start_datetime is not None or end_datetime is not None:                                
+                users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_datetime, end_datetime,'date_joined')                                        
+            serializer = UserSerializer(users_queryset, many=True)
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
@@ -310,6 +359,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
 
     def getSingleUser(self, request,pk):
         '''Get data from single user'''
+        user = User.objects.exclude(id=1)
         user = User.objects.get(id=pk) 
         serializer = UserSerializer(user)                    
         return Response(serializer.data, status=status.HTTP_200_OK)
