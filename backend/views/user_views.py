@@ -274,8 +274,8 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         '''Get all users'''
         try:
             is_activeValue = request.query_params.get('is_active', None)
-            is_staff = request.query_params.get('is_staff', None)
-            is_superuser = request.query_params.get('is_superuser', None)
+            is_staffValue = request.query_params.get('is_staff', None)
+            is_superuserValue = request.query_params.get('is_superuser', None)
             start_date = request.query_params.get('start_date', None)
             end_date = request.query_params.get('end_date', None)
             
@@ -291,16 +291,19 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             if is_activeValue is not None:
                 print('Past is_active')
                 try:
-                    users_queryset = users_queryset.filter(is_active=is_activeValue)
+                    is_active_bool = True if is_activeValue.lower() == 'true' else False
+                    users_queryset = users_queryset.filter(is_active=is_active_bool)
                 except Exception as e:
                     print(e)                
                 print('Post is_active',users_queryset)
-            if is_staff is not None:
+            if is_staffValue is not None:
                 print('Past is staff')
-                users_queryset = users_queryset.filter(is_staff=is_staff)
-            if is_superuser is not None:
+                is_staff_bool = True if is_staffValue.lower() == 'true' else False
+                users_queryset = users_queryset.filter(is_staff=is_staff_bool)
+            if is_superuserValue is not None:
                 print('Past is superuser')
-                users_queryset = users_queryset.filter(is_superuser=is_superuser)            
+                is_staff_bool = True if is_superuserValue.lower() == 'true' else False
+                users_queryset = users_queryset.filter(is_superuser=is_staff_bool)            
             # Add filtering by datetime if provided
             if start_date is not None and end_date is not None:
                 print('Past dates')
