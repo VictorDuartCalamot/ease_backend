@@ -309,7 +309,8 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             if start_date is not None or end_date is not None:
                 print('Past dates')
                 # Assuming start_datetime and end_datetime are datetime objects
-                users_queryset = filter_by_date_time(users_queryset, start_date, end_date)
+                users_queryset = filter_by_date_time(users_queryset, start_date, end_date,'','','','')
+
 
             print(users_queryset)
             # Serialize the queryset and return the response
