@@ -20,7 +20,7 @@ def generate_random_id(prefix):
     return f"{prefix}{random_part}{timestamp}{date_part}"
 
 #Funcion para crear filtros de query por fecha y tiempo
-def filter_by_date_time(queryset, start_date, end_date, start_time, end_time,start_datetime,end_datetime,):    
+def filter_by_date_time(queryset, start_date, end_date, start_time, end_time,):    
     '''
         Returns queries for the given datetime, date and/or time 
     '''
@@ -30,18 +30,6 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time,sta
 
     if (start_time and end_time) and (start_time > end_time):
         return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
-    
-    if (start_datetime and end_datetime) and (start_datetime > end_datetime):
-        return Response({'error': 'Start datetime cannot be after end datetime.'}, status=status.HTTP_400_BAD_REQUEST)
-    
-    datetime_query = Q()
-    if start_datetime or end_datetime:
-        if start_datetime is not None and end_datetime is not None:
-            datetime_query &= Q(creation_datetime__range=[start_datetime, end_datetime])
-        elif start_datetime is not None:
-            datetime_query &= Q(creation_datetime__gte=start_datetime)
-        elif end_datetime is not None:   
-            datetime_query &= Q(creation_datetime__lte=end_datetime) 
 
     # Filter based on date range
     date_query = Q()
