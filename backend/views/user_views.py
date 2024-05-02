@@ -291,6 +291,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             if is_active is not None:
                 print('Past is_active')
                 users_queryset = users_queryset.filter(is_active=is_active)
+                print('Post is_active',users_queryset)
             if is_staff is not None:
                 print('Past is staff')
                 users_queryset = users_queryset.filter(is_staff=is_staff)
@@ -302,6 +303,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 print('Past dates')
                 # Assuming start_datetime and end_datetime are datetime objects
                 users_queryset = filter_by_date_time(users_queryset, start_date, end_date)
+
             print(users_queryset)
             # Serialize the queryset and return the response
             serializer = UserSerializer(users_queryset, many=True)
