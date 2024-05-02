@@ -273,13 +273,13 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
     def getAllUsers(self,request):
         '''Get all users'''
         try:
-            is_active = request.query_params.get('is_active', None)
+            is_activeValue = request.query_params.get('is_active', None)
             is_staff = request.query_params.get('is_staff', None)
             is_superuser = request.query_params.get('is_superuser', None)
             start_date = request.query_params.get('start_date', None)
             end_date = request.query_params.get('end_date', None)
             
-            print('Is active', is_active, 'Is staff', is_staff, 'Is superuser', is_superuser, 'Start date', start_date, 'End date', end_date)
+            print('Is active', is_activeValue, 'Is staff', is_staff, 'Is superuser', is_superuser, 'Start date', start_date, 'End date', end_date)
             
             # Start with an initial queryset that includes all users
             users_queryset = User.objects.all()
@@ -288,9 +288,12 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             users_queryset = users_queryset.exclude(id=1)
             
             # Apply filters based on query parameters
-            if is_active is not None:
+            if is_activeValue is not None:
                 print('Past is_active')
-                users_queryset = users_queryset.filter(is_active=is_active)
+                try:
+                    users_queryset = users_queryset.filter(is_active=is_activeValue)
+                except Exception as e:
+                    print(e)                
                 print('Post is_active',users_queryset)
             if is_staff is not None:
                 print('Past is staff')
