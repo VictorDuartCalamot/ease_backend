@@ -13,7 +13,7 @@ from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from datetime import datetime,timedelta
 from django.utils import timezone
-from backend.utils import filter_by_date_time, getUserObjectByEmail
+from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db.models import Q
@@ -310,7 +310,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 print('Past dates')
                 # Assuming start_datetime and end_datetime are datetime objects
                 try:
-                    users_queryset = filter_by_date_time(users_queryset, start_date, end_date, None,None)
+                    users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_date, end_date,'date_joined')
                 except Exception as e :
                     print(e)
 

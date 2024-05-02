@@ -68,6 +68,26 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time,):
     combined_query = date_query & time_query
     return queryset.filter(combined_query)
 
+def filter_by_datetime_with_custom_field(queryset, start_value, end_value,fieldname):  
+    '''Function to filter by datetime, date or time and using a custom field'''
+    if (start_value and end_value) and (start_value > end_value):
+        return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Filter based on date range
+    value_query = Q()
+    if start_value or end_value:
+        if start_value is not None and end_value is not None:
+            if start_value == end_value:
+                value_query &= Q(**{fieldname: start_value})
+            else:
+                value_query &= Q(**{f"{fieldname}__range": [start_value, end_value]})
+        elif start_value is not None:
+            value_query &= Q(**{f"{fieldname}__gte": start_value})
+        elif end_value is not None:   
+            value_query &= Q(**{f"{fieldname}__lte": end_value})
+    
+    return queryset.filter(value_query)
+
 #Funcion para recuperar el usuario utilizando el email)
 def getUserObjectByEmail(email):
     '''Returns User Object by email'''    
