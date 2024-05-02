@@ -276,10 +276,10 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             is_activeValue = request.query_params.get('is_active', None)
             is_staffValue = request.query_params.get('is_staff', None)
             is_superuserValue = request.query_params.get('is_superuser', None)
-            start_date_str = request.query_params.get('start_date', None)
-            end_date_str = request.query_params.get('end_date', None)
-            start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
-            end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
+            start_datetime_str = request.query_params.get('start_date', None)
+            end_datetime_str = request.query_params.get('end_date', None)
+            start_datetime = datetime.strptime(start_datetime_str, '%Y-%m-%d %H:%M:%S') if start_datetime_str else None
+            end_datetime = datetime.strptime(end_datetime_str, '%Y-%m-%d %H:%M:%S') if end_datetime_str else timezone.now()
             
             
             # Start with an initial queryset that includes all users
@@ -306,11 +306,11 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 is_staff_bool = True if is_superuserValue.lower() == 'true' else False
                 users_queryset = users_queryset.filter(is_superuser=is_staff_bool)            
             # Add filtering by datetime if provided
-            if start_date is not None or end_date is not None:
+            if start_datetime is not None or end_datetime is not None:
                 print('Past dates')
                 # Assuming start_datetime and end_datetime are datetime objects
                 try:
-                    users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_date, end_date,'date_joined')
+                    users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_datetime, end_datetime,'date_joined')
                 except Exception as e :
                     print(e)
 
