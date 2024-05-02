@@ -65,7 +65,7 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time,):
     #print('despues time')
         
     # Apply combined date and time filtering
-    combined_query = datetime_query & date_query & time_query
+    combined_query = date_query & time_query
     return queryset.filter(combined_query)
 
 #Funcion para recuperar el usuario utilizando el email)
