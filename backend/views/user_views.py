@@ -51,9 +51,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
             print('Intento de inicio de sesión fallido')            
-            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)
-            
-
+            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)            
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -62,6 +60,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 #Funcion para registrar un usuario y crear un token.
 @api_view(['POST'])
 def registerUser(request):
+    '''Register new user'''
     data = request.data
     email = (data['email']).strip().lower()
     name = (data['first_name']).strip()
@@ -93,6 +92,7 @@ class LogoutView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        '''Logouts current user and blacklists the token'''
         token = request.auth
 
         if token:
@@ -109,6 +109,7 @@ class LogoutView(viewsets.ModelViewSet):
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def change_password(request):
+    '''Change password for the current user'''
     try:
         user_obj = User.objects.get(id=request.user.id)
     except User.DoesNotExist:
@@ -134,8 +135,8 @@ def blockUser(userID):
     userObject = User.objects.get(id=userID)
     currentDate = datetime.now()
     three_minutes_ago = currentDate - timedelta(minutes=3)
-    # Convert the date and time to strings in ISO format and extract date and time separately
-    #Convierte la fecha y hora en strings al formato ISO y los extrae de forma separada
+    # Transform the date and time to strings in ISO format and extract date and time separately
+    # Convierte la fecha y hora en strings al formato ISO y los extrae de forma separada
     new_date = three_minutes_ago.date().isoformat()
     new_time = three_minutes_ago.time().isoformat()[:8]
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
@@ -143,7 +144,7 @@ def blockUser(userID):
         #print('Ha sobrepasado los logins fallidos posibles ! ! !')
         userObject.is_active = False                                          
         userObject.save()        
-        return Response({'detail':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
+        return Response({'message':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
         
     
 class AuthUserLogsListView(viewsets.ModelViewSet):
@@ -152,7 +153,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,HasMorePermsThanUser]    
     def get(self, request):        
         '''
-            Get to retrieve data filtered by dates 
+            Retrieve data filtered by dates 
         '''
         # Get query parameters for date range        
         start_date_str = request.query_params.get('start_date')
@@ -177,9 +178,8 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
     
     def createLogWithLogin(OS,isSuccess,user_id):
         '''
-            Creates a log with all the data
-        '''
-        print(OS,isSuccess,user_id)
+            Creates a log with when a user tries to login
+        '''        
         # Get the current date and time
         date = datetime.now()
         # Convert the date and time to string in ISO format and extract date and time separately
@@ -226,7 +226,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
 
     def get(self,request,pk):
         '''
-           Get single income object with specified PK
+           Get single log object with specified PK
         ''' 
         try:
         # Retrieve the income object based on the primary key (pk) and user
@@ -273,8 +273,29 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
     def getAllUsers(self,request):
         '''Get all users'''
         try:
-            users = User.objects.all()            
-            serializer = UserSerializer(users, many=True)            
+            is_active = request.query_params.get('is_active')
+            is_staff = request.query_params.get('is_staff')
+            is_superuser = request.query_params.get('is_superuser')
+            start_datetime = request.query_params.get('start_datetime')
+            end_datetime = request.query_params.get('end_datetime')
+            
+            # Start with an initial queryset that includes all users
+            users_queryset = User.objects.all()
+            
+            # Apply filters based on query parameters
+            if is_active is not None:
+                users_queryset = users_queryset.filter(is_active=is_active)
+            if is_staff is not None:
+                users_queryset = users_queryset.filter(is_staff=is_staff)
+            if is_superuser is not None:
+                users_queryset = users_queryset.filter(is_superuser=is_superuser)
+            # Add filtering by datetime if provided
+            if start_datetime is not None and end_datetime is not None:
+                # Assuming start_datetime and end_datetime are datetime objects
+                users_queryset = filter_by_date_time(users_queryset, start_datetime, end_datetime)
+            
+            # Serialize the queryset and return the response
+            serializer = UserSerializer(users_queryset, many=True)
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

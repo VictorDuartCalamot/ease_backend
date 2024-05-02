@@ -47,7 +47,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         #print(f'Start date {start_date}, end date: {end_date}, start time: {start_time}, end time: {end_time}')
         expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
         
-        print(expenses_queryset)        
+        #print(expenses_queryset)        
         # Serialize the expenses
         serializer = ExpenseSerializer(expenses_queryset, many=True)
         #print('Serializer ok?', serializer.data)        
@@ -168,7 +168,7 @@ class IncomeListView(viewsets.ModelViewSet):
         start_time_str = request.query_params.get('start_time')
         end_time_str = request.query_params.get('end_time')
         #print(start_date_str,'-',end_date_str)
-        print(end_date_str,start_date_str,start_time_str,end_time_str)
+        #print(end_date_str,start_date_str,start_time_str,end_time_str)
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
