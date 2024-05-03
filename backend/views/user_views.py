@@ -314,22 +314,16 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             
         '''                
         data = request.data
-        email = (data['email']).strip().lower()
-        first_name = (data['first_name']).strip()
-        last_name = (data['last_name']).strip()
-        password = (data['password']).strip()
-        if data['is_staff'] is not None:
-            is_staff = data['is_staff']
-        else:
-            is_staff = False
+        email = data.get('email', '').strip().lower()
+        first_name = data.get('first_name', '').strip()
+        last_name = data.get('last_name', '').strip()
+        password = data.get('password', '').strip()
+        is_staff = data.get('is_staff', False)
+        is_superuser = data.get('is_superuser', False)                        
         
-        if data['is_superuser'] is not None:
-            if request.user.is_staff and data['is_superuser']:
-                return Response(status=status.HTTP_403_FORBIDDEN)
-            else:
-                is_superuser = data['is_superuser']
-        else:
-            is_superuser = False
+        if is_superuser is not None:
+            if request.user.is_staff and is_superuser:
+                return Response(status=status.HTTP_403_FORBIDDEN) 
         try:
             validate_password(password)
         except ValidationError as e:
