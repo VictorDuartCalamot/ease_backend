@@ -387,9 +387,12 @@ class SubCategoryListView(viewsets.ModelViewSet):
            Get all categories
         '''      
         try:
+            category_id = request.query_params.get('category_id',None)
         # Retrieve the income object based on the primary key (pk) and user
-            subCategory = SubCategory.objects.all()
-            serializer = SubCategorySerializer(subCategory, many=True)
+            subCategory_queryset = SubCategory.objects.all()
+            if category_id is not None:
+                subCategory_queryset = subCategory_queryset.filter(category=category_id)
+            serializer = SubCategorySerializer(subCategory_queryset, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
