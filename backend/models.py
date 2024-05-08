@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 import uuid
-from guardian.shortcuts import assign_perm,remove_perm
+from django.conf import settings
+#from guardian.shortcuts import assign_perm,remove_perm
 
 import logging
 #Income/Expense models
@@ -94,3 +95,14 @@ class BlacklistedToken(models.Model):
 
     def __str__(self):
         return self.token
+
+#DJANGO CHANNELS
+class ChatSession(models.Model):
+    id = models.AutoField(primary_key=True)
+    is_active = models.BooleanField(default=True, verbose_name="Chat Activo")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="customer_chats", on_delete=models.CASCADE, verbose_name="Cliente")
+    admin = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="admin_chats", on_delete=models.CASCADE, verbose_name="Admin/Superusuario")
+    
+    def __str__(self):
+        return f"Chat {self.id} entre {self.customer} y {self.admin}"

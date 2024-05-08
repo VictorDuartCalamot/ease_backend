@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 #from .models import Income, Expense,auth_user_logs
-from .models import Expense, Income, AuthUserLogs, Category , SubCategory
+from .models import Expense, Income, AuthUserLogs, Category , SubCategory, ChatSession
 
 class UserSerializer(serializers.ModelSerializer):
     #name = serializers.SerializerMethodField(read_only=True)
@@ -96,3 +96,9 @@ class SubCategorySerializer(serializers.ModelSerializer):
         model = SubCategory
         fields = '__all__'
         read_only_fields = ['id']
+
+
+class ChatSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatSession
+        fields = ['id', 'is_active', 'created_at', 'customer', 'admin']        
