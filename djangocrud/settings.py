@@ -127,6 +127,17 @@ DATABASES = {
 database_url = os.environ.get("DATABASE_URL")
 DATABASES["default"] = dj_database_url.parse(database_url)
 #DATABASES['default'] = dj_database_url.parse('postgres://easedb_user:2FiW5cP7P9rRUfiwqKidJRDt76OwKUP8@dpg-cn1524en7f5s73fdqsa0-a/easedb')
+
+# Redis channel layers configuration for Django Channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('rediss://red-cosf6120si5c739uo73g:OeXSzj7JnHkvmTL9GiT3eP059V6gmxWA@frankfurt-redis.render.com:6379',)],
+        },
+    },
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -170,3 +181,4 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
+ASGI_APPLICATION = 'djangocrud.asgi.application'
