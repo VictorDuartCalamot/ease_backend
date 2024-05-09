@@ -46,10 +46,11 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def authenticate_chat(self):
-        if self.scope['user'].is_anonymous:
-            return False
         try:
             chat = ChatSession.objects.get(id=self.chat_id, is_active=True)
-            return self.scope['user'] == chat.customer or self.scope['user'] == chat.admin
+            auth = self.scope['user'] == chat.customer or self.scope['user'] == chat.admin
+            #logger.debug(f"Authentication for chat {self.chat_id} with user {self.scope['user']} : {auth}")
+            return auth
         except ChatSession.DoesNotExist:
+            #logger.debug(f"Chat session {self.chat_id} does not exist.")
             return False
