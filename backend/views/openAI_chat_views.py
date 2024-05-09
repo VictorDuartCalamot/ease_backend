@@ -13,7 +13,7 @@ class ChatAPIView(APIView):
         url = "https://api.openai.com/v1/chat/completions"
 
         # Prepare headers and payload
-        auth = "Bearer ",os.environ.get("OPENAI_KEY")
+        auth = "Bearer " + os.environ.get("OPENAI_KEY")
         print(auth)
         headers = {
             "Authorization": auth,
