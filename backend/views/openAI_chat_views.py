@@ -13,7 +13,7 @@ class ChatAPIView(APIView):
 
         # Prepare headers and payload
         headers = {
-            "Authorization": "Bearer YOUR_API_KEY",
+            "Authorization": "Bearer APIKEY",
             "Content-Type": "application/json"
         }
         data = {
