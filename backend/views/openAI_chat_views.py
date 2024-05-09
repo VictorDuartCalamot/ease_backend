@@ -2,6 +2,7 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+import os
 
 class ChatAPIView(APIView):
     def post(self, request):
@@ -12,8 +13,10 @@ class ChatAPIView(APIView):
         url = "https://api.openai.com/v1/chat/completions"
 
         # Prepare headers and payload
+        auth = "Bearer ",os.environ.get("OPENAI_KEY")
+        print(auth)
         headers = {
-            "Authorization": "Bearer APIKEY",
+            "Authorization": auth,
             "Content-Type": "application/json"
         }
         data = {
