@@ -6,5 +6,5 @@ Este archivo es para tener los endpoints delos usuarios
 '''
 
 urlpatterns = [
-    path('chat/',chat_views.ChatAPIView.as_view(), name='chat_api'),
+    path('chat/',chat_views.ChatAPIView.as_view({'post':'post'}), name='chat_api'),
 ]
