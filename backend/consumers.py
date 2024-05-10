@@ -10,14 +10,14 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
         self.chat_group_name = f'chat_{self.chat_id}'
 
         # Autenticar usuario y verificar si pertenece a este chat
-        #if await self.authenticate_chat():
-        await self.channel_layer.group_add(
-            self.chat_group_name,
-            self.channel_name
-        )
-        await self.accept()
-        #else:
-            #await self.close()
+        if await self.authenticate_chat():
+            await self.channel_layer.group_add(
+                self.chat_group_name,
+                self.channel_name
+            )
+            await self.accept()
+        else:
+            await self.close()
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
