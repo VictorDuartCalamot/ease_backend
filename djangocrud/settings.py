@@ -133,7 +133,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('rediss://red-cosf6120si5c739uo73g:OeXSzj7JnHkvmTL9GiT3eP059V6gmxWA@frankfurt-redis.render.com:6379',)],
+            'hosts': [os.environ.get('REDIS_URL')]
         },
     },
 }
