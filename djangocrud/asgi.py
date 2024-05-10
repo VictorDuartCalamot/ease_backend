@@ -18,7 +18,7 @@ from backend.routing import websocket_urlpatterns  # Asegúrate de tener esto co
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangocrud.settings')
 django.setup()
 
-application = ProtocolTypeRouter({
+backend = ProtocolTypeRouter({
     "http": get_asgi_application(),  # Define cómo manejar los protocolos HTTP
     "websocket": AuthMiddlewareStack(
         URLRouter(
