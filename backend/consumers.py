@@ -44,7 +44,7 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
             'message': message
         }))
 
-    '''@database_sync_to_async
+    @database_sync_to_async
     def authenticate_chat(self):
         try:
             chat = ChatSession.objects.get(id=self.chat_id, is_active=True)
@@ -53,4 +53,4 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
             return auth
         except ChatSession.DoesNotExist:
             #logger.debug(f"Chat session {self.chat_id} does not exist.")
-            return False'''
+            return False
