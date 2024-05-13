@@ -12,7 +12,7 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
         self.chat_group_name = f'chat_{self.chat_id}'
 
         # Autenticar usuario y verificar si pertenece a este chat
-        print('Antes de autenticar usuario y chat')
+        print('Antes de autenticar usuario y chat',self)
         if await self.authenticate_chat():
             await self.channel_layer.group_add(
                 self.chat_group_name,
