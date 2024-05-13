@@ -3,14 +3,17 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.contrib.auth.models import AnonymousUser
 from .models import ChatSession
+from rest_framework.permissions import IsAuthenticated
 
 class TechSupportConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
+    permission_classes = [IsAuthenticated]
+    async def connect(self,request):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
         self.chat_group_name = f'chat_{self.chat_id}'
 
         # Autenticar usuario y verificar si pertenece a este chat
-        if await self.authenticate_chat():
+        print('Antes de autenticar usuario y chat',request)
+        if await self.authenticate_chat(self,request):
             await self.channel_layer.group_add(
                 self.chat_group_name,
                 self.channel_name
@@ -45,14 +48,18 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def authenticate_chat(self):
+    def authenticate_chat(self,request):
         try:
+            print('Mirando si las cosas concuerdan:')
+            print('Self.scope user',self.scope['user'],'chat.consumer',chat.consumer,'self.scope admin',self.scope['user'],'chat.admin',chat.admin)
             chat = ChatSession.objects.get(id=self.chat_id, is_active=True)
+            print('Chat object:', chat)
             auth = self.scope['user'] == chat.customer or self.scope['user'] == chat.admin
             #logger.debug(f"Authentication for chat {self.chat_id} with user {self.scope['user']} : {auth}")
             print(f"Authentication for chat {self.chat_id} with user {self.scope['user']} : {auth}")
             return auth
         except ChatSession.DoesNotExist:
+            print('Does not exist?')
             #logger.debug(f"Chat session {self.chat_id} does not exist.")
             print(f"Chat session {self.chat_id} does not exist.")
             return False
