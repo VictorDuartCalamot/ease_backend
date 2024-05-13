@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 import os
 import django
 from django.core.asgi import get_asgi_application
-from channels.auth import AuthMiddlewareStack
+from backend.websocket_auth import TokenAuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangocrud.settings')
@@ -20,7 +20,7 @@ from backend.routing import websocket_urlpatterns  # Import después de django.s
 
 backend = ProtocolTypeRouter({
     "http": get_asgi_application(),  # Define cómo manejar los protocolos HTTP
-    "websocket": AuthMiddlewareStack(
+    "websocket": TokenAuthMiddlewareStack(
         URLRouter(
             websocket_urlpatterns  # Utiliza las URL de WebSocket definidas en backend.routing
         )
