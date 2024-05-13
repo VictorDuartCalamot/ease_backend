@@ -5,12 +5,12 @@ from django.contrib.auth.models import AnonymousUser
 from .models import ChatSession
 
 class TechSupportConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
+    async def connect(self,request):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
         self.chat_group_name = f'chat_{self.chat_id}'
 
         # Autenticar usuario y verificar si pertenece a este chat
-        if await self.authenticate_chat():
+        if await self.authenticate_chat(self,request):
             await self.channel_layer.group_add(
                 self.chat_group_name,
                 self.channel_name
@@ -45,7 +45,7 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def authenticate_chat(self):
+    def authenticate_chat(self,request):
         try:
             chat = ChatSession.objects.get(id=self.chat_id, is_active=True)
             auth = self.scope['user'] == chat.customer or self.scope['user'] == chat.admin
