@@ -51,7 +51,7 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
     def authenticate_chat(self):
         try:
             print('Mirando si las cosas concuerdan:')
-            print('Self.scope user',self.scope['user'],'chat.consumer',chat.consumer,'self.scope admin',self.scope['user'],'chat.admin',chat.admin)
+            print('Self.scope user',self.scope['user'],'chat.consumer',chat['consumer'],'self.scope admin',self.scope['user'],'chat.admin',chat['admin'])
             chat = ChatSession.objects.get(id=self.chat_id, is_active=True)
             print('Chat object:', chat)
             auth = self.scope['user'] == chat.customer or self.scope['user'] == chat.admin
