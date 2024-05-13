@@ -6,7 +6,7 @@ from .models import ChatSession
 from rest_framework.permissions import IsAuthenticated
 
 class TechSupportConsumer(AsyncWebsocketConsumer):
-    permission_classes = [IsAuthenticated]
+    
     async def connect(self):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
         self.chat_group_name = f'chat_{self.chat_id}'
