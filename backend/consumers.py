@@ -6,12 +6,12 @@ from .models import ChatSession
 
 
 class TechSupportConsumer(AsyncWebsocketConsumer):
-    async def connect(self,request):
+    async def connect(self):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
         self.chat_group_name = f'chat_{self.chat_id}'
 
         # Autenticar usuario y verificar si pertenece a este chat
-        if await self.authenticate_chat(self,request):
+        if await self.authenticate_chat(self):
             await self.channel_layer.group_add(
                 self.chat_group_name,
                 self.channel_name
@@ -46,7 +46,7 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def authenticate_chat(self,request):
+    def authenticate_chat(self):
         try:
             print('Mirando si las cosas concuerdan:')
             
