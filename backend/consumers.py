@@ -7,13 +7,13 @@ from rest_framework.permissions import IsAuthenticated
 
 class TechSupportConsumer(AsyncWebsocketConsumer):
     permission_classes = [IsAuthenticated]
-    async def connect(self,request):
+    async def connect(self):
         self.chat_id = self.scope['url_route']['kwargs']['chat_id']
         self.chat_group_name = f'chat_{self.chat_id}'
 
         # Autenticar usuario y verificar si pertenece a este chat
-        print('Antes de autenticar usuario y chat',request)
-        if await self.authenticate_chat(self,request):
+        print('Antes de autenticar usuario y chat')
+        if await self.authenticate_chat(self):
             await self.channel_layer.group_add(
                 self.chat_group_name,
                 self.channel_name
@@ -48,7 +48,7 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def authenticate_chat(self,request):
+    def authenticate_chat(self):
         try:
             print('Mirando si las cosas concuerdan:')
             print('Self.scope user',self.scope['user'],'chat.consumer',chat.consumer,'self.scope admin',self.scope['user'],'chat.admin',chat.admin)
