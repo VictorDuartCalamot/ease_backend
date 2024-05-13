@@ -12,7 +12,7 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
         self.chat_group_name = f'chat_{self.chat_id}'
 
         # Autenticar usuario y verificar si pertenece a este chat
-        #print('Antes de autenticar usuario y chat')
+        print('Antes de autenticar usuario y chat')
         if await self.authenticate_chat():
             await self.channel_layer.group_add(
                 self.chat_group_name,
@@ -50,16 +50,16 @@ class TechSupportConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def authenticate_chat(self):
         try:
-            #print('Mirando si las cosas concuerdan:')
-            #print('Self.scope user',self.scope['user'],'chat.consumer',chat.consumer,'self.scope admin',self.scope['user'],'chat.admin',chat.admin)
+            print('Mirando si las cosas concuerdan:')
+            print('Self.scope user',self.scope['user'],'chat.consumer',chat.consumer,'self.scope admin',self.scope['user'],'chat.admin',chat.admin)
             chat = ChatSession.objects.get(id=self.chat_id, is_active=True)
-            #print('Chat object:', chat)
+            print('Chat object:', chat)
             auth = self.scope['user'] == chat.customer or self.scope['user'] == chat.admin
             #logger.debug(f"Authentication for chat {self.chat_id} with user {self.scope['user']} : {auth}")
             print(f"Authentication for chat {self.chat_id} with user {self.scope['user']} : {auth}")
             return auth
         except ChatSession.DoesNotExist:
-            #print('Does not exist?')
+            print('Does not exist?')
             #logger.debug(f"Chat session {self.chat_id} does not exist.")
             print(f"Chat session {self.chat_id} does not exist.")
             return False
