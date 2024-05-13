@@ -20,14 +20,24 @@ Archivos creados/modificados:
 #djangocrud
 djangocrud/settings.py
 djangocrud/urls.py
+djangocrud/asgi.py
 
 #backend
 backend/utils.py
 backend/serializers.py
 backend/permissions.py
 backend/models.py
+backend/websocket_auth.py
+backend/routing.py
+backend/consumers.py
+backend/middleware.py
+#
 backend/views/management_views.py
 backend/views/user_views.py
+backend/views/chat_views.py
+#
 backend/urls/admin_urls.py
 backend/urls/management_urls.py
 backend/urls/user_urls.py
+backend/urls/chat_urls.py
+
