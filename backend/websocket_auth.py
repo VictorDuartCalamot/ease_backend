@@ -1,25 +1,32 @@
 from channels.middleware import BaseMiddleware
 from channels.auth import AuthMiddlewareStack
-from django.contrib.auth.models import AnonymousUser
-from channels.db import database_sync_to_async
-from rest_framework_simplejwt.authentication import JWTAuthentication
+from urllib.parse import parse_qs
+from django.contrib.auth.models import User
+from django.db import close_old_connections
+from rest_framework_simplejwt.tokens import UntypedToken
+from rest_framework_simplejwt.exceptions import TokenError
 
-class TokenAuthMiddleware(BaseMiddleware):
-    """
-    Custom token auth middleware for Django Channels
-    """
-    
+class TokenAuthMiddleware:
     def __init__(self, inner):
         self.inner = inner
 
-    async def __call__(self, scope, receive, send):
-        headers = dict(scope['headers'])
-        if b'sec-websocket-protocol' in headers:
-            token_name, token = headers[b'sec-websocket-protocol'].decode().split(', ')
-            jwt_auth = JWTAuthentication()
-            validated_token = jwt_auth.get_validated_token(token)
-            scope['user'] = await database_sync_to_async(jwt_auth.get_user)(validated_token)
-        return await super().__call__(scope, receive, send)
+    def __call__(self, scope):
+        close_old_connections()
+        query_string = parse_qs(scope['query_string'].decode())
+        token = query_string.get('token', [None])[0]
+        user = self.verify_token(token)
+        if user:
+            scope['user'] = user
+        return self.inner(scope)
+
+    def verify_token(self, token):
+        try:
+            # Verify the token
+            decoded_token = UntypedToken(token)
+            user_id = decoded_token['user_id']
+            return User.objects.get(id=user_id)
+        except (TokenError, User.DoesNotExist):
+            return None
 
 def TokenAuthMiddlewareStack(inner):
     return TokenAuthMiddleware(AuthMiddlewareStack(inner))
