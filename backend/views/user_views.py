@@ -21,7 +21,8 @@ from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from rest_framework.authtoken.models import Token
 from backend.models import BlacklistedToken
 from django.contrib.auth.hashers import check_password
-
+import logging
+logger = logging.getLogger(__name__)
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -35,9 +36,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
-        print(userObject)
+        #logger.debug(f'UserObject: {userObject}')
         if (userObject.get('is_active') == False):
-            return Response({'detail':'The account is blocked. Contact your administrator for further information.'},status=status.HTTP_403_FORBIDDEN, )
+            logger.info(f'The account: {emailToLower} is tryign to login but its blocked.')
+            return Response({'detail':'The account is blocked. Contact your administrator for further information.'},status=status.HTTP_403_FORBIDDEN)
         try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
@@ -45,11 +47,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             for k, v in serializer.items():
                 data[k] = v             
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
-            print(f'Inicio de sesión exitoso para el usuario: {self.user.username}')
+            logger.debug(f'Login successful for {self.user.username}')            
             return data
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
+            logger.debug(f'{emailToLower} login failed')
             print('Intento de inicio de sesión fallido')            
             raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)            
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -80,10 +83,10 @@ def registerUser(request):
             password=make_password(password)            
         )
         serializer = UserSerializerWithToken(user, many=False)
-        print(f'Usuario registrado con éxito: {email}.')
+        logging.debug(f'User {email} registered successfully')        
         return Response(serializer.data)
     except Exception as e:
-        print(f'Error al registrar usuario: {str(e)}.')
+        logging.error(f'Error registering user: {str(e)}')        
         message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
@@ -118,7 +121,7 @@ def change_password(request):
     current_password = request.data.get("current_password", "").strip()
     new_password = request.data.get("new_password", "").strip()
 
-    # Check if the provided current password matches the one in the database
+    # Check if the provided current password matches the hash with the one in the database
     if not check_password(current_password, user_obj.password):
         return Response({"error": "Incorrect current password."}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -135,13 +138,12 @@ def blockUser(userID):
     userObject = User.objects.get(id=userID)
     currentDate = datetime.now()
     three_minutes_ago = currentDate - timedelta(minutes=3)
-    # Transform the date and time to strings in ISO format and extract date and time separately
-    # Convierte la fecha y hora en strings al formato ISO y los extrae de forma separada
+    # Transform the date and time to strings in ISO format and extract date and time separately    
     new_date = three_minutes_ago.date().isoformat()
     new_time = three_minutes_ago.time().isoformat()[:8]
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
     if (query.count() >=3):
-        #print('Ha sobrepasado los logins fallidos posibles ! ! !')
+        logging.debug(f'UserID: {userID} surpassed the possible failed logins')#print('Ha sobrepasado los logins fallidos posibles ! ! !')
         userObject.is_active = False                                          
         userObject.save()        
         return Response({'message':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
@@ -213,7 +215,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
         serializer = AuthUserLogsSerializer(data=request.data) 
         #Check if the serializer is valid
         if serializer.is_valid():            
-            serializer.save()  # Save the income object to the database
+            serializer.save()  # Save the log object to the database
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             #print(serializer.errors)  # Print out the errors for debugging
