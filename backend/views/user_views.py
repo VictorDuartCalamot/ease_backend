@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password
 from backend.serializers import UserSerializerWithToken, UserSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed,PermissionDenied
 from backend.models import AuthUserLogs
 from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
@@ -36,7 +36,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
         if not userObject['is_active']:
-            raise AuthenticationFailed('The account is blocked. Contact your administrator for further information.')
+            raise PermissionDenied('The account is blocked. Contact your administrator for further information.')
         try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
@@ -48,7 +48,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            raise AuthenticationFailed('Credentials incorrect.',code=status.HTTP_400_BAD_REQUEST)                     
+            raise AuthenticationFailed('Credentials are incorrect.')                     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
