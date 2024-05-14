@@ -36,7 +36,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
         if not userObject['is_active']:
-            raise AuthenticationFailed('The account is blocked. Contact your administrator for further information.',code=status.HTTP_403_FORBIDDEN)
+            raise AuthenticationFailed('The account is blocked. Contact your administrator for further information.')
         try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
@@ -48,7 +48,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            raise AuthenticationFailed(str(e),code=status.HTTP_400_BAD_REQUEST)                     
+            raise AuthenticationFailed('Credentials incorrect.',code=status.HTTP_400_BAD_REQUEST)                     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
