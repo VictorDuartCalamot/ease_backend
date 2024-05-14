@@ -2,7 +2,7 @@ from django.urls import path
 from backend.views import user_views as user_views
 
 '''
-Este archivo es para tener los endpoints delos usuarios
+    Enpoints for users
 '''
 
 urlpatterns = [
