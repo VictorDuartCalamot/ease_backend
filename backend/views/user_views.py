@@ -68,7 +68,7 @@ def registerUser(request):
     try:
         validate_password(password)
     except DjangoValidationError as e:
-        raise ValidationError({'password': e.message})
+        raise ValidationError({'password': e.messages})
         
     try:
         user = User.objects.create(
