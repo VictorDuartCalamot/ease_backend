@@ -115,7 +115,7 @@ def change_password(request):
 
     # Check if the provided current password matches the hash with the one in the database
     if not check_password(current_password, user_obj.password):
-        return Response({"error": "Incorrect current password."}, status=status.HTTP_400_BAD_REQUEST)
+        raise ValidationError('Incorrect current password.')
 
     # Set the new password and save the user object
     user_obj.set_password(new_password)
