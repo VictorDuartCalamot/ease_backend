@@ -1,6 +1,7 @@
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+
 from rest_framework import status,viewsets
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
@@ -34,8 +35,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
-        if (userObject.get('is_active') == False):
-            return Response('The account is blocked. Contact your administrator for further information.',status=status.HTTP_403_FORBIDDEN)
+        if not userObject['is_active']:
+            raise ValidationError('The account is blocked. Contact your administrator for further information.',status=status.HTTP_403_FORBIDDEN)
         try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
@@ -47,7 +48,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            raise ValidationError(e,status=status.HTTP_400_BAD_REQUEST)                     
+            raise AuthenticationFailed(str(e),code=status.HTTP_400_BAD_REQUEST)                     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
