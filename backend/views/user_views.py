@@ -36,7 +36,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
         if not userObject['is_active']:
-            raise ValidationError('The account is blocked. Contact your administrator for further information.',code=status.HTTP_403_FORBIDDEN)
+            raise AuthenticationFailed('The account is blocked. Contact your administrator for further information.',code=status.HTTP_403_FORBIDDEN)
         try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
