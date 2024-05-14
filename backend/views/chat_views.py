@@ -1,4 +1,3 @@
-#import logging
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
@@ -11,7 +10,6 @@ from django.db.models import Q
 import random
 
 User = get_user_model()
-#logger = logging.getLogger(__name__)
 class ChatSessionViewSet(viewsets.ModelViewSet):
     queryset = ChatSession.objects.all()
     serializer_class = ChatSessionSerializer

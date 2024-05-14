@@ -1,5 +1,4 @@
 # backend/views.py
-#import logging
 from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
@@ -19,7 +18,6 @@ from django.dispatch import receiver
 '''
 Este archivo es para las vistas de gastos e ingresos.
 '''
-#logger = logging.getLogger(__name__)
 #Expenses
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
@@ -309,7 +307,6 @@ class CategoryListView(viewsets.ModelViewSet):
             serializer.save()  # Save the income object to the database
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            #logging.error(f'Error creating category: {serializer.error}')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
         
@@ -431,7 +428,6 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
             subCategory.delete()                      
             return Response(status=status.HTTP_204_NO_CONTENT)
         except SubCategory.DoesNotExist:
-            #logging.error('Error: Cannot delete Subcategory because it does not exist')
             return Response({'error': 'Subcategory not found'}, status=status.HTTP_404_NOT_FOUND)
         
     def update(self, request, *args,**kwargs):

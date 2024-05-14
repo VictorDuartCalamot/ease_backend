@@ -21,8 +21,6 @@ from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from rest_framework.authtoken.models import Token
 from backend.models import BlacklistedToken
 from django.contrib.auth.hashers import check_password
-#import logging
-#logger = logging.getLogger(__name__)
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -334,7 +332,6 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             )
             
             serializer = UserSerializerWithToken(user)
-            #logging.debug(f'User created successfully: {email}')            
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)

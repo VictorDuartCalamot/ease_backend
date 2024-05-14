@@ -4,9 +4,7 @@ import uuid
 from django.conf import settings
 #from guardian.shortcuts import assign_perm,remove_perm
 
-import logging
 #Income/Expense models
-logger = logging.getLogger(__name__)
 
 class AuthUserLogs(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
