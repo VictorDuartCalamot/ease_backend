@@ -53,7 +53,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
             logger.debug(f'{emailToLower} login failed')            
-            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)            
+            raise ValidationError(str(e),status=status.HTTP_400_BAD_REQUEST)            
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -71,7 +71,7 @@ def registerUser(request):
     try:
         validate_password(password)
     except ValidationError as e:
-        return Response(e,status=status.HTTP_400_BAD_REQUEST)
+        return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
         
     try:
         user = User.objects.create(
@@ -334,7 +334,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         try:
             validate_password(password)
         except ValidationError as e:
-            return Response(detail=str(e),status=status.HTTP_400_BAD_REQUEST)        
+            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)        
         try:
             user = User.objects.create(
                 first_name=first_name,
