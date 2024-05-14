@@ -84,7 +84,7 @@ def registerUser(request):
         return Response({'message':'Account registrated successfully!'},user_serializer.data)
     except ValidationError as e:
         #message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
-        return ValidationError({'detail':f'Error registering user: {str(e)}'})
+        raise ValidationError({'detail':f'Error registering user: {str(e)}'})
 
 
 class LogoutView(viewsets.ModelViewSet):
