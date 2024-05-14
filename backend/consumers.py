@@ -6,6 +6,8 @@ from backend.models import ChatSession
 from django.contrib.auth.tokens import default_token_generator
 from django.db.utils import OperationalError
 from django.contrib.auth.models import AnonymousUser
+from rest_framework_simplejwt.tokens import UntypedToken
+from rest_framework_simplejwt.exceptions import InvalidToken,TokenError
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -85,11 +87,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def authenticate_user(self, token):
         try:
-            print('user auth??')
-            user_id = default_token_generator.check_token(token)  # Adjust based on your token logic
+            UntypedToken.verify_token(token)
+            user_id = UntypedToken(token)['user_id']
             print(user_id)
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
+            return User.objects.get(id=user_id)
+        except (InvalidToken,TokenError,User.DoesNotExist):
             return None
 
     @database_sync_to_async
