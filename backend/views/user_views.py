@@ -52,8 +52,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            logger.debug(f'{emailToLower} login failed')
-            print('Intento de inicio de sesión fallido')            
+            logger.debug(f'{emailToLower} login failed')            
             raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)            
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -107,6 +106,7 @@ class LogoutView(viewsets.ModelViewSet):
 
             return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         else:
+            logging.error(f'Error: No token found for user')
             return Response({"error": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['PUT'])
@@ -123,12 +123,12 @@ def change_password(request):
 
     # Check if the provided current password matches the hash with the one in the database
     if not check_password(current_password, user_obj.password):
+        logging.error('Error: Password mismatch when trying to update password')
         return Response({"error": "Incorrect current password."}, status=status.HTTP_400_BAD_REQUEST)
 
     # Set the new password and save the user object
     user_obj.set_password(new_password)
     user_obj.save()
-
     return Response({"message": "Password changed successfully."}, status=status.HTTP_200_OK)
     
 # Funtion to block the user.
@@ -142,10 +142,10 @@ def blockUser(userID):
     new_date = three_minutes_ago.date().isoformat()
     new_time = three_minutes_ago.time().isoformat()[:8]
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
-    if (query.count() >=3):
-        logging.debug(f'UserID: {userID} surpassed the possible failed logins')#print('Ha sobrepasado los logins fallidos posibles ! ! !')
+    if (query.count() >=3):        
         userObject.is_active = False                                          
         userObject.save()        
+        logging.info(f'UserID: {userID} surpassed possible failed logins')
         return Response({'message':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
         
     
@@ -170,7 +170,8 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
-            return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+            logging.error(f'Error: Invalid date format')
+            return Response({'error': 'Invalid date or time format, must be YYYY-MM-DD for date and HH:MM:SS for time. '}, status=status.HTTP_400_BAD_REQUEST)
               
         authUserLog = filter_by_date_time(AuthUserLogs.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)        
         # Serialize the authUserLog
@@ -235,6 +236,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             authUserLog = AuthUserLogs.objects.get(pk=pk)
         except authUserLog.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
+            logging.error(f'Error: Income not found.')
             return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)                
         serializer = AuthUserLogsSerializer(authUserLog)         
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -246,6 +248,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             authUserLog.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AuthUserLogs.DoesNotExist:
+            logging.error(f'Error: Income not found when trying to delete.')
             return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
     
     def update(self,request,*args,**kwargs):
@@ -264,6 +267,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             # Return error response if serializer data is invalid
+            logging.error(f'Error: Serializer data is invalid: {serializer.errors}')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -306,6 +310,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             serializer = UserSerializer(users_queryset, many=True)
             return Response(serializer.data)
         except Exception as e:
+            logging.error(f'Error: couldn`t retrieve users.')
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
     
     def createUserWithRoles(self,request):
@@ -343,7 +348,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             )
             
             serializer = UserSerializerWithToken(user)
-            print(f'Usuario registrado con éxito: {email}.')
+            #logging.debug(f'User created successfully: {email}')            
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
@@ -355,10 +360,14 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
 
     def getSingleUser(self, request,pk):
         '''Get data from single user'''
-        user = User.objects.exclude(id=1)
-        user = User.objects.get(id=pk) 
-        serializer = UserSerializer(user)                    
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            user = User.objects.exclude(id=1)
+            user = User.objects.get(id=pk) 
+            serializer = UserSerializer(user)                    
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist as e:
+            logging.error(f'User not found: {pk}')
+            return Response('User not found', status=status.HTTP_404_NOT_FOUND)
     
     def deleteUser(self,request,pk):        
         '''Being a superuser delete users from the database'''        
@@ -367,6 +376,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             user.delete()                                  
             return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)        
         except User.DoesNotExist:
+                logging.error(f'User not found: {pk}')
                 return Response("User not found", status=status.HTTP_404_NOT_FOUND)
         
     def updateUser(self,request,pk):
@@ -387,8 +397,9 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 return Response(serializer.data)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
-        except User.DoesNotExist:
-                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist as error:
+                logging.error(f'User not found: {error}')
+                return Response(f"User not found: {error}", status=status.HTTP_404_NOT_FOUND)
 
     def blockUnblockUser(self,request,pk):        
         '''Being a superuser update user from the database'''
@@ -403,5 +414,6 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 return Response(serializer.data)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
-        except User.DoesNotExist:
-                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist as error:
+                logging.error(f'User not found: {error}')
+                return Response(f"User not found {error}", status=status.HTTP_404_NOT_FOUND)
