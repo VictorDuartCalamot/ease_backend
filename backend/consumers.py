@@ -85,7 +85,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def authenticate_user(self, token):
         try:
+            print('user auth??')
             user_id = default_token_generator.check_token(token)  # Adjust based on your token logic
+            print(user_id)
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
