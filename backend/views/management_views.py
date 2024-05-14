@@ -184,8 +184,11 @@ class IncomeListView(viewsets.ModelViewSet):
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
             return Response({"detail": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
-        if (request.data['amount'] <= 0):
-            return Response({"detail": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
+        if not (request.data['amount']):
+            logger.error('Amount field not found in request.data')
+        else: 
+            if (request.data['amount'] <= 0):
+                return Response({"detail": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
 
         #Insert userID into the request.data array
         request.data['user'] = request.user.id
@@ -262,8 +265,11 @@ class IncomeDetailView(viewsets.ModelViewSet):
         '''
         # Retrieve the income object
         income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that                
-        if (request.data['amount'] <= 0):
-            return Response({'detail': 'Amount is equal or lower than 0'}, status=status.HTTP_400_BAD_REQUEST)                                    
+        if not (request.data['amount']):
+            logger.error('amount field not found in request.data')
+        else: 
+            if (request.data['amount'] <= 0):
+                return Response({'detail': 'Amount is equal or lower than 0'}, status=status.HTTP_400_BAD_REQUEST)                                    
         # Serialize the income data with the updated data from request
         serializer = IncomeUpdateSerializer(income, data=request.data)                
         # Validate the serializer data
