@@ -1,14 +1,14 @@
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-
+from rest_framework import serializers
 from rest_framework import status,viewsets
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from backend.serializers import UserSerializerWithToken, UserSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.exceptions import AuthenticationFailed,PermissionDenied
+from rest_framework.exceptions import AuthenticationFailed,PermissionDenied,NotFound
 from backend.models import AuthUserLogs
 from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
@@ -36,7 +36,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
         if not userObject['is_active']:
-            raise PermissionDenied('The account is blocked. Contact your administrator for further information.')
+            raise PermissionDenied({'detail':'The account is blocked. Contact your administrator for further information.'})
         try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
@@ -48,7 +48,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            raise AuthenticationFailed('Credentials are incorrect.')                     
+            raise AuthenticationFailed({'detail':f'Credentials are incorrect: {e}'})                     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -66,7 +66,7 @@ def registerUser(request):
     try:
         validate_password(password)
     except ValidationError as e:
-        return Response(e,status=status.HTTP_400_BAD_REQUEST)
+        raise ValidationError({'detail':f'Password does not meet the minimum requirements: {e}'})
         
     try:
         user = User.objects.create(
@@ -76,11 +76,11 @@ def registerUser(request):
             email=email,
             password=make_password(password)            
         )
-        serializer = UserSerializerWithToken(user, many=False)
-        return Response(serializer.data)
+        user_serializer = UserSerializerWithToken(user, many=False)
+        return Response({'message':'Account registrated successfully!'},user_serializer.data)
     except Exception as e:
-        message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        #message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
+        raise serializers.ValidationError({'detail':f'The information provided is not valid: {e}'})
 
 
 class LogoutView(viewsets.ModelViewSet):
@@ -99,7 +99,7 @@ class LogoutView(viewsets.ModelViewSet):
 
             return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         else:
-            return Response({"error": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
+            raise AuthenticationFailed({"detail": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -108,7 +108,7 @@ def change_password(request):
     try:
         user_obj = User.objects.get(id=request.user.id)
     except User.DoesNotExist:
-        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        raise NotFound({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
     current_password = request.data.get("current_password", "").strip()
     new_password = request.data.get("new_password", "").strip()
@@ -160,7 +160,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
-            return Response({'error': 'Invalid date or time format, must be YYYY-MM-DD for date and HH:MM:SS for time. '}, status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError({'detail': 'Invalid date or time format, must be YYYY-MM-DD for date and HH:MM:SS for time. '})
               
         authUserLog = filter_by_date_time(AuthUserLogs.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)        
         # Serialize the authUserLog
@@ -193,7 +193,9 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             
         serializer = AuthUserLogsSerializer(data=data)
         if serializer.is_valid():                
-                serializer.save()  
+                serializer.save()
+        else:
+            raise ValidationError({'detail':'The data provided is invalid.'})  
 
     def create(self, request, *args, **kwargs): 
         '''
@@ -209,7 +211,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             #print(serializer.errors)  # Print out the errors for debugging
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            raise ValidationError({'detail':'The data provided is not valid.'}) 
 
 class AuthUserLogsDetailView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
@@ -225,7 +227,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             authUserLog = AuthUserLogs.objects.get(pk=pk)
         except authUserLog.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)                
+            raise NotFound({'detail': 'Log not found.'})                
         serializer = AuthUserLogsSerializer(authUserLog)         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -236,7 +238,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             authUserLog.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AuthUserLogs.DoesNotExist:
-            return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
+            return NotFound({'detail':'Log not found'})
     
     def update(self,request,*args,**kwargs):
         '''
@@ -254,7 +256,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             # Return error response if serializer data is invalid
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            raise serializer.ValidationError({''}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SuperAdminManagementListView(viewsets.ModelViewSet):    
