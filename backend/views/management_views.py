@@ -1,5 +1,5 @@
 # backend/views.py
-
+import logging
 from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
@@ -19,7 +19,7 @@ from django.dispatch import receiver
 '''
 Este archivo es para las vistas de gastos e ingresos.
 '''
-
+logger = logging.getLogger(__name__)
 #Expenses
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
@@ -42,15 +42,13 @@ class ExpenseListView(viewsets.ModelViewSet):
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
+            logger.error('ExpenseListView.get Invalid date format')
             return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        #print(f'Start date {start_date}, end date: {end_date}, start time: {start_time}, end time: {end_time}')
+                
         expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
-        
-        #print(expenses_queryset)        
+                     
         # Serialize the expenses
-        serializer = ExpenseSerializer(expenses_queryset, many=True)
-        #print('Serializer ok?', serializer.data)        
+        serializer = ExpenseSerializer(expenses_queryset, many=True)              
         # Return a JSON response containing the serialized expenses
         return Response(serializer.data, status=status.HTTP_200_OK)
             
