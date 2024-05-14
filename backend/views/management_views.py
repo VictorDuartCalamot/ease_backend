@@ -385,7 +385,7 @@ class SubCategoryListView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
+            return Response({'detail': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
 
     def create(self,request):   
         '''
