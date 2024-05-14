@@ -7,5 +7,6 @@ urlpatterns = [
     path('api/users/', include('backend.urls.user_urls')),
     path('api/management/', include('backend.urls.management_urls')),   
     path('api/chats/', include('backend.urls.chat_urls')),
-    path('api/', include('backend.urls.openAI_chat_urls')),   
+      
 ]
+#path('api/', include('backend.urls.openAI_chat_urls')), 
