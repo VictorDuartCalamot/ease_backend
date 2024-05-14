@@ -1,5 +1,4 @@
 # backend/views.py
-import logging
 from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
@@ -19,7 +18,6 @@ from django.dispatch import receiver
 '''
 Este archivo es para las vistas de gastos e ingresos.
 '''
-logger = logging.getLogger(__name__)
 #Expenses
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
@@ -33,8 +31,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
-        end_time_str = request.query_params.get('end_time')
-        #print(start_date_str,'-',end_date_str)        
+        end_time_str = request.query_params.get('end_time')        
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
@@ -42,8 +39,7 @@ class ExpenseListView(viewsets.ModelViewSet):
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
-            logger.error('ExpenseListView.get Invalid date format')
-            return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Invalid date/time format'}, status=status.HTTP_400_BAD_REQUEST)
                 
         expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
                      
@@ -70,13 +66,11 @@ class ExpenseListView(viewsets.ModelViewSet):
             with transaction.atomic():
                 # Save the expense object to the database
                 instance = serializer.save()
-                print("Created expense instance:", instance)  # Debug print
                 # Ensure the transaction is committed
                 transaction.on_commit(lambda: self.after_create(instance))
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Print out the errors for debugging
-            print("Serializer errors:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
 
     def after_create(self, instance):
@@ -84,7 +78,7 @@ class ExpenseListView(viewsets.ModelViewSet):
         Perform actions after the expense object is created
         '''
         if instance is None:
-            print("Error: Expense instance is None in after_create")  # Log an error message
+            print("Error: Expense instance is None in after_create")
             return
         # Assign permissions to the user who created the expense
         assign_perm('change_expense', instance.user, instance)        
@@ -106,16 +100,14 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             expense = Expense.objects.get(id=pk, user=request.user.id)
         except Expense.DoesNotExist:
         # If the expense object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Expense not found.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        #print(expense)
-        serializer = ExpenseSerializer(expense) 
-        #print(serializer.data)        
+            return Response({'error': 'Expense not found.'}, status=status.HTTP_404_NOT_FOUND)                
+        serializer = ExpenseSerializer(expense)         
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     @staticmethod
     @receiver(pre_delete, sender=Expense)
     def delete_object_permissions(sender, instance, **kwargs):
+        '''Once the object has been deleted, deletes the permissions associated with it'''
         # Delete associated object permissions
         UserObjectPermission.objects.filter(object_pk=str(instance.pk)).delete()   
 
@@ -128,7 +120,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             expense.delete()            
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:            
-            return Response("Expense not found.", status=status.HTTP_404_NOT_FOUND)
+            return Response({'error':'Expense not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     
     def update(self, request, *args,**kwargs):
@@ -138,7 +130,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         # Retrieve the expense object
         expense = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that                
         if (request.data['amount'] <= 0):
-            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                            
+            return Response({'error': 'Amount is equal or lower than 0'}, status=status.HTTP_400_BAD_REQUEST)                            
         # Serialize the expense data with the updated data from request
         serializer = ExpenseUpdateSerializer(expense, data=request.data)        
         # Validate the serializer data
@@ -158,15 +150,12 @@ class IncomeListView(viewsets.ModelViewSet):
     def get(self, request):     
         '''
             Get to retrieve data filtered by dates 
-        '''   
-        #print('Inside get request')
+        '''           
         # Get query parameters for date range
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
-        end_time_str = request.query_params.get('end_time')
-        #print(start_date_str,'-',end_date_str)
-        #print(end_date_str,start_date_str,start_time_str,end_time_str)
+        end_time_str = request.query_params.get('end_time')        
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
@@ -189,9 +178,13 @@ class IncomeListView(viewsets.ModelViewSet):
         '''              
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
-            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
-        if (request.data['amount'] <= 0):
+            return Response({'error': "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)            
+        if not (request.data['amount']):
+            #logger.error('Amount field not found in request.data')
             return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)            
+        else: 
+            if (request.data['amount'] <= 0):
+                return Response({'error': 'Amount is equal or lower than 0'}, status=status.HTTP_400_BAD_REQUEST)            
 
         #Insert userID into the request.data array
         request.data['user'] = request.user.id
@@ -203,13 +196,11 @@ class IncomeListView(viewsets.ModelViewSet):
             with transaction.atomic():
                 # Save the expense object to the database
                 instance = serializer.save()
-                print("Created income instance:", instance)  # Debug print
                 # Ensure the transaction is committed
                 transaction.on_commit(lambda: self.after_create(instance))
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Print out the errors for debugging
-            print("Serializer errors:", serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
 
     def after_create(self, instance):
@@ -217,7 +208,6 @@ class IncomeListView(viewsets.ModelViewSet):
         Perform actions after the expense object is created
         '''        
         if instance is None:
-            print("Error: Income instance is None in after_create")  # Log an error message
             return
         # Assign permissions to the user who created the expense
         assign_perm('change_income', instance.user, instance)        
@@ -240,10 +230,8 @@ class IncomeDetailView(viewsets.ModelViewSet):
         except Income.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
             return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        #print(income)
-        serializer = IncomeSerializer(income) 
-        #print(serializer.data)        
+                
+        serializer = IncomeSerializer(income)         
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     @staticmethod
@@ -261,7 +249,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
             income.delete()
             return Response( status=status.HTTP_204_NO_CONTENT)
         except Income.DoesNotExist:
-            return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
+            return Response({'error':'Income not found.'}, status=status.HTTP_404_NOT_FOUND)
     
     def update(self, request, *args,**kwargs):
 
@@ -270,8 +258,11 @@ class IncomeDetailView(viewsets.ModelViewSet):
         '''
         # Retrieve the income object
         income = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that                
-        if (request.data['amount'] <= 0):
-            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                                    
+        if not (request.data['amount']):
+            return Response({'error': 'Couldn`t get amount'}, status=status.HTTP_400_BAD_REQUEST)                                    
+        else: 
+            if (request.data['amount'] <= 0):
+                return Response({'error': 'Amount is equal or lower than 0'}, status=status.HTTP_400_BAD_REQUEST)                                    
         # Serialize the income data with the updated data from request
         serializer = IncomeUpdateSerializer(income, data=request.data)                
         # Validate the serializer data
@@ -309,14 +300,13 @@ class CategoryListView(viewsets.ModelViewSet):
         Create new category
         '''       
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)    
+            return Response({'error': 'User has not enough permission'}, status=status.HTTP_403_FORBIDDEN)    
         serializer = CategorySerializer(data=request.data) 
         #Check if the serializer is valid
         if serializer.is_valid():            
             serializer.save()  # Save the income object to the database
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            #print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
         
@@ -335,10 +325,8 @@ class CategoryDetailView(viewsets.ModelViewSet):
             category = Category.objects.get(pk=pk)
         except Category.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)        
-        #print(income)
-        serializer = CategorySerializer(category) 
-        #print(serializer.data)        
+            return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)                
+        serializer = CategorySerializer(category)         
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     
     def delete(self, request, pk):
@@ -346,20 +334,20 @@ class CategoryDetailView(viewsets.ModelViewSet):
             Delete income object with specified PK 
         '''
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
+            return Response({'error': 'User has not enough permission'}, status=status.HTTP_403_FORBIDDEN)           
         try:
             category = Category.objects.get(pk=pk)            
             category.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Category.DoesNotExist:
-            return Response("Category not found.", status=status.HTTP_404_NOT_FOUND)
+            return Response({'error':'Category not found'}, status=status.HTTP_404_NOT_FOUND)
         
     def update(self, request, *args,**kwargs):
         '''
             Update income object with specified PK
         '''
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'User has not enough permission'}, status=status.HTTP_403_FORBIDDEN)
         # Retrieve the income object
         category = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
         
@@ -394,23 +382,20 @@ class SubCategoryListView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
+            return Response({'detail': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
 
     def create(self,request):   
         '''
         Create new category
         '''       
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)          
+            return Response({'error': 'User has not enough permission'}, status=status.HTTP_403_FORBIDDEN)          
         serializer = SubCategorySerializer(data=request.data)         
-        #Check if the serializer is valid
-        print('Antes de checkear si es valido')
-        if serializer.is_valid(): 
-            print('es valido')           
+        #Check if the serializer is valid        
+        if serializer.is_valid():                     
             serializer.save()  # Save the income object to the database
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            #print(serializer.errors)  # Print out the errors for debugging
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
 
 class SubCategoryDetailView(viewsets.ModelViewSet):
@@ -437,21 +422,20 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
             Delete income object with specified PK 
         '''
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)           
+            return Response({'error': 'User has not enough permission'}, status=status.HTTP_403_FORBIDDEN)           
         try:
             subCategory = SubCategory.objects.get(pk=pk)             
-            subCategory.delete()
-            print('post delete')            
+            subCategory.delete()                      
             return Response(status=status.HTTP_204_NO_CONTENT)
         except SubCategory.DoesNotExist:
-            return Response("SubCategory not found.", status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Subcategory not found'}, status=status.HTTP_404_NOT_FOUND)
         
     def update(self, request, *args,**kwargs):
         '''
             Update income object with specified PK
         '''
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({"error": "User has not enough permission"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'User has not enough permission'}, status=status.HTTP_403_FORBIDDEN)
         # Retrieve the income object
         subCategory = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
         

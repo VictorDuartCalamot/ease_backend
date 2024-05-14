@@ -1,4 +1,3 @@
-import logging
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
@@ -11,7 +10,6 @@ from django.db.models import Q
 import random
 
 User = get_user_model()
-logger = logging.getLogger(__name__)
 class ChatSessionViewSet(viewsets.ModelViewSet):
     queryset = ChatSession.objects.all()
     serializer_class = ChatSessionSerializer
@@ -28,7 +26,7 @@ class ChatSessionViewSet(viewsets.ModelViewSet):
             # If there is no existing chat session create a new one with a random admin
             admins = User.objects.filter((Q(is_staff=True) | Q(is_superuser=True)) & Q(is_active=True)).order_by('?').first()
             if not admins:
-                logger.error(f'No admins available to create a new chat session')
+                #logger.error(f'No admins available to create a new chat session')
                 return Response({'error': 'No admins available'}, status=status.HTTP_404_NOT_FOUND)
             chat = ChatSession.objects.create(customer=request.user, admin=admins, is_active=True)
         

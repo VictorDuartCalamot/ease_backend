@@ -1,6 +1,9 @@
 from django.urls import path
 from backend.views import management_views as management_views
 
+'''
+    Endpoints for management
+'''
 urlpatterns = [    
     #Expense
     path('expense/', management_views.ExpenseListView.as_view({'get':'get','post':'create'}), name='expense-list'),

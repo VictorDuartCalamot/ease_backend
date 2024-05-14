@@ -4,9 +4,7 @@ import uuid
 from django.conf import settings
 #from guardian.shortcuts import assign_perm,remove_perm
 
-import logging
 #Income/Expense models
-logger = logging.getLogger(__name__)
 
 class AuthUserLogs(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -44,21 +42,6 @@ class Expense(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
 
-    '''permissions = [
-            ("can_view_expense", "Can view expense"),
-            ("can_add_expense", "Can add expense"),
-            ("can_change_expense", "Can change expense"),
-            ("can_delete_expense", "Can delete expense"),
-        ]    
-    
-    
-    def save(self, *args, **kwargs):
-        # Call the parent save method to save the expense first
-        super().save(*args, **kwargs)        
-        # Assign permissions to the user who created the expense
-        assign_perm('change_expense', self.user, self)
-        assign_perm('delete_expense', self.user, self)'''
-
 
 class Income(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -73,20 +56,6 @@ class Income(models.Model):
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
 
-    '''permissions = [
-            ("can_view_income", "Can view income"),
-            ("can_add_income", "Can add income"),
-            ("can_change_income", "Can change income"),
-            ("can_delete_income", "Can delete income"),
-        ]    
-    
-    def save(self, *args, **kwargs):
-        # Call the parent save method to save the expense first
-        super().save(*args, **kwargs)
-        
-        # Assign permissions to the user who created the income
-        assign_perm('change_income', self.user, self)
-        assign_perm('delete_income', self.user, self)'''
    
 
 class BlacklistedToken(models.Model):

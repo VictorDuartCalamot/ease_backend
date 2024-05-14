@@ -1,28 +1,26 @@
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework import serializers
 from rest_framework import status,viewsets
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from backend.serializers import UserSerializerWithToken, UserSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
+from django.core.exceptions import ValidationError as DjangoValidationError
 from backend.models import AuthUserLogs
 from backend.serializers import AuthUserLogsSerializer
-from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from datetime import datetime,timedelta
 from django.utils import timezone
 from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
-from django.db.models import Q
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
-from rest_framework.authtoken.models import Token
 from backend.models import BlacklistedToken
 from django.contrib.auth.hashers import check_password
-import logging
-logger = logging.getLogger(__name__)
+from django.core.validators import EmailValidator
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -36,10 +34,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
-        #logger.debug(f'UserObject: {userObject}')
-        if (userObject.get('is_active') == False):
-            logger.info(f'The account: {emailToLower} is tryign to login but its blocked.')
-            return Response({'detail':'The account is blocked. Contact your administrator for further information.'},status=status.HTTP_403_FORBIDDEN)
+        if not userObject['is_active']:
+            raise PermissionDenied({'detail':'The account is blocked. Contact your administrator for further information.'})
         try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
@@ -47,14 +43,11 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             for k, v in serializer.items():
                 data[k] = v             
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
-            logger.debug(f'Login successful for {self.user.username}')            
             return data
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            logger.debug(f'{emailToLower} login failed')
-            print('Intento de inicio de sesión fallido')            
-            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)            
+            raise AuthenticationFailed({'detail':f'Credentials are incorrect: {e}'})                     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -70,9 +63,14 @@ def registerUser(request):
     last_name = (data['last_name']).strip()
     password = (data['password']).strip()
     try:
+        EmailValidator()(email)
+    except DjangoValidationError as e:
+        raise ValidationError({'detail': e.messages})
+
+    try:
         validate_password(password)
-    except ValidationError as e:
-        return Response(e,status=status.HTTP_400_BAD_REQUEST)
+    except DjangoValidationError as e:
+        raise ValidationError({'password': e.messages})
         
     try:
         user = User.objects.create(
@@ -82,13 +80,11 @@ def registerUser(request):
             email=email,
             password=make_password(password)            
         )
-        serializer = UserSerializerWithToken(user, many=False)
-        logging.debug(f'User {email} registered successfully')        
-        return Response(serializer.data)
-    except Exception as e:
-        logging.error(f'Error registering user: {str(e)}')        
-        message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        user_serializer = UserSerializerWithToken(user, many=False)
+        return Response({'message':'Account registrated successfully!'},status=status.HTTP_202_ACCEPTED)
+    except ValidationError as e:
+        #message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
+        raise ValidationError({'detail':f'Error registering user: {str(e)}'})
 
 
 class LogoutView(viewsets.ModelViewSet):
@@ -107,7 +103,7 @@ class LogoutView(viewsets.ModelViewSet):
 
             return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         else:
-            return Response({"error": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
+            raise AuthenticationFailed({"detail": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -116,19 +112,18 @@ def change_password(request):
     try:
         user_obj = User.objects.get(id=request.user.id)
     except User.DoesNotExist:
-        return Response({"error": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+        raise NotFound({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
 
     current_password = request.data.get("current_password", "").strip()
     new_password = request.data.get("new_password", "").strip()
 
     # Check if the provided current password matches the hash with the one in the database
     if not check_password(current_password, user_obj.password):
-        return Response({"error": "Incorrect current password."}, status=status.HTTP_400_BAD_REQUEST)
+        raise ValidationError('Incorrect current password.')
 
     # Set the new password and save the user object
     user_obj.set_password(new_password)
     user_obj.save()
-
     return Response({"message": "Password changed successfully."}, status=status.HTTP_200_OK)
     
 # Funtion to block the user.
@@ -142,8 +137,7 @@ def blockUser(userID):
     new_date = three_minutes_ago.date().isoformat()
     new_time = three_minutes_ago.time().isoformat()[:8]
     query = AuthUserLogs.objects.filter(user=userID,creation_date=new_date,creation_time__range=[new_time, currentDate.time()],successful=False)
-    if (query.count() >=3):
-        logging.debug(f'UserID: {userID} surpassed the possible failed logins')#print('Ha sobrepasado los logins fallidos posibles ! ! !')
+    if (query.count() >=3):        
         userObject.is_active = False                                          
         userObject.save()        
         return Response({'message':'The account has been blocked because of several unsuccessful login attempts.'},status=status.HTTP_403_FORBIDDEN, )
@@ -170,7 +164,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
-            return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError({'detail': 'Invalid date or time format, must be YYYY-MM-DD for date and HH:MM:SS for time. '})
               
         authUserLog = filter_by_date_time(AuthUserLogs.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)        
         # Serialize the authUserLog
@@ -203,7 +197,9 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             
         serializer = AuthUserLogsSerializer(data=data)
         if serializer.is_valid():                
-                serializer.save()  
+                serializer.save()
+        else:
+            raise ValidationError({'detail':'The data provided is invalid.'})  
 
     def create(self, request, *args, **kwargs): 
         '''
@@ -219,7 +215,7 @@ class AuthUserLogsListView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             #print(serializer.errors)  # Print out the errors for debugging
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            raise ValidationError({'detail':'The data provided is not valid.'}) 
 
 class AuthUserLogsDetailView(viewsets.ModelViewSet):
     queryset = AuthUserLogs.objects.all()
@@ -235,7 +231,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             authUserLog = AuthUserLogs.objects.get(pk=pk)
         except authUserLog.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)                
+            raise NotFound({'detail': 'Log not found.'})                
         serializer = AuthUserLogsSerializer(authUserLog)         
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -246,7 +242,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             authUserLog.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AuthUserLogs.DoesNotExist:
-            return Response("Income not found.", status=status.HTTP_404_NOT_FOUND)
+            return NotFound({'detail':'Log not found'})
     
     def update(self,request,*args,**kwargs):
         '''
@@ -264,7 +260,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             # Return error response if serializer data is invalid
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            raise serializer.ValidationError({''}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SuperAdminManagementListView(viewsets.ModelViewSet):    
@@ -343,7 +339,6 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             )
             
             serializer = UserSerializerWithToken(user)
-            print(f'Usuario registrado con éxito: {email}.')
             return Response(serializer.data)
         except Exception as e:
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
@@ -355,10 +350,13 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
 
     def getSingleUser(self, request,pk):
         '''Get data from single user'''
-        user = User.objects.exclude(id=1)
-        user = User.objects.get(id=pk) 
-        serializer = UserSerializer(user)                    
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            user = User.objects.exclude(id=1)
+            user = User.objects.get(id=pk) 
+            serializer = UserSerializer(user)                    
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except User.DoesNotExist as e:
+            return Response(e, status=status.HTTP_404_NOT_FOUND)
     
     def deleteUser(self,request,pk):        
         '''Being a superuser delete users from the database'''        
@@ -387,8 +385,8 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 return Response(serializer.data)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
-        except User.DoesNotExist:
-                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist as error:
+            return Response(error, status=status.HTTP_404_NOT_FOUND)
 
     def blockUnblockUser(self,request,pk):        
         '''Being a superuser update user from the database'''
@@ -403,5 +401,5 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 return Response(serializer.data)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
-        except User.DoesNotExist:
-                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist as error:
+            return Response(error, status=status.HTTP_404_NOT_FOUND)

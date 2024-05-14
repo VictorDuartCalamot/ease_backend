@@ -1,3 +1,4 @@
+'''
 import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -34,3 +35,4 @@ class ChatAPIView(APIView):
         else:
             return Response({"error": "Failed to fetch response from OpenAI"}, status=response.status_code)
 
+'''
