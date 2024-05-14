@@ -57,9 +57,9 @@ class ExpenseListView(viewsets.ModelViewSet):
         '''              
         # Ensure the user is authenticated
         if not request.user.is_authenticated:
-            return Response({"error": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)  
+            return Response({"detail": "User is not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)  
         if (request.data['amount'] <= 0):
-            return Response({"error": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                      
+            return Response({"detail": "Amount is equal or lower than 0"}, status=status.HTTP_400_BAD_REQUEST)                      
         #Insert userID into the request.data array
         request.data['user'] = request.user.id                        
         # Create a serializer instance with the data in the array
@@ -168,7 +168,7 @@ class IncomeListView(viewsets.ModelViewSet):
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
-            return Response({'error': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Invalid date format'}, status=status.HTTP_400_BAD_REQUEST)
         
         income = filter_by_date_time(Income.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
         # Apply combined date and time filtering        
@@ -302,7 +302,7 @@ class CategoryListView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
+            return Response({'detail': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
 
     def create(self,request):   
         '''
@@ -392,7 +392,7 @@ class SubCategoryListView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
+            return Response({'detail': 'Category objects not found.'}, status=status.HTTP_404_NOT_FOUND)               
 
     def create(self,request):   
         '''
@@ -424,7 +424,7 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
             subCategory = SubCategory.objects.get(id=pk)
         except SubCategory.DoesNotExist:
         # If the income object does not exist for the specified user, return a 404 Not Found response
-            return Response({'error': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)                
+            return Response({'detail': 'Income not found.'}, status=status.HTTP_404_NOT_FOUND)                
         serializer = SubCategorySerializer(subCategory)              
         return Response(serializer.data, status=status.HTTP_200_OK)
     

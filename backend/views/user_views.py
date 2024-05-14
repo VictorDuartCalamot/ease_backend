@@ -71,7 +71,7 @@ def registerUser(request):
     try:
         validate_password(password)
     except ValidationError as e:
-        return Response(e,status=status.HTTP_400_BAD_REQUEST)
+        return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
         
     try:
         user = User.objects.create(
@@ -334,7 +334,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         try:
             validate_password(password)
         except ValidationError as e:
-            return Response(e,status=status.HTTP_400_BAD_REQUEST)        
+            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)        
         try:
             user = User.objects.create(
                 first_name=first_name,
