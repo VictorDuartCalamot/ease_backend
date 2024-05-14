@@ -29,7 +29,7 @@ class ChatSessionViewSet(viewsets.ModelViewSet):
             # Si no hay chat activo, crea uno nuevo con un admin aleatorio
             chat = ChatSession.objects.create(customer=request.user, admin=admins, is_active=True)
         
-        return Response({'chat_id': chat.id, 'admin_id': admins.id}, status=status.HTTP_200_OK)
+        return Response({'chat_id': chat.id}, status=status.HTTP_200_OK)
     
 class ChatSessionDetailViewSet(viewsets.ModelViewSet):
     queryset = ChatSession.objects.all()
@@ -42,8 +42,7 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
         # La variable 'pk' representa la ID del chat específico
         chat = self.get_object()
         if chat:
-            chat.is_active = False
-            chat.save()
+            chat.delete()
             return Response({'status': 'chat closed', 'chat_id': pk})
         else:
             return Response({'status': 'chat not found'}, status=status.HTTP_404_NOT_FOUND)
