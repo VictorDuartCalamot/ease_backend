@@ -29,7 +29,7 @@ class ChatSessionViewSet(viewsets.ModelViewSet):
             admins = User.objects.filter((Q(is_staff=True) | Q(is_superuser=True)) & Q(is_active=True)).order_by('?').first()
             if not admins:
                 logger.error(f'No admins available to create a new chat session')
-                return Response({'error': 'No admins available'}, status=status.HTTP_404_NOT_FOUND)
+                return Response({'detail': 'No admins available'}, status=status.HTTP_404_NOT_FOUND)
             chat = ChatSession.objects.create(customer=request.user, admin=admins, is_active=True)
         
         return Response({'chat_id': chat.id}, status=status.HTTP_200_OK)
@@ -49,6 +49,6 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
         chat = self.get_object()
         if chat:
             chat.delete()
-            return Response({'status': 'chat closed', 'chat_id': pk},status=status.HTTP_202_ACCEPTED)
+            return Response({'detail': 'chat closed', 'chat_id': pk},status=status.HTTP_202_ACCEPTED)
         else:
-            return Response({'status': 'chat not found'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'detail': 'chat not found'}, status=status.HTTP_404_NOT_FOUND)
