@@ -52,7 +52,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            logger.debug(f'{emailToLower} login failed')            
+            #logger.debug(f'{emailToLower} login failed')            
             return Response(str(e),status=status.HTTP_400_BAD_REQUEST)            
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
