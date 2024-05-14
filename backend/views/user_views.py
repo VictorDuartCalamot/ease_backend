@@ -12,18 +12,15 @@ from rest_framework.exceptions import ValidationError,AuthenticationFailed,Permi
 from django.core.exceptions import ValidationError as DjangoValidationError
 from backend.models import AuthUserLogs
 from backend.serializers import AuthUserLogsSerializer
-from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from datetime import datetime,timedelta
 from django.utils import timezone
 from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
-
-from django.db.models import Q
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
-from rest_framework.authtoken.models import Token
 from backend.models import BlacklistedToken
 from django.contrib.auth.hashers import check_password
-
+from django.core.validators import EmailValidator
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -65,6 +62,11 @@ def registerUser(request):
     name = (data['first_name']).strip()
     last_name = (data['last_name']).strip()
     password = (data['password']).strip()
+    try:
+        EmailValidator()(email)
+    except DjangoValidationError as e:
+        raise ValidationError({'detail': e.messages})
+
     try:
         validate_password(password)
     except DjangoValidationError as e:
