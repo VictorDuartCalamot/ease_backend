@@ -6,16 +6,8 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
-
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
@@ -37,7 +29,7 @@ INSTALLED_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend', # this is default
+    'django.contrib.auth.backends.ModelBackend', # This is default
     'guardian.backends.ObjectPermissionBackend',
 )
 REST_FRAMEWORK = {
@@ -126,7 +118,6 @@ DATABASES = {
 
 database_url = os.environ.get("DATABASE_URL")
 DATABASES["default"] = dj_database_url.parse(database_url)
-#DATABASES['default'] = dj_database_url.parse('postgres://easedb_user:2FiW5cP7P9rRUfiwqKidJRDt76OwKUP8@dpg-cn1524en7f5s73fdqsa0-a/easedb')
 
 # Redis channel layers configuration for Django Channels
 CHANNEL_LAYERS = {
@@ -218,7 +209,7 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
-        'your_app_name': {  # Replace 'your_app_name' with the name of your Django app
+        'backend': {  
             'handlers': ['file', 'console'],
             'level': 'DEBUG',
             'propagate': False,

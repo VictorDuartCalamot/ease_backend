@@ -416,4 +416,4 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
         except User.DoesNotExist as error:
                 logging.error(f'User not found: {error}')
-                return Response(f"User not found {error}", status=status.HTTP_404_NOT_FOUND)
+                return Response(f'User not found {error}', status=status.HTTP_404_NOT_FOUND)

@@ -16,13 +16,13 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangocrud.settings')
 django.setup()
 
-from backend.routing import websocket_urlpatterns  # Import después de django.setup()
+from backend.routing import websocket_urlpatterns
 from backend.websocket_auth import TokenAuthMiddlewareStack
 backend = ProtocolTypeRouter({
-    "http": get_asgi_application(),  # Define cómo manejar los protocolos HTTP
+    "http": get_asgi_application(),  # HTTP protocol management
     "websocket": TokenAuthMiddlewareStack(
         URLRouter(
-            websocket_urlpatterns  # Utiliza las URL de WebSocket definidas en backend.routing
+            websocket_urlpatterns  # Using the websocket URLS specified in backend.routing
         )
     ),
 })
