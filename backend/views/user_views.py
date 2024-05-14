@@ -52,8 +52,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            logger.debug(f'{emailToLower} login failed')            
-            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)            
+            #logger.debug(f'{emailToLower} login failed')            
+            return Response(detail=str(e),status=status.HTTP_400_BAD_REQUEST)            
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -416,4 +416,4 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
         except User.DoesNotExist as error:
                 logging.error(f'User not found: {error}')
-                return Response(f"User not found {error}", status=status.HTTP_404_NOT_FOUND)
+                return Response(f'User not found {error}', status=status.HTTP_404_NOT_FOUND)

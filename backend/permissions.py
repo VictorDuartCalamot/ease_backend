@@ -30,9 +30,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         try:
             obj = obj_model.objects.get(pk=obj_pk)
             serializer = obj_serializer(obj)            
-            print(serializer.data,request.user.id)
+            #logging.debug(serializer.data,request.user.id)
             if serializer.data['user'] == request.user.id:
-                print('Owner')
+                #logging.debug('Owner')
                 return True
             else:                
                 return False        
@@ -51,12 +51,12 @@ class IsSuperUser(permissions.BasePermission):
     def has_permission(self, request, view):
         '''Check if user has permission for the request'''        
         user = request.user
-        print(f'Checking permissions for user: {user}')
+        #logging.debug(f'Checking permissions for user: {user}')
         if self.isSuperUser(user):
-            print('User is a superuser.')
+            #logging.debug('User is a superuser.')
             return True
         else:
-            print('User is not a superuser.')
+            #logging.debug('User is not a superuser.')
             return False
 
 class HasMorePermsThanUser(permissions.BasePermission):
@@ -74,7 +74,7 @@ class HasMorePermsThanUser(permissions.BasePermission):
             #logger.debug(f'{user} is superuser or staff')
             return True
         else:
-            print('User is not a superuser or staff.')
+            #logging.debug('User is not a superuser or staff.')
             return False  
 
 
