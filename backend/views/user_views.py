@@ -53,7 +53,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
             logger.debug(f'{emailToLower} login failed')            
-            raise ValidationError(str(e),status=status.HTTP_400_BAD_REQUEST)            
+            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)            
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
