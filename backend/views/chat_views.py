@@ -17,16 +17,14 @@ class ChatSessionViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=['post'], url_path='get-or-create-chat')
-    def get_or_create_chat(self, request):
-        # Filtrar los usuarios que son admins (is_staff) o superadmins (is_superuser)
-        admins = User.objects.filter((Q(is_staff=True) | Q(is_superuser=True)) & Q(is_active=True)).order_by('?').first()
-        if not admins:
-            return Response({'error': 'No admins available'}, status=status.HTTP_404_NOT_FOUND)
-        
-        # Intentar encontrar un chat activo existente con cualquier admin
+    def get_or_create_chat(self, request):                       
+        # Firstly tries to find a existing chat session with the user
         chat = ChatSession.objects.filter(customer=request.user, is_active=True).first()
         if not chat:
-            # Si no hay chat activo, crea uno nuevo con un admin aleatorio
+            # If there is no existing chat session create a new one with a random admin
+            admins = User.objects.filter((Q(is_staff=True) | Q(is_superuser=True)) & Q(is_active=True)).order_by('?').first()
+            if not admins:
+                return Response({'error': 'No admins available'}, status=status.HTTP_404_NOT_FOUND)
             chat = ChatSession.objects.create(customer=request.user, admin=admins, is_active=True)
         
         return Response({'chat_id': chat.id}, status=status.HTTP_200_OK)

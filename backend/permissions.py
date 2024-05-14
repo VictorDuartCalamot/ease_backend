@@ -69,7 +69,7 @@ class HasMorePermsThanUser(permissions.BasePermission):
         '''Check if user has permission for the request'''        
         user = request.user
         print(f'Checking permissions for user: {user}')
-        if self.isSuperUser(user) or self.isStaff:
+        if self.isSuperUser(user) or self.isStaff(user):
             print('User is a superuser or staff.')
             return True
         else:
