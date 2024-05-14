@@ -8,7 +8,8 @@ from django.contrib.auth.hashers import make_password
 from backend.serializers import UserSerializerWithToken, UserSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.exceptions import AuthenticationFailed,PermissionDenied,NotFound
+from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
+from django.core.exceptions import ValidationError as DjangoValidationError
 from backend.models import AuthUserLogs
 from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
@@ -16,12 +17,13 @@ from datetime import datetime,timedelta
 from django.utils import timezone
 from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
+
 from django.db.models import Q
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from rest_framework.authtoken.models import Token
 from backend.models import BlacklistedToken
 from django.contrib.auth.hashers import check_password
+
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -65,8 +67,8 @@ def registerUser(request):
     password = (data['password']).strip()
     try:
         validate_password(password)
-    except ValidationError as e:
-        raise ValidationError({'detail':f'Password does not meet the minimum requirements: {e}'})
+    except DjangoValidationError as e:
+        raise ValidationError({'password': e.message})
         
     try:
         user = User.objects.create(
