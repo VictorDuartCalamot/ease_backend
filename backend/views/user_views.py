@@ -81,7 +81,7 @@ def registerUser(request):
             password=make_password(password)            
         )
         user_serializer = UserSerializerWithToken(user, many=False)
-        return Response({'message':'Account registrated successfully!'},user_serializer.data)
+        return Response({'message':'Account registrated successfully!'},status=status.HTTP_202_ACCEPTED)
     except ValidationError as e:
         #message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
         raise ValidationError({'detail':f'Error registering user: {str(e)}'})
