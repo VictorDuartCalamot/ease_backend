@@ -47,7 +47,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
             blockUser(userObject.get('id'))
-            raise ValidationError(detail=str(e),status=status.HTTP_400_BAD_REQUEST)                     
+            raise ValidationError(e,status=status.HTTP_400_BAD_REQUEST)                     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
