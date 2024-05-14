@@ -103,7 +103,7 @@ class LogoutView(viewsets.ModelViewSet):
 
             return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         else:
-            raise AuthenticationFailed({"detail": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
+            raise AuthenticationFailed({"detail": "No token found."})
     
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -119,7 +119,7 @@ def change_password(request):
 
     # Check if the provided current password matches the hash with the one in the database
     if not check_password(current_password, user_obj.password):
-        raise ValidationError('Incorrect current password.')
+        raise ValidationError('Passwords do not match.')
 
     # Set the new password and save the user object
     user_obj.set_password(new_password)
@@ -242,7 +242,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             authUserLog.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AuthUserLogs.DoesNotExist:
-            return NotFound({'detail':'Log not found'})
+            raise NotFound({'detail':'Log not found'})
     
     def update(self,request,*args,**kwargs):
         '''
@@ -260,7 +260,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             # Return error response if serializer data is invalid
-            raise serializer.ValidationError({''}, status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError({'detail':'The data provided is not valid.'})
 
 
 class SuperAdminManagementListView(viewsets.ModelViewSet):    
@@ -302,7 +302,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             serializer = UserSerializer(users_queryset, many=True)
             return Response(serializer.data)
         except Exception as e:
-            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError({'detail':'The data provided is not valid.'})
     
     def createUserWithRoles(self,request):
         '''
@@ -321,11 +321,11 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         
         if is_superuser is not None:
             if request.user.is_staff and is_superuser:
-                return Response(status=status.HTTP_403_FORBIDDEN) 
+                raise PermissionDenied() 
         try:
             validate_password(password)
-        except ValidationError as e:
-            return Response(e,status=status.HTTP_400_BAD_REQUEST)        
+        except DjangoValidationError as e:
+            raise ValidationError({'detail': e.messages})        
         try:
             user = User.objects.create(
                 first_name=first_name,
@@ -339,9 +339,9 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             )
             
             serializer = UserSerializerWithToken(user)
-            return Response(serializer.data)
-        except Exception as e:
-            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
+        except DjangoValidationError as e:
+            raise ValidationError({'detail': e.messages})
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -355,17 +355,17 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             user = User.objects.get(id=pk) 
             serializer = UserSerializer(user)                    
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist as e:
-            return Response(e, status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist:
+            raise NotFound({'detail': 'User does not exist.'})
     
     def deleteUser(self,request,pk):        
         '''Being a superuser delete users from the database'''        
         try:              
             user = User.objects.get(id=pk)             
             user.delete()                                  
-            return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)        
+            return Response({'message':'User deleted successfully'}, status=status.HTTP_204_NO_CONTENT)        
         except User.DoesNotExist:
-                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+            raise NotFound({'detail': 'User does not exist.'})
         
     def updateUser(self,request,pk):
         '''Being a superuser update user from the database'''
@@ -384,9 +384,9 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 serializer.save()
                 return Response(serializer.data)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
-        except User.DoesNotExist as error:
-            return Response(error, status=status.HTTP_404_NOT_FOUND)
+                raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
+        except User.DoesNotExist:
+            raise NotFound({'detail': 'User does not exist'})
 
     def blockUnblockUser(self,request,pk):        
         '''Being a superuser update user from the database'''
@@ -400,6 +400,6 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
                 serializer.save()
                 return Response(serializer.data)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+                raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
         except User.DoesNotExist as error:
-            return Response(error, status=status.HTTP_404_NOT_FOUND)
+            raise NotFound({'detail': 'User does not exist'})
