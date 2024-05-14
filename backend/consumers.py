@@ -57,7 +57,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
-            self.room_group_name,
+            self.chat_group_name,
             self.channel_name
         )
 
@@ -65,9 +65,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
 
-        # Send message to room group
+        # Send message to chat group
         await self.channel_layer.group_send(
-            self.room_group_name,
+            self.chat_group_name,
             {
                 'type': 'chat_message',
                 'message': message
@@ -91,6 +91,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return None
 
     @database_sync_to_async
-    def is_user_in_chat_session(self, user, session_id):
-        session = ChatSession.objects.get(id=session_id)
+    def is_user_in_chat_session(self, user, chat_id):
+        session = ChatSession.objects.get(id=chat_id)
         return session.admin == user or session.customer == user
