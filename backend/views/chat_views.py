@@ -45,7 +45,7 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
         Retrieve all chat sessions for the authenticated user
         '''
         try:
-            user = request.user
+            user = request.user.id
             chat_sessions = ChatSession.objects.filter(Q(admin=user))
             if not chat_sessions.exists():
                 raise NotFound({'detail': 'No chat sessions found for the user.'})
