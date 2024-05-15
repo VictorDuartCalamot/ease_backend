@@ -27,7 +27,7 @@ class SubCategory(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     hexColor = models.CharField(max_length=7)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
    
 class Expense(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -39,8 +39,8 @@ class Expense(models.Model):
     creation_date = models.DateField()
     creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
 
 
 class Income(models.Model):
@@ -53,8 +53,8 @@ class Income(models.Model):
     creation_date = models.DateField()
     creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
 
    
 
