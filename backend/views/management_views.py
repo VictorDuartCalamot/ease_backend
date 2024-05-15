@@ -333,6 +333,10 @@ class CategoryDetailView(viewsets.ModelViewSet):
         if request.user.is_staff == False and request.user.is_superuser == False:
             raise AuthenticationFailed({'detail': 'User has not enough permission to perform this action'})
         try:
+        
+            if SubCategory.objects.filter(category=pk).exists() or Expense.objects.filter(category=pk).exists() or Income.objects.filter(category=pk).exists():
+                raise ValidationError({'detail': 'Cannot delete subcategory because there are related objects with the specified category'})
+            
             category = Category.objects.get(pk=pk)            
             category.delete()
             return Response({'message':'Category deleted successfully'},status=status.HTTP_204_NO_CONTENT)
@@ -421,7 +425,11 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
         if request.user.is_staff == False and request.user.is_superuser == False:
             raise AuthenticationFailed({'detail': 'User has not enough permission'})
         try:
-            subCategory = SubCategory.objects.get(pk=pk)             
+
+            if Expense.objects.filter(subcategory=pk).exists() or Income.objects.filter(subcategory=pk).exists():
+                raise ValidationError({'detail': 'Cannot delete subcategory because there are related objects with the specified subcategory'})
+
+            subCategory = SubCategory.objects.get(pk=pk)
             subCategory.delete()                      
             return Response(status=status.HTTP_204_NO_CONTENT)
         except SubCategory.DoesNotExist:
