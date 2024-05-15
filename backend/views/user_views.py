@@ -386,7 +386,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             serializer = UserSerializer(user, data=data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
+                return Response({'detail': f'User {serializer.data['email']} updated successfully' })
             else:
                 raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
         except User.DoesNotExist:
