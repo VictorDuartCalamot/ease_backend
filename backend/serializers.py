@@ -37,6 +37,19 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'is_staff','is_active','is_superuser','first_name','last_name']
+        # Fields optional during update
+        extra_kwargs = {
+            'email': {'required': False},
+            'is_staff': {'required': False},
+            'is_active': {'required': False},
+            'is_superuser': {'required': False},
+            'first_name': {'required': False},
+            'last_name': {'required': False}
+        }
 
 class ExpenseSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)

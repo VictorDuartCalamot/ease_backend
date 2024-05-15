@@ -1,26 +1,25 @@
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
+from datetime import datetime,timedelta
 from rest_framework import serializers
 from rest_framework import status,viewsets
-from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
-from backend.serializers import UserSerializerWithToken, UserSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
-from django.core.exceptions import ValidationError as DjangoValidationError
-from backend.models import AuthUserLogs
-from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated
-from datetime import datetime,timedelta
 from django.utils import timezone
-from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.hashers import check_password
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.validators import EmailValidator
+from backend.models import AuthUserLogs
+from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
+from backend.serializers import UserSerializerWithToken, UserSerializer
+from backend.serializers import AuthUserLogsSerializer,UserUpdateSerializer
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from backend.models import BlacklistedToken
-from django.contrib.auth.hashers import check_password
-from django.core.validators import EmailValidator
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -383,7 +382,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             if request.data['is_staff'] is not None:data['is_staff'] = request.data['is_staff']
             if request.data['is_superuser'] is not None:data['is_superuser'] = request.data['is_superuser']
             if request.data['is_active'] is not None:data['is_active'] = request.data['is_active']
-            serializer = UserSerializer(user, data=data)
+            serializer = UserUpdateSerializer(user, data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response({'detail': f'User {serializer.data['email']} updated successfully' })
