@@ -88,4 +88,4 @@ superadmin/user/<int:pk>/
 superadmin/user/block/<int:pk>/
 
 WebSocket Endpoint:
-wss://easeapi.onrender.com/ws/support/chat/<chatid>/?token=<user token>
+wss://BASEURL/ws/support/chat/<chatid>/?token=<user token>
