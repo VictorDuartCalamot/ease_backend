@@ -9,4 +9,3 @@ urlpatterns = [
     path('api/chats/', include('backend.urls.chat_urls')),
       
 ]
-#path('api/', include('backend.urls.openAI_chat_urls')), 

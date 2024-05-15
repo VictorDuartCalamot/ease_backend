@@ -10,8 +10,9 @@ from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed,ValidationError,NotFound
 from backend.serializers import UserSerializer
+
 
 def generate_random_id(prefix):
     random_part = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
@@ -26,10 +27,10 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time,):
     '''
     # Ensure start_date is not after end_date
     if (start_date and end_date) and (start_date > end_date):
-        return Response({'error': 'Start date cannot be after end date.'}, status=status.HTTP_400_BAD_REQUEST)
+        raise ValidationError({'detail': 'Start date cannot be after end date.'})
 
     if (start_time and end_time) and (start_time > end_time):
-        return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
+        raise ValidationError({'detail': 'Start time cannot be after end time.'})
 
     # Filter based on date range
     date_query = Q()
@@ -71,7 +72,7 @@ def filter_by_date_time(queryset, start_date, end_date, start_time, end_time,):
 def filter_by_datetime_with_custom_field(queryset, start_value, end_value,fieldname):  
     '''Function to filter by datetime, date or time and using a custom field'''
     if (start_value and end_value) and (start_value > end_value):
-        return Response({'error': 'Start time cannot be after end time.'}, status=status.HTTP_400_BAD_REQUEST)
+        raise ValidationError({'detail': 'Start time cannot be after end time.'})
 
     # Filter based on date range
     value_query = Q()
@@ -95,5 +96,5 @@ def getUserObjectByEmail(email):
         user = User.objects.get(email=email)    
     except ObjectDoesNotExist:
         # Handle the case where the user with the provided email does not exist
-        raise AuthenticationFailed(_('Invalid username or password'), code='invalid_credentials')    
+        raise NotFound(_('Invalid username or password'))    
     return UserSerializer(user).data
