@@ -39,6 +39,23 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
     # Establece las clases de permisos por defecto para todas las acciones en el ViewSet
     permission_classes = [IsAuthenticated, HasMorePermsThanUser]
 
+    @action(detail=False, methods=['get'], url_path='get-chats')
+    def getChats(self, request):
+        '''
+        Retrieve all chat sessions for the authenticated user
+        '''
+        try:
+            user = request.user
+            chat_sessions = ChatSession.objects.filter(Q(admin=user))
+            if not chat_sessions.exists():
+                raise NotFound({'detail': 'No chat sessions found for the user.'})
+            serializer = ChatSessionSerializer(chat_sessions, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except NotFound as e:
+            return Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
     @action(detail=True, methods=['post'], url_path='close-chat')
     def close_chat(self, request, pk=None):
         '''
