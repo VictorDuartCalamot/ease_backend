@@ -1,26 +1,25 @@
-
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
+from datetime import datetime,timedelta
 from rest_framework import serializers
 from rest_framework import status,viewsets
-from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
-from backend.serializers import UserSerializerWithToken, UserSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
-from django.core.exceptions import ValidationError as DjangoValidationError
-from backend.models import AuthUserLogs
-from backend.serializers import AuthUserLogsSerializer
 from rest_framework.permissions import IsAuthenticated
-from datetime import datetime,timedelta
 from django.utils import timezone
-from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.hashers import check_password
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.validators import EmailValidator
+from backend.models import AuthUserLogs
+from backend.utils import filter_by_date_time, filter_by_datetime_with_custom_field, getUserObjectByEmail
+from backend.serializers import UserSerializerWithToken, UserSerializer
+from backend.serializers import AuthUserLogsSerializer,UserUpdateSerializer
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from backend.models import BlacklistedToken
-from django.contrib.auth.hashers import check_password
-from django.core.validators import EmailValidator
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -65,12 +64,12 @@ def registerUser(request):
     try:
         EmailValidator()(email)
     except DjangoValidationError as e:
-        raise ValidationError({'detail': e.messages})
+        raise ValidationError({'detail': 'Credentials are incorrect'})
 
     try:
         validate_password(password)
     except DjangoValidationError as e:
-        raise ValidationError({'password': e.messages})
+        raise ValidationError({'detail': 'Credentials are incorrect'})
         
     try:
         user = User.objects.create(
@@ -103,7 +102,7 @@ class LogoutView(viewsets.ModelViewSet):
 
             return Response({"message": "Logout successful."}, status=status.HTTP_200_OK)
         else:
-            raise AuthenticationFailed({"detail": "No token found."}, status=status.HTTP_400_BAD_REQUEST)
+            raise AuthenticationFailed({"detail": "No token found."})
     
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -117,9 +116,13 @@ def change_password(request):
     current_password = request.data.get("current_password", "").strip()
     new_password = request.data.get("new_password", "").strip()
 
+    
+
     # Check if the provided current password matches the hash with the one in the database
     if not check_password(current_password, user_obj.password):
-        raise ValidationError('Incorrect current password.')
+        raise ValidationError('Current password is incorrect.')
+        
+
 
     # Set the new password and save the user object
     user_obj.set_password(new_password)
@@ -242,7 +245,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             authUserLog.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except AuthUserLogs.DoesNotExist:
-            return NotFound({'detail':'Log not found'})
+            raise NotFound({'detail':'Log not found'})
     
     def update(self,request,*args,**kwargs):
         '''
@@ -260,7 +263,7 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             # Return error response if serializer data is invalid
-            raise serializer.ValidationError({''}, status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError({'detail':'The data provided is not valid.'})
 
 
 class SuperAdminManagementListView(viewsets.ModelViewSet):    
@@ -302,7 +305,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             serializer = UserSerializer(users_queryset, many=True)
             return Response(serializer.data)
         except Exception as e:
-            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError({'detail':'The data provided is not valid.'})
     
     def createUserWithRoles(self,request):
         '''
@@ -321,11 +324,11 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         
         if is_superuser is not None:
             if request.user.is_staff and is_superuser:
-                return Response(status=status.HTTP_403_FORBIDDEN) 
+                raise PermissionDenied() 
         try:
             validate_password(password)
-        except ValidationError as e:
-            return Response(e,status=status.HTTP_400_BAD_REQUEST)        
+        except DjangoValidationError as e:
+            raise ValidationError({'detail': e.messages})        
         try:
             user = User.objects.create(
                 first_name=first_name,
@@ -339,9 +342,9 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             )
             
             serializer = UserSerializerWithToken(user)
-            return Response(serializer.data)
-        except Exception as e:
-            return Response(str(e),status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
+        except DjangoValidationError as e:
+            raise ValidationError({'detail': e.messages})
 
 class SuperAdminManagementDetailView(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -355,17 +358,17 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             user = User.objects.get(id=pk) 
             serializer = UserSerializer(user)                    
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except User.DoesNotExist as e:
-            return Response(e, status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist:
+            raise NotFound({'detail': 'User does not exist.'})
     
     def deleteUser(self,request,pk):        
         '''Being a superuser delete users from the database'''        
         try:              
             user = User.objects.get(id=pk)             
             user.delete()                                  
-            return Response("User deleted successfully", status=status.HTTP_204_NO_CONTENT)        
+            return Response({'message':'User deleted successfully'}, status=status.HTTP_204_NO_CONTENT)        
         except User.DoesNotExist:
-                return Response("User not found", status=status.HTTP_404_NOT_FOUND)
+            raise NotFound({'detail': 'User does not exist.'})
         
     def updateUser(self,request,pk):
         '''Being a superuser update user from the database'''
@@ -373,20 +376,28 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             user = User.objects.get(id=pk)
             serializer = UserSerializer(user)
             data = serializer.data
-            if request.data['first_name'] is not None:data['first_name'] = request.data['first_name']
-            if request.data['last_name'] is not None:data['last_name'] = request.data['last_name']
-            if request.data['email'] is not None:data['email'] = request.data['email']
-            if request.data['is_staff'] is not None:data['is_staff'] = request.data['is_staff']
-            if request.data['is_superuser'] is not None:data['is_superuser'] = request.data['is_superuser']
-            if request.data['is_active'] is not None:data['is_active'] = request.data['is_active']
-            serializer = UserSerializer(user, data=data)
+            if 'first_name' in request.data and request.data['first_name'] is not None:
+                data['first_name'] = request.data['first_name']
+            if 'last_name' in request.data and request.data['last_name'] is not None:
+                data['last_name'] = request.data['last_name']
+            if 'email' in request.data and request.data['email'] is not None:
+                data['email'] = request.data['email']                
+                data['username'] = request.data['email']
+            if 'is_staff' in request.data and request.data['is_staff'] is not None:
+                data['is_staff'] = request.data['is_staff']
+            if 'is_superuser' in request.data and request.data['is_superuser'] is not None:
+                data['is_superuser'] = request.data['is_superuser']
+            if 'is_active' in request.data and request.data['is_active'] is not None:
+                data['is_active'] = request.data['is_active']
+            
+            serializer = UserUpdateSerializer(user, data=data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
+                return Response({'detail': f'User {serializer.data['email']} updated successfully' })
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
-        except User.DoesNotExist as error:
-            return Response(error, status=status.HTTP_404_NOT_FOUND)
+                raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
+        except User.DoesNotExist:
+            raise NotFound({'detail': 'User does not exist'})
 
     def blockUnblockUser(self,request,pk):        
         '''Being a superuser update user from the database'''
@@ -398,8 +409,8 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             serializer = UserSerializer(user, data=data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
+                return Response({'detail':f'{serializer.data['email']} updated successfully to {serializer.data['is_active']}'},status=status.HTTP_202_ACCEPTED)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+                raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
         except User.DoesNotExist as error:
-            return Response(error, status=status.HTTP_404_NOT_FOUND)
+            raise NotFound({'detail': 'User does not exist'})

@@ -37,6 +37,20 @@ class UserSerializerWithToken(UserSerializer):
         token = RefreshToken.for_user(obj)
         return str(token.access_token)
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email','username','is_staff','is_active','is_superuser','first_name','last_name']
+        # Fields optional during update
+        extra_kwargs = {
+            'email': {'required': False},
+            'is_staff': {'required': False},
+            'is_active': {'required': False},
+            'is_superuser': {'required': False},
+            'first_name': {'required': False},
+            'last_name': {'required': False},
+            'username':{'required': False}
+        }
 
 class ExpenseSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
@@ -91,13 +105,34 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['id']
 
+class CategoryUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCategory
+        fields = ['name','description','hexColor']
+        # Fields optional during update
+        extra_kwargs = {
+            'name': {'required': False},
+            'description': {'required': False},
+            'hexColor': {'required': False},         
+        }
+
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
         fields = '__all__'
         read_only_fields = ['id']
 
-
+class SubCategoryUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCategory
+        fields = ['name','description','hexColor','category']
+        # Fields optional during update
+        extra_kwargs = {
+            'name': {'required': False},
+            'description': {'required': False},
+            'hexColor': {'required': False},
+            'category': {'required': False},            
+        }
 class ChatSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatSession

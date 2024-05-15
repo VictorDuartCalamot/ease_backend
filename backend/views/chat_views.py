@@ -7,6 +7,7 @@ from backend.models import ChatSession
 from backend.serializers import ChatSessionSerializer
 from backend.permissions import HasMorePermsThanUser
 from django.db.models import Q
+from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
 import random
 
 User = get_user_model()
@@ -27,7 +28,7 @@ class ChatSessionViewSet(viewsets.ModelViewSet):
             admins = User.objects.filter((Q(is_staff=True) | Q(is_superuser=True)) & Q(is_active=True)).order_by('?').first()
             if not admins:
                 #logger.error(f'No admins available to create a new chat session')
-                return Response({'error': 'No admins available'}, status=status.HTTP_404_NOT_FOUND)
+                raise NotFound({'detail': 'No admins available'})
             chat = ChatSession.objects.create(customer=request.user, admin=admins, is_active=True)
         
         return Response({'chat_id': chat.id}, status=status.HTTP_200_OK)
@@ -38,6 +39,23 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
     # Establece las clases de permisos por defecto para todas las acciones en el ViewSet
     permission_classes = [IsAuthenticated, HasMorePermsThanUser]
 
+    @action(detail=False, methods=['get'], url_path='get-chats')
+    def getChats(self, request):
+        '''
+        Retrieve all chat sessions for the authenticated user
+        '''
+        try:
+            user = request.user.id
+            chat_sessions = ChatSession.objects.filter(Q(admin=user))
+            if not chat_sessions.exists():
+                raise NotFound({'detail': 'No chat sessions found for the user.'})
+            serializer = ChatSessionSerializer(chat_sessions, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except NotFound as e:
+            return Response({'detail': str(e)}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
     @action(detail=True, methods=['post'], url_path='close-chat')
     def close_chat(self, request, pk=None):
         '''
@@ -47,6 +65,6 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
         chat = self.get_object()
         if chat:
             chat.delete()
-            return Response({'status': 'chat closed', 'chat_id': pk},status=status.HTTP_202_ACCEPTED)
+            return Response({'message': f'chat {pk} closed'},status=status.HTTP_202_ACCEPTED)
         else:
-            return Response({'status': 'chat not found'}, status=status.HTTP_404_NOT_FOUND)
+            raise NotFound({'detail': 'chat not found'})
