@@ -71,7 +71,7 @@ class ExpenseListView(viewsets.ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Print out the errors for debugging
-            raise ValidationError(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+            raise ValidationError(serializer.errors)  
 
     def after_create(self, instance):
         '''
@@ -100,7 +100,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             expense = Expense.objects.get(id=pk, user=request.user.id)
         except Expense.DoesNotExist:
             # If the expense object does not exist for the specified user, return a 404 Not Found response
-            raise NotFound({'detail': 'Expense not found.'}, status=status.HTTP_404_NOT_FOUND)                
+            raise NotFound({'detail': 'Expense not found.'})                
         serializer = ExpenseSerializer(expense)         
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -140,7 +140,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
-            raise ValidationError(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError(serializer.errors)
 #Income
 class IncomeListView(viewsets.ModelViewSet):
     queryset = Income.objects.all()
@@ -245,7 +245,7 @@ class IncomeDetailView(viewsets.ModelViewSet):
             income.delete()
             return Response({'message':'Income deleted successfully!'},status=status.HTTP_204_NO_CONTENT)
         except Income.DoesNotExist:
-            raise NotFound({'detail':'Income not found.'}, status=status.HTTP_404_NOT_FOUND)
+            raise NotFound({'detail':'Income not found.'})
     
     def update(self, request, *args,**kwargs):
 
@@ -296,7 +296,7 @@ class CategoryListView(viewsets.ModelViewSet):
         Create new category
         '''       
         if request.user.is_staff == False and request.user.is_superuser == False:
-            return Response({'error': 'User has not enough permission'}, status=status.HTTP_403_FORBIDDEN)    
+            raise AuthenticationFailed({'detail': 'User has not enough permission'})
         serializer = CategorySerializer(data=request.data) 
         #Check if the serializer is valid
         if serializer.is_valid():            
@@ -357,7 +357,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
-            raise ValidationError({'detail': f'Error occurred trying to update the category: {serializer.errors}'}, status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError({'detail': f'Error occurred trying to update the category: {serializer.errors}'})
 class SubCategoryListView(viewsets.ModelViewSet):
     ''''''
     queryset = SubCategory.objects.all()
@@ -392,7 +392,7 @@ class SubCategoryListView(viewsets.ModelViewSet):
             serializer.save()  # Save the income object to the database
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            raise ValidationError(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+            raise ValidationError(serializer.errors)
 
 class SubCategoryDetailView(viewsets.ModelViewSet):
     ''''''
@@ -445,4 +445,4 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError(serializer.errors)
