@@ -65,12 +65,12 @@ def registerUser(request):
     try:
         EmailValidator()(email)
     except DjangoValidationError as e:
-        raise ValidationError({'detail': e.messages})
+        raise ValidationError({'detail': 'Credentials are incorrect'})
 
     try:
         validate_password(password)
     except DjangoValidationError as e:
-        raise ValidationError({'password': e.messages})
+        raise ValidationError({'detail': 'Credentials are incorrect'})
         
     try:
         user = User.objects.create(
@@ -117,9 +117,13 @@ def change_password(request):
     current_password = request.data.get("current_password", "").strip()
     new_password = request.data.get("new_password", "").strip()
 
+    
+
     # Check if the provided current password matches the hash with the one in the database
     if not check_password(current_password, user_obj.password):
-        raise ValidationError('Passwords do not match.')
+        raise ValidationError('Current password is incorrect.')
+        
+
 
     # Set the new password and save the user object
     user_obj.set_password(new_password)
@@ -398,7 +402,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             serializer = UserSerializer(user, data=data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
+                return Response({'detail':f'{serializer.data['email']} updated successfully to {serializer.data['is_active']}'},status=status.HTTP_202_ACCEPTED)
             else:
                 raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
         except User.DoesNotExist as error:
