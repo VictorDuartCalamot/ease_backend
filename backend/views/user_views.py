@@ -378,10 +378,13 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             data = serializer.data
             if request.data['first_name'] is not None:data['first_name'] = request.data['first_name']
             if request.data['last_name'] is not None:data['last_name'] = request.data['last_name']
-            if request.data['email'] is not None:data['email'] = request.data['email']
+            if request.data['email'] is not None:
+                data['email'] = request.data['email']
+                data['username'] = request.data['email']
             if request.data['is_staff'] is not None:data['is_staff'] = request.data['is_staff']
             if request.data['is_superuser'] is not None:data['is_superuser'] = request.data['is_superuser']
             if request.data['is_active'] is not None:data['is_active'] = request.data['is_active']
+            
             serializer = UserUpdateSerializer(user, data=data)
             if serializer.is_valid():
                 serializer.save()
