@@ -105,13 +105,34 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['id']
 
+class CategoryUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCategory
+        fields = ['name','description','hexColor']
+        # Fields optional during update
+        extra_kwargs = {
+            'name': {'required': False},
+            'description': {'required': False},
+            'hexColor': {'required': False},         
+        }
+
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
         fields = '__all__'
         read_only_fields = ['id']
 
-
+class SubCategoryUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCategory
+        fields = ['name','description','hexColor','category']
+        # Fields optional during update
+        extra_kwargs = {
+            'name': {'required': False},
+            'description': {'required': False},
+            'hexColor': {'required': False},
+            'category': {'required': False},            
+        }
 class ChatSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatSession

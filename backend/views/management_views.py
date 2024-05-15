@@ -3,18 +3,19 @@ from datetime import datetime
 from rest_framework.response import Response
 from rest_framework import status,viewsets
 from rest_framework.permissions import IsAuthenticated
-from backend.permissions import IsOwnerOrReadOnly,HasMorePermsThanUser
-from backend.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer,SubCategorySerializer,IncomeUpdateSerializer,ExpenseUpdateSerializer
-from backend.models import Expense, Income, Category, SubCategory
+from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
 from django.utils import timezone
 from django.db.models import Q
-from backend.utils import filter_by_date_time
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from django.db import transaction
 from guardian.shortcuts import assign_perm
 from guardian.models import UserObjectPermission
-from django.db.models.signals import pre_delete
-from django.dispatch import receiver
-from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
+from backend.utils import filter_by_date_time
+from backend.permissions import IsOwnerOrReadOnly,HasMorePermsThanUser
+from backend.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer,SubCategorySerializer,IncomeUpdateSerializer,ExpenseUpdateSerializer,SubCategoryUpdateSerializer,CategoryUpdateSerializer
+from backend.models import Expense, Income, Category, SubCategory
+
 '''
 Este archivo es para las vistas de gastos e ingresos.
 '''
@@ -348,7 +349,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
         category = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
         
         # Serialize the income data with the updated data from request
-        serializer = CategorySerializer(category, data=request.data)
+        serializer = CategoryUpdateSerializer(category, data=request.data)
         
         # Validate the serializer data
         if serializer.is_valid():
@@ -436,7 +437,7 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
         subCategory = self.get_object() #The get_object() method retrieves the PK from the URL and looks for the object using that        
         
         # Serialize the income data with the updated data from request
-        serializer = SubCategorySerializer(subCategory, data=request.data)
+        serializer = SubCategoryUpdateSerializer(subCategory, data=request.data)
         
         # Validate the serializer data
         if serializer.is_valid():
