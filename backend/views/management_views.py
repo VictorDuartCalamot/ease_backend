@@ -14,7 +14,7 @@ from guardian.shortcuts import assign_perm
 from guardian.models import UserObjectPermission
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
-
+from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
 '''
 Este archivo es para las vistas de gastos e ingresos.
 '''
@@ -31,15 +31,15 @@ class ExpenseListView(viewsets.ModelViewSet):
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
-        end_time_str = request.query_params.get('end_time')        
+        end_time_str = request.query_params.get('end_time')           
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date() if end_date_str else timezone.now().date()
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
-        except ValueError:
-            return Response({'error': 'Invalid date/time format'}, status=status.HTTP_400_BAD_REQUEST)
+        except ValidationError:
+            raise ValidationError({'detail': 'Invalid date/time format'})
                 
         expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
                      
