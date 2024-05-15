@@ -334,7 +334,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
             raise AuthenticationFailed({'detail': 'User has not enough permission to perform this action'})
         try:
         
-            if Expense.objects.filter(category=pk).exists() or Income.objects.filter(category=pk).exists():
+            if SubCategory.objects.filter(category=pk).exists() or Expense.objects.filter(category=pk).exists() or Income.objects.filter(category=pk).exists():
                 raise ValidationError({'detail': 'Cannot delete subcategory because there are related objects with the specified category'})
             
             category = Category.objects.get(pk=pk)            
