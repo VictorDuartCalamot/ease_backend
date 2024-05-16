@@ -42,6 +42,30 @@ PYTHON_VERSION
 REDIS_URL
 SECRET_KEY
 ```
+### Possible actions using the API:
+```
+User:
+  -Login
+  -Register
+  -Logout
+  -Change own password
+  -Fetch own expenses/income
+  -Create expenses/income
+  -Update own expenses/income
+  -Delete own expenses/income
+  -Create Technical support chat (send messages/get messages)
+Admin (Same actions as user plus the following ones)
+  -Fetch users
+  -Create users with same or lower role permission level
+  -Update users
+  -Delete users
+  -Fetch chats where they belong
+  -Delete chats where they belong
+SuperAdmin (Same actions as user plus admin plus the following ones)
+  -Create users with any role permission leveL
+  -Update users with any role permission level
+  -Delete users with any role permission level  
+```
 
 ### Created/Modified files:
 ```
