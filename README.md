@@ -26,7 +26,7 @@ The redis server is great, i used it to setup django channels and it works great
 
 Overall render.com is great to create projects and deploy. We have to keep in mind that im using the free version for development and testing. The specs of the servers are pretty low so in a real stage it would be necessary to upgrade or lookup for any other more affordable or that brings better cards to the table. 
 ```
-# Api root url
+# Api information
 ### Testing server:
   https://easeapi.onrender.com/
 ### Production server:
