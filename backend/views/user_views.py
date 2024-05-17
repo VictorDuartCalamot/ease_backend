@@ -42,7 +42,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             for k, v in serializer.items():
                 data[k] = v             
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
-            update_last_login()
+            update_last_login(sender=User,user=self.user)
             return data
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
