@@ -8,9 +8,10 @@ import datetime
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.chat_id = self.scope['url_route']['kwargs']['chat_id']
-        self.chat_group_name = f'chat_{self.chat_id}'
+        self.chat_uuid = self.scope['url_route']['kwargs']['chat_uuid']
+        self.chat_group_name = f'chat_{self.chat_uuid}'
         print(self.scope)
+
         # Check if user is authenticated (assuming user is already set in scope by middleware)
         if self.scope['user'].is_anonymous:
             await self.close(code=4001)  # Unauthorized
@@ -18,8 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Check if user is part of the chat
         try:
-            is_allowed = await self.is_user_in_chat_session(self.scope['user'], self.chat_id)
-            
+            is_allowed = await self.is_user_in_chat_session(self.scope['user'], self.chat_uuid)
         except OperationalError:
             await self.close(code=4004)  # Database error
             return
@@ -31,7 +31,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.close(code=4006)  # User not part of the chat
             return
 
-        # Add user to the chat group
+        # Add user to the chat group and accept the connection
         try:
             await self.channel_layer.group_add(
                 self.chat_group_name,
@@ -39,12 +39,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
             await self.accept()
 
-            # Send previous messages to the user
-            messages = await self.get_chat_messages(self.chat_id)
-            serialized_messages = ChatMessageSerializer(messages, many=True).data
-            await self.send(text_data=json.dumps(serialized_messages))
-        except Exception:
+        except Exception as e:
+            print(f"Error while adding to group: {e}")
             await self.close(code=4007)  # Error while adding to group
+            return
+
+        # Send previous messages to the user (if any)
+        try:
+            messages = await self.get_chat_messages(self.chat_uuid)
+            if messages.exists():
+                serialized_messages = ChatMessageSerializer(messages, many=True).data
+                await self.send(text_data=json.dumps(serialized_messages))
+        except Exception as e:
+            print(f"Error while retrieving messages: {e}")
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -57,7 +64,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json['message']
 
         # Save message to database
-        await self.save_message(self.scope['user'], self.chat_id, message)
+        await self.save_message(self.scope['user'], self.chat_uuid, message)
 
         # Send message to chat group
         await self.channel_layer.group_send(
@@ -83,14 +90,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def is_user_in_chat_session(self, user, chat_id):
-        session = ChatSession.objects.get(id=chat_id)
+    def is_user_in_chat_session(self, user, chat_uuid):
+        session = ChatSession.objects.get(id=chat_uuid)
         return session.admin == user or session.customer == user
 
     @database_sync_to_async
-    def get_chat_messages(self, chat_id):
-        return ChatMessage.objects.filter(chat_session_id=chat_id).order_by('timestamp')
+    def get_chat_messages(self, chat_uuid):
+        return ChatMessage.objects.filter(chat_session_id=chat_uuid).order_by('timestamp')
 
     @database_sync_to_async
-    def save_message(self, user, chat_id, message):
-        ChatMessage.objects.create(user=user, chat_session_id=chat_id, message=message)
+    def save_message(self, user, chat_uuid, message):
+        ChatMessage.objects.create(user=user, chat_session_id=chat_uuid, message=message)
