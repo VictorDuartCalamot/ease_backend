@@ -65,7 +65,7 @@ class BlacklistedToken(models.Model):
 
 #DJANGO CHANNELS
 class ChatSession(models.Model):
-    id = models.AutoField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     is_active = models.BooleanField(default=True, verbose_name="Chat Activo")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="customer_chats", on_delete=models.CASCADE, verbose_name="Cliente")
