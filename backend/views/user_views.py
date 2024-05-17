@@ -62,6 +62,10 @@ def registerUser(request):
     name = (data['first_name']).strip()
     last_name = (data['last_name']).strip()
     password = (data['password']).strip()
+
+    if User.objects.filter(email=email).exists():
+        raise ValidationError({'detail': 'User already exists'})
+    
     try:
         EmailValidator()(email)
     except DjangoValidationError as e:
