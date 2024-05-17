@@ -400,18 +400,22 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         else:
             raise ValidationError({'detail':f'Error updating user {user.email}\n{serializer.errors}'})
 
-    def blockUnblockUser(self,request,pk):        
+    def blockUnblockUser(self, request, pk):
         '''Being a superuser update user from the database'''
-        try:                     
-            user = User.objects.get(id=pk) 
-            serializer = UserSerializer(user)                    
-            data = serializer.data            
-            data['is_active'] = request.data['is_active']               
-            serializer = UserSerializer(user, data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({'detail':f'{serializer.data['email']} updated successfully to {serializer.data['is_active']}'},status=status.HTTP_202_ACCEPTED)
-            else:
-                raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
-        except User.DoesNotExist as error:
+        try:
+            user = User.objects.get(id=pk)
+        except User.DoesNotExist:
             raise NotFound({'detail': 'User does not exist'})
+
+        # Create a new dictionary to hold the updated data
+        updated_data = {
+            'is_active': request.data.get('is_active', False)
+        }
+
+        serializer = UserSerializer(user, data=updated_data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'detail': f'{serializer.data["email"]} updated successfully to {serializer.data["is_active"]}'}, status=status.HTTP_202_ACCEPTED)
+        else:
+            raise ValidationError({'detail': f'Error updating user {user.email}\n{serializer.errors}'})
