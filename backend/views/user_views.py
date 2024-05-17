@@ -320,7 +320,8 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         last_name = data.get('last_name', '').strip()
         password = data.get('password', '').strip()
         is_staff = data.get('is_staff', False)
-        is_superuser = data.get('is_superuser', False)                        
+        is_superuser = data.get('is_superuser', False)
+        is_active = data.get('is_active', False)                        
         
         if is_superuser is not None:
             if request.user.is_staff and is_superuser:
@@ -337,7 +338,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 email=email,
                 is_staff=is_staff,  # Default to False if not provided
                 is_superuser=is_superuser,  # Default to False if not provided
-                is_active=True,
+                is_active=is_active,
                 password=make_password(password)
             )
             
@@ -370,47 +371,51 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         except User.DoesNotExist:
             raise NotFound({'detail': 'User does not exist.'})
         
-    def updateUser(self,request,pk):
+    def updateUser(self, request, pk):
         '''Being a superuser update user from the database'''
         try:
             user = User.objects.get(id=pk)
-            serializer = UserSerializer(user)
-            data = serializer.data
-            if 'first_name' in request.data and request.data['first_name'] is not None:
-                data['first_name'] = request.data['first_name']
-            if 'last_name' in request.data and request.data['last_name'] is not None:
-                data['last_name'] = request.data['last_name']
-            if 'email' in request.data and request.data['email'] is not None:
-                data['email'] = request.data['email']                
-                data['username'] = request.data['email']
-            if 'is_staff' in request.data and request.data['is_staff'] is not None:
-                data['is_staff'] = request.data['is_staff']
-            if 'is_superuser' in request.data and request.data['is_superuser'] is not None:
-                data['is_superuser'] = request.data['is_superuser']
-            if 'is_active' in request.data and request.data['is_active'] is not None:
-                data['is_active'] = request.data['is_active']
-            
-            serializer = UserUpdateSerializer(user, data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({'detail': f'User {serializer.data['email']} updated successfully' })
-            else:
-                raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
         except User.DoesNotExist:
             raise NotFound({'detail': 'User does not exist'})
 
-    def blockUnblockUser(self,request,pk):        
+        # Create a new dictionary to hold the updated data
+        updated_data = {
+            'first_name': request.data.get('first_name', user.first_name),
+            'last_name': request.data.get('last_name', user.last_name),
+            'email': request.data.get('email', user.email),
+            'is_staff': request.data.get('is_staff', user.is_staff),
+            'is_superuser': request.data.get('is_superuser', user.is_superuser),
+            'is_active': request.data.get('is_active', user.is_active)
+        }
+
+        # Update the username if email is provided and not None
+        if 'email' in request.data and request.data['email'] is not None:
+            updated_data['username'] = request.data['email']
+
+        serializer = UserUpdateSerializer(user, data=updated_data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'detail': f'User {serializer.data["email"]} updated successfully'})
+        else:
+            raise ValidationError({'detail':f'Error updating user {user.email}\n{serializer.errors}'})
+
+    def blockUnblockUser(self, request, pk):
         '''Being a superuser update user from the database'''
-        try:                     
-            user = User.objects.get(id=pk) 
-            serializer = UserSerializer(user)                    
-            data = serializer.data            
-            data['is_active'] = request.data['is_active']               
-            serializer = UserSerializer(user, data=data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response({'detail':f'{serializer.data['email']} updated successfully to {serializer.data['is_active']}'},status=status.HTTP_202_ACCEPTED)
-            else:
-                raise ValidationError(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)        
-        except User.DoesNotExist as error:
+        try:
+            user = User.objects.get(id=pk)
+        except User.DoesNotExist:
             raise NotFound({'detail': 'User does not exist'})
+
+        # Create a new dictionary to hold the updated data
+        updated_data = {
+            'is_active': request.data.get('is_active', False)
+        }
+
+        serializer = UserSerializer(user, data=updated_data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'detail': f'{serializer.data["email"]} updated successfully to {serializer.data["is_active"]}'}, status=status.HTTP_202_ACCEPTED)
+        else:
+            raise ValidationError({'detail': f'Error updating user {user.email}\n{serializer.errors}'})
