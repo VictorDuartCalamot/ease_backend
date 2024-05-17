@@ -398,7 +398,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
             serializer.save()
             return Response({'detail': f'User {serializer.data["email"]} updated successfully'})
         else:
-            raise ValidationError(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            raise ValidationError({'detail':f'Error updating user {user.email}\n{serializer.errors}'})
 
     def blockUnblockUser(self,request,pk):        
         '''Being a superuser update user from the database'''
