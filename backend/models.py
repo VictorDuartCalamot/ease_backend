@@ -78,7 +78,7 @@ class ChatSession(models.Model):
 class ChatMessage(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     message = models.CharField(max_length=255)
-    chat_session = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='messages')
+    chat_session = models.ForeignKey(ChatSession, on_delete=models.CASCADE, related_name='messages')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     class Meta:
