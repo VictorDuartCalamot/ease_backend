@@ -36,7 +36,8 @@ Overall render.com is great to create projects and deploy. We have to keep in mi
 ## ER Diagram
 [ER Diagram lucid chart link](https://lucid.app/lucidchart/c99734df-2ad2-4e88-abec-458289e6d9c6/edit?viewport_loc=-45%2C3%2C2164%2C1081%2C0_0&invitationId=inv_457726de-bf5b-4beb-9ab1-a806997d89c8)
 
-![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/9fa76905-809d-43de-83c6-3eab6013566e)
+![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/335e28ee-94bc-4d42-882e-f9352ae1293a)
+
 
 
 # Api information
