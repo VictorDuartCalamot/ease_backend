@@ -96,7 +96,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_chat_messages(self, chat_uuid):
-        return ChatMessage.objects.filter(chat_session=chat_uuid).order_by('timestamp')
+        messages = ChatMessage.objects.filter(chat_session=chat_uuid).order_by('timestamp')
+        # Serialize chat messages
+        serialized_messages = ChatMessageSerializer(messages, many=True).data        
+        return serialized_messages
 
     @database_sync_to_async
     def save_message(self, user, chat_uuid, message):
