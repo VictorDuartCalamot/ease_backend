@@ -8,8 +8,8 @@ import datetime
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.chat_uuid = self.scope['url_route']['kwargs']['chat_uuid']
-        self.chat_group_name = f'chat_{self.chat_uuid}'
+        self.chat_id = self.scope['url_route']['kwargs']['chat_id']
+        self.chat_group_name = f'chat_{self.chat_id}'
         print(self.scope)
         # Check if user is authenticated (assuming user is already set in scope by middleware)
         if self.scope['user'].is_anonymous:
@@ -18,7 +18,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Check if user is part of the chat
         try:
-            is_allowed = await self.is_user_in_chat_session(self.scope['user'], self.chat_uuid)
+            is_allowed = await self.is_user_in_chat_session(self.scope['user'], self.chat_id)
             
         except OperationalError:
             await self.close(code=4004)  # Database error
@@ -40,7 +40,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.accept()
 
             # Send previous messages to the user
-            messages = await self.get_chat_messages(self.chat_uuid)
+            messages = await self.get_chat_messages(self.chat_id)
             serialized_messages = ChatMessageSerializer(messages, many=True).data
             await self.send(text_data=json.dumps(serialized_messages))
         except Exception:
@@ -57,7 +57,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json['message']
 
         # Save message to database
-        await self.save_message(self.scope['user'], self.chat_uuid, message)
+        await self.save_message(self.scope['user'], self.chat_id, message)
 
         # Send message to chat group
         await self.channel_layer.group_send(
@@ -83,14 +83,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def is_user_in_chat_session(self, user, chat_uuid):
-        session = ChatSession.objects.get(id=chat_uuid)
+    def is_user_in_chat_session(self, user, chat_id):
+        session = ChatSession.objects.get(id=chat_id)
         return session.admin == user or session.customer == user
 
     @database_sync_to_async
-    def get_chat_messages(self, chat_uuid):
-        return ChatMessage.objects.filter(chat_session_id=chat_uuid).order_by('timestamp')
+    def get_chat_messages(self, chat_id):
+        return ChatMessage.objects.filter(chat_session_id=chat_id).order_by('timestamp')
 
     @database_sync_to_async
-    def save_message(self, user, chat_uuid, message):
-        ChatMessage.objects.create(user=user, chat_session_id=chat_uuid, message=message)
+    def save_message(self, user, chat_id, message):
+        ChatMessage.objects.create(user=user, chat_session_id=chat_id, message=message)
