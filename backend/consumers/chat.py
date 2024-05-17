@@ -47,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send previous messages to the user (if any)
         try:
             messages = await self.get_chat_messages(self.chat_uuid)
-            if messages.exists():
+            if messages:
                 serialized_messages = ChatMessageSerializer(messages, many=True).data
                 await self.send(text_data=json.dumps(serialized_messages))
         except Exception as e:
