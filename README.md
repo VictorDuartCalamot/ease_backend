@@ -66,7 +66,6 @@ SuperAdmin (Same actions as user plus admin plus the following ones)
   -Update users with any role permission level
   -Delete users with any role permission level  
 ```
-
 ### Created/Modified files:
 ```
 ____________________________________________
@@ -107,37 +106,347 @@ BASEURL:
 | User: |
  -------
 users/login/
+  *POST
+    Required fields:
+      - username
+      - password
 users/register/
+  *POST
+    Required fields:
+      -first_name
+      -last_name
+      -email
+      -password
+
 users/logout/
-users/loginLog/
-users/loginLog/<uuid:pk>/
+  *GET
+    Required header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+
 users/changepwd/
+  Required fields:
+    -current_password
+    -new_password
+  Required header:
+    -Authorization: Token <token>
+    -Content-Type: application/json
+users/loginLog/
+  *GET
+    Optional Params:
+      -start_date
+      -end_date
+      -start_time
+      -end_time
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *POST
+      #Cant't be used directly, its used automatically on login  
+  Required Header:
+    -Authorization: Token <token>
+    -Content-Type: application/json  
+
+users/loginLog/<uuid:pk>/
+  *GET
+    Required data in the url:
+      -<UUID>
+    Required Header:
+    -Authorization: Token <token>
+    -Content-Type: application/json
+  *PUT
+    Required data in the url:
+      -<UUID>
+    Required Fields:
+      -creation_date
+      -creation_time
+      -platform_OS
+      -successful
+      -description
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *DELETE
+    Required data in the url:
+      -<UUID>
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json    
+
  _____________
 | Management: |
  -------------
 management/expense/
+  *GET
+    Optional Params
+      -start_date
+      -end_date
+      -start_time
+      -end_time
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *POST
+    Required Fields:
+      -title
+      -description
+      -amount
+      -creation_date
+      -creation_time
+      -category
+      -subcategory
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  
 management/expense/<uuid:pk>/
-
+  *GET
+    Required data in the url:
+      -<UUID>
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *PUT
+    Required data in the url:
+      -<UUID>
+    Optional Fields:
+      -title
+      -description
+      -amount
+      -creation_date
+      -creation_time
+      -category
+      -subcategory
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *DELETE
+    Required data in the url:
+      -<UUID>
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+      
 management/income/
+  *GET
+      Optional Params
+        -start_date
+        -end_date
+        -start_time
+        -end_time
+      Required Header:
+        -Authorization: Token <token>
+        -Content-Type: application/json
+  *POST
+    Required Fields:
+        -title
+        -description
+        -amount
+        -creation_date
+        -creation_time
+        -category
+        -subcategory
+      Required Header:
+        -Authorization: Token <token>
+        -Content-Type: application/json
+
 management/income/<uuid:pk>/
+  *GET
+    Required data in the url:
+      -<UUID>
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *PUT
+    Required data in the url:
+      -<UUID>
+    Optional Fields:
+      -title
+      -description
+      -amount
+      -creation_date
+      -creation_time
+      -category
+      -subcategory
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+   *DELETE
+      Required data in the url:
+        -<UUID>
+      Required Header:
+        -Authorization: Token <token>
+        -Content-Type: application/json
 
 management/category/
+  *GET    
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *POST
+    Required Fields:
+      -name
+      -description
+      -type
+      -hexColor
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+
 management/category/<uuid:pk>/
+  *GET
+    Required data in the url:
+      -<UUID>
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *PUT
+    Required data in the url:
+      -<UUID>
+    Optional Fields:
+      -name
+      -description
+      -type
+      -hexColor
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *Delete
+    Required data in the url:
+      -<UUID>
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
 
 management/subcategory/
+  *GET    
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *POST
+    Required Fields:
+      -name
+      -description
+      -type
+      -hexColor
+      -category
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+
 management/subcategory/<uuid:pk>/
+  *GET
+    Required data in the url:
+      -<UUID>
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *PUT
+    Required data in the url:
+      -<UUID>
+    Optional Fields:
+      -name
+      -description
+      -type
+      -hexColor
+      -category
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *Delete
+    Required data in the url:
+      -<UUID>
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
  ________
 | Chats: |
  --------
-chats/chat/
+
 chats/get-or-create/
+  *POST
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json
+
 chats/<int:pk>/close/
+  *POST
+    Required data in the url:
+      -<INT>
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json
+
+chats/chat/
+  *GET
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json
+
  ___________________
 | Admin/SuperAdmin: |
  -------------------
 superadmin/user/
+  *GET
+    Optional Params:
+      -start_date
+      -end_date
+      -is_active
+      -is_staff
+      -is_superuser
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *POST
+    Required Fields
+      -email
+      -first_name
+      -last_name
+      -password
+    Optional Fields
+      -is_staff
+      -is_superuser
+      -is_active
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  
 superadmin/user/<int:pk>/
+  *GET
+    Required data in the url:
+      -<INT>    
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *PUT
+    Required data in the url:
+      -<INT> 
+    Optional Fields:
+      -first_name
+      -last_name
+      -email
+      -is_staff
+      -is_superuser
+      -is_active
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json
+  *DELETE
+    Required data in the url:
+      -<INT>
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json 
+    
 superadmin/user/block/<int:pk>/
+  *PUT
+    Required data in the url:
+      -<INT>       
+    Optional Field:
+      -is_active
+    Required Header
+      -Authorization: Token <token>
+      -Content-Type: application/json
 ```
 ## WebSocket Endpoint:
 ```
