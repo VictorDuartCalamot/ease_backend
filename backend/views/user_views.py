@@ -320,7 +320,8 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         last_name = data.get('last_name', '').strip()
         password = data.get('password', '').strip()
         is_staff = data.get('is_staff', False)
-        is_superuser = data.get('is_superuser', False)                        
+        is_superuser = data.get('is_superuser', False)
+        is_active = data.get('is_active', False)                        
         
         if is_superuser is not None:
             if request.user.is_staff and is_superuser:
@@ -337,7 +338,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 email=email,
                 is_staff=is_staff,  # Default to False if not provided
                 is_superuser=is_superuser,  # Default to False if not provided
-                is_active=True,
+                is_active=is_active,
                 password=make_password(password)
             )
             
