@@ -56,8 +56,6 @@ class Income(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
 
-   
-
 class BlacklistedToken(models.Model):
     token = models.CharField(max_length=255, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -75,3 +73,13 @@ class ChatSession(models.Model):
     
     def __str__(self):
         return f"Chat {self.id} entre {self.customer} y {self.admin}"
+    
+    
+class ChatMessage(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    message = models.CharField(max_length=255)
+    chat_session = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='messages')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ['timestamp']

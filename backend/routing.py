@@ -1,5 +1,5 @@
 from django.urls import re_path
-from .consumers import ChatConsumer
+from .consumers.chat import ChatConsumer
 '''
     Route for the websocket connection
 '''
