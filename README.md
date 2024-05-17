@@ -27,11 +27,15 @@ The redis server is great, i used it to setup django channels and it works great
 Overall render.com is great to create projects and deploy. We have to keep in mind that im using the free version for development and testing. The specs of the servers are pretty low so in a real stage it would be necessary to upgrade or lookup for any other more affordable or that brings better cards to the table. 
 ```
 # Database info
-### Class Diagram
+## Class Diagram
+[Class Diagrama lucid chart link](https://lucid.app/lucidchart/312df9b3-ee00-47b2-adf6-d349ac8c9b9b/edit?viewport_loc=-152%2C33%2C2674%2C1336%2C0_0&invitationId=inv_171d3cc6-46ce-40d5-b74a-ef61c904353a)
+
 ![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/ce7c5341-b446-48f3-894c-2cd0363eab81)
 
 
-### ER Diagram
+## ER Diagram
+[ER Diagram lucid chart link](https://lucid.app/lucidchart/c99734df-2ad2-4e88-abec-458289e6d9c6/edit?viewport_loc=-45%2C3%2C2164%2C1081%2C0_0&invitationId=inv_457726de-bf5b-4beb-9ab1-a806997d89c8)
+
 ![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/9fa76905-809d-43de-83c6-3eab6013566e)
 
 
