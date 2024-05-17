@@ -139,7 +139,8 @@ class ChatSessionSerializer(serializers.ModelSerializer):
         fields = ['id', 'is_active', 'created_at', 'customer', 'admin']        
         
         
-class ChatMessageSerializer(serializers.ModelSerializer):    
+class ChatMessageSerializer(serializers.ModelSerializer):  
+    user = serializers.StringRelatedField()  # Use StringRelatedField for simple representation  
 
     class Meta:
         model = ChatMessage
