@@ -1,3 +1,5 @@
+### Setup API in your machine using windows.
+```
 #Create virtual enviroment
 python -m venv venv
 
@@ -10,23 +12,48 @@ pip install daphne "twisted[tls]" --no-deps
 
 #Copy packages to requirements.txt
 pip freeze > requirements.txt
+```
 
+# Render.com server hosting:
+```
+I used render.com mainly because its FREE to create several web services to deploy the API using github, you get a "custom" url and its pretty easy to setup.
+```
+## Database and redis on render.com
+```
 
-#Api root url
-Testing server:
+Since i used DRF for the api, i`ve seen that postgresql is one of the recommended databases to pair with render.com, it offers a free postgresql database, the only bad thing is that the database gets deleted after 3 months unless you pay for an upgraded instance.
+The redis server is great, i used it to setup django channels and it works great so far.
+
+Overall render.com is great to create projects and deploy. We have to keep in mind that im using the free version for development and testing. The specs of the servers are pretty low so in a real stage it would be necessary to upgrade or lookup for any other more affordable or that brings better cards to the table. 
+```
+# Api root url
+### Testing server:
   https://easeapi.onrender.com/
-Production server:
+### Production server:
   https://ease-backend-xsi2.onrender.com/
 
-Created/Modified files:
+### Enviromental variables:
+```
+ALLOWED_HOSTS
+DATABASE_URL
+DEBUG
+OPENAI_KEY
+PYTHON_VERSION
+REDIS_URL
+SECRET_KEY
+```
 
-#Djangocrud
+### Created/Modified files:
+```
+____________________________________________
+
+Djangocrud
 --------------------------------------------
 djangocrud/settings.py
 djangocrud/urls.py
 djangocrud/asgi.py
 
-#Backend
+Backend
 --------------------------------------------
 backend/utils.py
 backend/serializers.py
@@ -45,47 +72,50 @@ backend/urls/admin_urls.py
 backend/urls/management_urls.py
 backend/urls/user_urls.py
 backend/urls/chat_urls.py
-________________________________________________________
-
-HTTP/HTTPS Endpoints:
+____________________________________________
+```
+## HTTP/HTTPS Endpoints:
+```
 BASEURL: 
   https://easeapi.onrender.com/api/
   https://ease-backend-xsi2.onrender.com/api/
-
-User:
---------------------------------------------
+ _______
+| User: |
+ -------
 users/login/
 users/register/
 users/logout/
 users/loginLog/
 users/loginLog/<uuid:pk>/
 users/changepwd/
-
-Management:
---------------------------------------------
+ _____________
+| Management: |
+ -------------
 management/expense/
 management/expense/<uuid:pk>/
--
+
 management/income/
 management/income/<uuid:pk>/
--
+
 management/category/
 management/category/<uuid:pk>/
--
+
 management/subcategory/
 management/subcategory/<uuid:pk>/
-
-Chats:
---------------------------------------------
+ ________
+| Chats: |
+ --------
 chats/chat/
 chats/get-or-create/
 chats/<int:pk>/close/
-
-Admin/SuperAdmin:
---------------------------------------------
+ ___________________
+| Admin/SuperAdmin: |
+ -------------------
 superadmin/user/
 superadmin/user/<int:pk>/
 superadmin/user/block/<int:pk>/
-
-WebSocket Endpoint:
+```
+## WebSocket Endpoint:
+```
 wss://BASEURL/ws/support/chat/<chatid>/?token=<user token>
+```
