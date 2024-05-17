@@ -86,7 +86,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'user': user,
             'message': message,
-            'timestamp': timestamp
+            'timestamp': timestamp                    
         }))
 
     @database_sync_to_async
@@ -100,4 +100,4 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, user, chat_uuid, message):
-        ChatMessage.objects.create(user=user, id=chat_uuid, message=message)
+        ChatMessage.objects.create(user=user, chat_session_id=chat_uuid, message=message)
