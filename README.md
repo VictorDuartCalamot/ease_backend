@@ -14,7 +14,7 @@ pip install daphne "twisted[tls]" --no-deps
 pip freeze > requirements.txt
 ```
 
-# Render.com server hosting:
+## Render.com server hosting:
 ```
 I used render.com mainly because its FREE to create several web services to deploy the API using github, you get a "custom" url and its pretty easy to setup.
 ```
@@ -26,6 +26,15 @@ The redis server is great, i used it to setup django channels and it works great
 
 Overall render.com is great to create projects and deploy. We have to keep in mind that im using the free version for development and testing. The specs of the servers are pretty low so in a real stage it would be necessary to upgrade or lookup for any other more affordable or that brings better cards to the table. 
 ```
+# Database info
+### Class Diagram
+![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/ce7c5341-b446-48f3-894c-2cd0363eab81)
+
+
+### ER Diagram
+![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/9fa76905-809d-43de-83c6-3eab6013566e)
+
+
 # Api information
 ### Testing server:
   https://easeapi.onrender.com/
