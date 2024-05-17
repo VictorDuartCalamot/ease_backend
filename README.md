@@ -125,12 +125,13 @@ users/logout/
       -Content-Type: application/json
 
 users/changepwd/
-  Required fields:
-    -current_password
-    -new_password
-  Required header:
-    -Authorization: Token <token>
-    -Content-Type: application/json
+  *PUT
+    Required fields:
+      -current_password
+      -new_password
+    Required header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
 users/loginLog/
   *GET
     Optional Params:
@@ -229,26 +230,26 @@ management/expense/<uuid:pk>/
       
 management/income/
   *GET
-      Optional Params
-        -start_date
-        -end_date
-        -start_time
-        -end_time
-      Required Header:
-        -Authorization: Token <token>
-        -Content-Type: application/json
+    Optional Params
+      -start_date
+      -end_date
+      -start_time
+      -end_time
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
   *POST
     Required Fields:
-        -title
-        -description
-        -amount
-        -creation_date
-        -creation_time
-        -category
-        -subcategory
-      Required Header:
-        -Authorization: Token <token>
-        -Content-Type: application/json
+      -title
+      -description
+      -amount
+      -creation_date
+      -creation_time
+      -category
+      -subcategory
+    Required Header:
+      -Authorization: Token <token>
+      -Content-Type: application/json
 
 management/income/<uuid:pk>/
   *GET
@@ -362,7 +363,6 @@ management/subcategory/<uuid:pk>/
  ________
 | Chats: |
  --------
-
 chats/get-or-create/
   *POST
     Required Header
