@@ -77,13 +77,13 @@ class IncomeSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     class Meta:
         model = Income
-        fields = ['id','title','description','amount','creation_date','creation_time','user','category','subcategory']
+        fields = ['id','title','description','amount','creation_date','creation_time','user','category']
         read_only_fields = ['id']        
 
 class IncomeUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Income
-        fields = ['title', 'description', 'amount', 'user', 'category', 'subcategory']
+        fields = ['title', 'description', 'amount', 'user', 'category']
         # Fields optional during update
         extra_kwargs = {
             'title': {'required': False},
