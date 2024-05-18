@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, update_last_login
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.hashers import check_password
@@ -42,6 +42,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             for k, v in serializer.items():
                 data[k] = v             
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
+            update_last_login(sender=User,user=self.user)
             return data
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
@@ -61,6 +62,10 @@ def registerUser(request):
     name = (data['first_name']).strip()
     last_name = (data['last_name']).strip()
     password = (data['password']).strip()
+
+    if User.objects.filter(email=email).exists():
+        raise ValidationError({'detail': 'User already exists'})
+    
     try:
         EmailValidator()(email)
     except DjangoValidationError as e:
