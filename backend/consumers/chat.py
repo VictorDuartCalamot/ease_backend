@@ -9,8 +9,7 @@ import datetime
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.chat_uuid = self.scope['url_route']['kwargs']['chat_uuid']
-        self.chat_group_name = f'chat_{self.chat_uuid}'
-        print(self.scope)
+        self.chat_group_name = f'chat_{self.chat_uuid}'        
 
         # Check if user is authenticated (assuming user is already set in scope by middleware)
         if self.scope['user'].is_anonymous:

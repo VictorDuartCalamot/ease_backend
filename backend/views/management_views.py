@@ -285,7 +285,7 @@ class CategoryListView(viewsets.ModelViewSet):
         '''      
         try:
             category_type = request.query_params.get('type', None)
-            if not (category_type == 'income') or (category_type == 'expense'):
+            if category_type not in ['income','expense']:
                 raise ValidationError('Invalid type for category. Only "income" and "expense" are allowed.')
         # Retrieve the income object based on the primary key (pk) and user
             if category_type:
