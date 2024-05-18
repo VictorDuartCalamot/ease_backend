@@ -284,8 +284,9 @@ class CategoryListView(viewsets.ModelViewSet):
            Get all categories
         '''      
         try:
+            category_type = request.query_params.get('type')
         # Retrieve the income object based on the primary key (pk) and user
-            category = Category.objects.all()
+            category = Category.objects.filter(type=category_type)
             serializer = CategorySerializer(category, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:

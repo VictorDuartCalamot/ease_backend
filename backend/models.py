@@ -54,7 +54,6 @@ class Income(models.Model):
     creation_time = models.TimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.PROTECT)
 
 class BlacklistedToken(models.Model):
     token = models.CharField(max_length=255, unique=True)
