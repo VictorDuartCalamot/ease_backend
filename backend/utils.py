@@ -93,8 +93,8 @@ def filter_by_datetime_with_custom_field(queryset, start_value, end_value,fieldn
 def getUserObjectByEmail(email):
     '''Returns User Object by email'''    
     try:
-        user = User.objects.get(email=email)    
+        user = User.objects.get(email=email)   
+        return user
     except ObjectDoesNotExist:
         # Handle the case where the user with the provided email does not exist
-        raise NotFound(_('Invalid username or password'))    
-    return UserSerializer(user).data
+        raise NotFound({'detail':'User does not exist'})        
