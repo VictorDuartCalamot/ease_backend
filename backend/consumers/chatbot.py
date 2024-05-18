@@ -5,9 +5,11 @@ import os
 
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 BOTCHAT_ID = os.environ.get('BOT_ID')
+
 class ChatBotConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_group_name = 'chat_bot'
+        print("ChatBotConsumer: connect")
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -15,12 +17,14 @@ class ChatBotConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
+        print("ChatBotConsumer: disconnect")
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
 
     async def receive(self, text_data):
+        print("ChatBotConsumer: receive", text_data)
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         
@@ -28,7 +32,8 @@ class ChatBotConsumer(AsyncWebsocketConsumer):
         bot_token = BOT_TOKEN
         chat_id = BOTCHAT_ID
         url = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={message}'
-        requests.get(url)
+        response = requests.get(url)
+        print("ChatBotConsumer: Telegram response", response.text)
 
         # Broadcast the message to the group
         await self.channel_layer.group_send(
@@ -40,6 +45,7 @@ class ChatBotConsumer(AsyncWebsocketConsumer):
         )
 
     async def chat_message(self, event):
+        print("ChatBotConsumer: chat_message", event)
         message = event['message']
 
         await self.send(text_data=json.dumps({
