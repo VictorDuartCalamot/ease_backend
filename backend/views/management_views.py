@@ -285,8 +285,13 @@ class CategoryListView(viewsets.ModelViewSet):
         '''      
         try:
             category_type = request.query_params.get('type')
+            if not (category_type == 'income') or (category_type == 'expense'):
+                raise ValidationError('Invalid type for category. Only "income" and "expense" are allowed.')
         # Retrieve the income object based on the primary key (pk) and user
-            category = Category.objects.filter(type=category_type)
+            if category_type:
+                category = Category.objects.filter(type=category_type)
+            else:
+                category = Category.objects.all()
             serializer = CategorySerializer(category, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Category.DoesNotExist:
