@@ -22,7 +22,7 @@ from django.urls import path
 backend = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": URLRouter([
-        path('ws/support/chat/', TokenAuthMiddlewareStack(URLRouter(websocket_urlpatterns))),
-        path('ws/support/bot/', URLRouter(websocket_urlpatterns)),
+        path('ws/support/chat/<uuid:chat_uuid>/', TokenAuthMiddlewareStack(URLRouter(websocket_urlpatterns))),
+        path('ws/support/chatbot/', URLRouter(websocket_urlpatterns)),
     ])
 })
