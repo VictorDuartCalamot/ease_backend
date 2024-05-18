@@ -95,6 +95,6 @@ def getUserObjectByEmail(email):
     try:
         user = User.objects.get(email=email)   
         return user
-    except ObjectDoesNotExist:
+    except User.DoesNotExist:
         # Handle the case where the user with the provided email does not exist
         raise NotFound({'detail':'User does not exist'})        
