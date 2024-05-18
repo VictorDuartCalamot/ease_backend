@@ -52,7 +52,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
                 data[k] = v             
 
             #Set the token in the Cache with the cache_key from before
-            cache.set(cache_key, data["access"], timeout=60*15)
+            cache.set(cache_key, data, timeout=60*15)
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
             update_last_login(sender=User,user=self.user)
 
