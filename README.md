@@ -259,8 +259,7 @@ management/income/
       -amount
       -creation_date
       -creation_time
-      -category
-      -subcategory
+      -category      
     Required Header:
       -Authorization: Token <token>
       -Content-Type: application/json
@@ -281,8 +280,7 @@ management/income/<uuid:pk>/
       -amount
       -creation_date
       -creation_time
-      -category
-      -subcategory
+      -category      
     Required Header:
       -Authorization: Token <token>
       -Content-Type: application/json
@@ -294,7 +292,9 @@ management/income/<uuid:pk>/
         -Content-Type: application/json
 
 management/category/
-  *GET    
+  *GET
+    Optional fields:
+      - Type (income/expense)
     Required Header:
       -Authorization: Token <token>
       -Content-Type: application/json
@@ -464,5 +464,5 @@ superadmin/user/block/<int:pk>/
 ```
 ## WebSocket Endpoint:
 ```
-wss://BASEURL/ws/support/chat/<chatid>/?token=<user token>
+wss://BASEURL/ws/support/chat/<chatuuid>/?token=<user token>
 ```
