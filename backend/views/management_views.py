@@ -284,12 +284,12 @@ class CategoryListView(viewsets.ModelViewSet):
            Get all categories
         '''      
         try:
-            category_type = request.query_params.get('type', None)
-            if category_type not in ['income','expense']:
-                raise ValidationError('Invalid type for category. Only "income" and "expense" are allowed.')
-        # Retrieve the income object based on the primary key (pk) and user
-            if category_type:
-                category = Category.objects.filter(type=category_type)
+            category_type = request.query_params.get('type', None)            
+            if category_type 
+                if(category_type not in ['income','expense']):
+                    raise ValidationError('Invalid type for category. Only "income" and "expense" are allowed.')
+                else:
+                    category = Category.objects.filter(type=category_type)
             else:
                 category = Category.objects.all()
             serializer = CategorySerializer(category, many=True)
