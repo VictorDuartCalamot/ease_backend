@@ -9,7 +9,7 @@ from backend.permissions import HasMorePermsThanUser
 from django.db.models import Q
 from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
 import random
-
+from django.core.cache import cache
 User = get_user_model()
 class ChatSessionViewSet(viewsets.ModelViewSet):
     queryset = ChatSession.objects.all()
@@ -46,9 +46,15 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
         '''
         try:
             user = request.user.id
-            chat_sessions = ChatSession.objects.filter(Q(admin=user))
-            if not chat_sessions.exists():
-                raise NotFound({'detail': 'No chat sessions found for the user.'})
+            cache_key = f"user_{user}_chats"
+            chat_sessions = cache.get(cache_key)
+
+            if chat_sessions is None:
+                chat_sessions = ChatSession.objects.filter(Q(admin=user))
+                if not chat_sessions.exists():
+                    raise NotFound({'detail': 'No chat sessions found for the user.'})
+                cache.set(cache_key, list(chat_sessions), timeout=60*15)  # Cache for 15 minutes
+
             serializer = ChatSessionSerializer(chat_sessions, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except NotFound as e:
