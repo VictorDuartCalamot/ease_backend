@@ -20,6 +20,8 @@ from backend.serializers import UserSerializerWithToken, UserSerializer
 from backend.serializers import AuthUserLogsSerializer,UserUpdateSerializer
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from backend.models import BlacklistedToken
+from django.core.cache import cache
+from django.conf import settings
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -33,16 +35,27 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
-        if not userObject['is_active']:
+        if not userObject.is_active:
             raise PermissionDenied({'detail':'The account is blocked. Contact your administrator for further information.'})
+        
+        #Create cache_key and get cache if there is any
+        cache_key = f"user_token_{userObject.id}"
+        cached_token = cache.get(cache_key)        
+        if cached_token:
+            return {'access': cached_token, 'refresh': None}
+        
         try:                                              
             attrs['username'] = emailToLower 
             data = super().validate(attrs)                                                                        
             serializer = UserSerializerWithToken(self.user).data            
             for k, v in serializer.items():
                 data[k] = v             
+
+            #Set the token in the Cache with the cache_key from before
+            cache.set(cache_key, data, timeout=60*15)
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
             update_last_login(sender=User,user=self.user)
+
             return data
         except AuthenticationFailed as e:            
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        

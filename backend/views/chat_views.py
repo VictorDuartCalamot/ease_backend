@@ -8,9 +8,19 @@ from backend.serializers import ChatSessionSerializer
 from backend.permissions import HasMorePermsThanUser
 from django.db.models import Q
 from rest_framework.exceptions import ValidationError,AuthenticationFailed,PermissionDenied,NotFound
-import random
-
+from django.core.cache import cache
 User = get_user_model()
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+
+# Signal to invalidate cache when a chat session is saved or deleted
+@receiver(post_save, sender=ChatSession)
+@receiver(post_delete, sender=ChatSession)
+def clear_cache(sender, instance, **kwargs):
+    print(instance)
+    user_id = instance.admin.id
+    cache_key = f"user_{user_id}_chats"
+    cache.delete(cache_key)
 class ChatSessionViewSet(viewsets.ModelViewSet):
     queryset = ChatSession.objects.all()
     serializer_class = ChatSessionSerializer
@@ -30,6 +40,9 @@ class ChatSessionViewSet(viewsets.ModelViewSet):
                 #logger.error(f'No admins available to create a new chat session')
                 raise NotFound({'detail': 'No admins available'})
             chat = ChatSession.objects.create(customer=request.user, admin=admins, is_active=True)
+            # Invalidate the cache for the user
+            cache_key = f"user_{request.user.id}_chats"
+            cache.delete(cache_key)
         
         return Response({'chat_id': chat.id}, status=status.HTTP_200_OK)
     
@@ -46,9 +59,15 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
         '''
         try:
             user = request.user.id
-            chat_sessions = ChatSession.objects.filter(Q(admin=user))
-            if not chat_sessions.exists():
-                raise NotFound({'detail': 'No chat sessions found for the user.'})
+            cache_key = f"user_{user}_chats"
+            chat_sessions = cache.get(cache_key)
+
+            if chat_sessions is None:
+                chat_sessions = ChatSession.objects.filter(Q(admin=user))
+                if not chat_sessions.exists():
+                    raise NotFound({'detail': 'No chat sessions found for the user.'})
+                cache.set(cache_key, list(chat_sessions), timeout=60*15)  # Cache for 15 minutes
+
             serializer = ChatSessionSerializer(chat_sessions, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except NotFound as e:
@@ -65,6 +84,8 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
         chat = self.get_object()
         if chat:
             chat.delete()
+            cache_key = f"user_{request.user.id}_chats"
+            cache.delete(cache_key)
             return Response({'message': f'chat {pk} closed'},status=status.HTTP_202_ACCEPTED)
         else:
             raise NotFound({'detail': 'chat not found'})

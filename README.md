@@ -7,7 +7,7 @@ python -m venv venv
 .\venv\Scripts\activate
 
 #Install required packages (inside venv)
-pip install django dj-database-url djangorestframework-simplejwt psycopg2-binary whitenoise[brotli] gunicorn django-guardian channels channels_redis django-cors-headers requests
+pip install django dj-database-url djangorestframework-simplejwt psycopg2-binary whitenoise[brotli] gunicorn django-guardian channels channels_redis django-cors-headers requests django-redis
 pip install daphne "twisted[tls]" --no-deps 
 
 #Copy packages to requirements.txt
@@ -40,10 +40,207 @@ Overall render.com is great to create projects and deploy. We have to keep in mi
 ## ER Diagram
 [ER Diagram lucid chart link](https://lucid.app/lucidchart/c99734df-2ad2-4e88-abec-458289e6d9c6/edit?viewport_loc=-45%2C3%2C2164%2C1081%2C0_0&invitationId=inv_457726de-bf5b-4beb-9ab1-a806997d89c8)
 
-![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/1e292e75-815f-4769-b052-5d5925d9d874)
+![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/0c518a78-f276-4c52-8dc4-b9864ead309a)
+### Tables
+#### Users
+```
+  //This table stores users
 
+  Columns:
+    id: int //Its the identifier of the user
+    password: varcharr(128) //Password of the user
+    username: varchar (150) // Its not a used field because gets overwritten by email 
+    email: varchar(254) //Its the email of the user which acts as the unique field yet it isn't but in the logic of       the code its been updated to make it unique.
+    first_name: varchar(150) // First name of the user
+    last_name: varchar(150) // Last name of the user
+    last_login: timestampz // Last successful login of the user
+    date_joined: timestampz // Datetime creation of the useraccount
+    is_active: bool //Its used to block the account from login disabling the account.
+    is_staff: bool //Used to check if the user is an Admin
+    is_superuser: bool //Used to check if the user is a super admin
 
+  Table relations:
+    User 1---N:1---N User Logs
+    User 1---1:1---1 Chat
+    User 1---N:1---N Chat messages
+    User 1---N:1---N Income
+    User 1---N:1---N Expense
 
+  Constraints:
+    id: PK
+    Username: UNIQUE
+```
+#### User Logs
+```
+  //This table stores login logs of users
+
+  Columns:
+    id: uuid //Identifier of the log
+    creation_date: date //Creation date of the log
+    creation_time: time //Creation time of the log
+    platform_OS: varchar(50) //Its ment to be fullfilled with the platform the user is trying to log-in (Example:         Web, Phone, Tablet, Desktop, Laptop)
+    successful: bool // Shows if the login was successful or failed
+    description: varchar(30) //Explains the reason of the failed login
+    useri_id: int //Its the foreign key to the user
+
+Table relations:
+User logs N---N:1---1 User
+
+Constraints:
+  id: PK
+
+Foreign keys:
+  user_id -- User
+```
+#### Chat
+```
+  //This table stores chats
+
+  Columns:
+    id: uuid //Its the identificator of the chat session
+    is_active: bool //Shows if the chat is currently active or not
+    created_at: timestampz // Shows when the chat got created
+    admin_id: int //Shows the admin thats responsible to answer in that chat
+    customer_id: int //The customer that opened the chat
+
+  Table Relations:
+  Chat 1---1:1---1 User
+  Chat 1---N:1---N Chat messages
+
+  Constraints:
+    id: PK
+
+  Foreign keys:
+    admin_id -- User
+    customer_id -- User
+```
+#### Chat messages
+```
+  //This table stores messsages of the chat
+
+  Columns:
+    id: uuid //Identificator of the message
+    message: varchar(250) //Message
+    timestamp: timestampz //Creation of the message
+    user_id: int //User that sent the message
+    chat_session: uuid //Chat session where the message belongs to
+
+Table relations:
+  Chat messages N---N:1---1 Chat
+  Chat messages N---N:1---1 User
+
+Constraints
+  id: PK
+
+Foreign keys;
+  user_id -- User
+  chat_session -- Chat
+```
+#### Blacklisted Token
+```
+  //This table stores the tokens that got blacklisted 
+
+  Columns:
+    id: int //Identificator of the blacklisted token
+    token: varchar(255) //Token of the user that got blacklisted
+    created_at: timestampz //Creation of the blaclisted token
+
+Constraints:
+id: PK
+```
+#### Income
+```
+  //This table stores income records created by users
+
+  Columns:
+    id: uuid //Identificator of the income record
+    title: varchar(100) //Title of the income
+    description: varchar(100) //Description of the income
+    amount: numeric(10,2) // Amount of the income
+    category_id: uuid //Category of the income
+    user_id: int //User that owns the income record
+    creation_date: date //Creation date of the income
+    creation_time: time //Cration time of the income 
+
+Table relations:
+  Income N---N:1---1 User
+  Income N---N:1---1 Category  
+
+Constraints:
+  id: PK
+
+Foreign keys:
+  category_id -- Category
+  user_id -- User
+```
+#### Expense
+```
+  //This table stores expense records created by users
+
+  Columns:
+    id: uuid //Identificator of the expense record
+    title: varchar(100) //Title of the expense
+    description: varchar(100) //Description of the expense
+    amount: numeric(10,2) //Amount of the expense
+    category_id: uuid //Category of the expense
+    subcategory_id: uuid //Subcategory of the expense
+    user_id: int //User that owns the expense record
+    creation_date: date //Creation date of the expense
+    creation_time: time //Creation time of the expense
+
+Table relations:
+  Expense N---N:1---1 User
+  Expense N---N:1---1 Category
+  Expense N---N:1---1 Subcategory
+
+Constraints:
+  id: PK
+
+Foreign keys:
+  category_id -- Category
+  subcategory_id -- Subcategory
+  user_id -- User
+```
+#### Category
+```
+  //This table stores the categories
+
+  Columns:
+    id: uuid //Identificator of the category
+    name: varchar(100) //Name of the category
+    description: varchar(100) //Description of the category
+    type: varchar(100) //Type of the category (income/expense)
+    hexColor: varchar(7) //HTML color of the category
+
+Table relations:
+  Category 1---N:1---N Income
+  Category 1---N:1---N Expense
+  Category 1---N:1---N Subcategory
+
+Constraints:
+  id: PK
+```
+#### Subcategory
+```
+  //This table stores the subcategories
+
+  Columns:
+    id: uuid //Identificator of the subcategory
+    name: varchar(100) //Name of the subcategory
+    description: varchar(100) //Name of the subcategory
+    hexColor: varchar(7) //HTML color of the subcategory
+    category_id: uuid //Main category
+
+  Table relations;
+    Subcategory 1--N:1--N Expense    
+    Subcategory N--N:1--1 Category
+
+  Constraints:
+    id: PK
+
+  Foreign keys:
+    category_id -- Category
+```
 
 # Api information
 ### Testing server:
