@@ -140,7 +140,7 @@ class ChatSessionSerializer(serializers.ModelSerializer):
         
         
 class ChatMessageSerializer(serializers.ModelSerializer):  
-    user = serializers.StringRelatedField()  # Use StringRelatedField for simple representation  
+    user = serializers.StringRelatedField()  # Use StringRelatedField for simple representation of related objects
 
     class Meta:
         model = ChatMessage
