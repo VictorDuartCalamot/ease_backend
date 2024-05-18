@@ -30,13 +30,15 @@ Overall render.com is great to create projects and deploy. We have to keep in mi
 ## Class Diagram
 [Class Diagrama lucid chart link](https://lucid.app/lucidchart/312df9b3-ee00-47b2-adf6-d349ac8c9b9b/edit?viewport_loc=-152%2C33%2C2674%2C1336%2C0_0&invitationId=inv_171d3cc6-46ce-40d5-b74a-ef61c904353a)
 
-![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/ce7c5341-b446-48f3-894c-2cd0363eab81)
+![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/f07e787f-cb1f-4eb4-80b6-b4b54f28e6c1)
+
 
 
 ## ER Diagram
 [ER Diagram lucid chart link](https://lucid.app/lucidchart/c99734df-2ad2-4e88-abec-458289e6d9c6/edit?viewport_loc=-45%2C3%2C2164%2C1081%2C0_0&invitationId=inv_457726de-bf5b-4beb-9ab1-a806997d89c8)
 
-![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/335e28ee-94bc-4d42-882e-f9352ae1293a)
+![image](https://github.com/VictorDuartCalamot/ease_backend/assets/115024032/1e292e75-815f-4769-b052-5d5925d9d874)
+
 
 
 
@@ -259,8 +261,7 @@ management/income/
       -amount
       -creation_date
       -creation_time
-      -category
-      -subcategory
+      -category      
     Required Header:
       -Authorization: Token <token>
       -Content-Type: application/json
@@ -281,8 +282,7 @@ management/income/<uuid:pk>/
       -amount
       -creation_date
       -creation_time
-      -category
-      -subcategory
+      -category      
     Required Header:
       -Authorization: Token <token>
       -Content-Type: application/json
@@ -294,7 +294,9 @@ management/income/<uuid:pk>/
         -Content-Type: application/json
 
 management/category/
-  *GET    
+  *GET
+    Optional fields:
+      - Type (income/expense)
     Required Header:
       -Authorization: Token <token>
       -Content-Type: application/json
@@ -464,5 +466,5 @@ superadmin/user/block/<int:pk>/
 ```
 ## WebSocket Endpoint:
 ```
-wss://BASEURL/ws/support/chat/<chatid>/?token=<user token>
+wss://BASEURL/ws/support/chat/<chatuuid>/?token=<user token>
 ```
