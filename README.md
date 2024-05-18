@@ -7,7 +7,7 @@ python -m venv venv
 .\venv\Scripts\activate
 
 #Install required packages (inside venv)
-pip install django dj-database-url djangorestframework-simplejwt psycopg2-binary whitenoise[brotli] gunicorn django-guardian channels channels_redis django-cors-headers requests
+pip install django dj-database-url djangorestframework-simplejwt psycopg2-binary whitenoise[brotli] gunicorn django-guardian channels channels_redis django-cors-headers requests django-redis
 pip install daphne "twisted[tls]" --no-deps 
 
 #Copy packages to requirements.txt
