@@ -18,11 +18,11 @@ django.setup()
 
 from backend.routing import websocket_urlpatterns
 from backend.websocket_auth import TokenAuthMiddlewareStack
-from django.urls import path
 backend = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": URLRouter([
-        path('ws/support/chat/<uuid:chat_uuid>/', TokenAuthMiddlewareStack(URLRouter(websocket_urlpatterns))),
-        path('ws/support/chatbot/', URLRouter(websocket_urlpatterns)),
-    ])
+    "http": get_asgi_application(),  # HTTP protocol management
+    "websocket": TokenAuthMiddlewareStack(
+        URLRouter(
+            websocket_urlpatterns  # Using the websocket URLS specified in backend.routing
+        )
+    ),
 })
