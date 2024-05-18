@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
-
+REDIS_URL = os.environ.get('REDIS_URL')
 
 # Application definition
 
@@ -124,7 +124,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [os.environ.get('REDIS_URL')]
+            'hosts': [REDIS_URL]
         },
     },
 }
@@ -173,7 +173,7 @@ if not DEBUG:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 ASGI_APPLICATION = 'djangocrud.asgi.application'
-REDIS_URL = os.environ.get('REDIS_URL')
+
 # Configuración de Redis como Caché
 CACHES = {
     "default": {
