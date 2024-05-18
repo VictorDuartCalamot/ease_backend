@@ -35,7 +35,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
-        if not userObject['is_active']:
+        if not userObject.is_active:
             raise PermissionDenied({'detail':'The account is blocked. Contact your administrator for further information.'})
         
         #Create cache_key and get cache if there is any
