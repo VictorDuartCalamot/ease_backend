@@ -42,7 +42,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         cache_key = f"user_token_{userObject.id}"
         cached_token = cache.get(cache_key)        
         if cached_token:
-            return {'access': cached_token, 'refresh': None}
+            return cached_token
         
         try:                                              
             attrs['username'] = emailToLower 
@@ -98,6 +98,9 @@ def registerUser(request):
             password=make_password(password)            
         )
         user_serializer = UserSerializerWithToken(user, many=False)
+
+        cache_key = f"user_list"
+        cache.delete(cache_key)
         return Response({'message':'Account registrated successfully!'},status=status.HTTP_202_ACCEPTED)
     except ValidationError as e:
         #message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
@@ -291,39 +294,47 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
 
     def getAllUsers(self,request):
         '''Get all users with optional parameters'''
+        
         try:
-            is_activeValue = request.query_params.get('is_active', None)
-            is_staffValue = request.query_params.get('is_staff', None)
-            is_superuserValue = request.query_params.get('is_superuser', None)
-            start_datetime_str = request.query_params.get('start_date', None)
-            end_datetime_str = request.query_params.get('end_date', None)
-            start_datetime = datetime.strptime(start_datetime_str, '%Y-%m-%d %H:%M:%S') if start_datetime_str else None
-            end_datetime = datetime.strptime(end_datetime_str, '%Y-%m-%d %H:%M:%S') if end_datetime_str else timezone.now()
-            
-            
-            # Start with an initial queryset that includes all users
-            users_queryset = User.objects.all()
-            
-            # Exclude Anonymous user
-            users_queryset = users_queryset.exclude(id=1)
-            
-            # Apply filters based on query parameters
-            if is_activeValue is not None:                              
-                is_active_bool = True if is_activeValue.lower() == 'true' else False
-                users_queryset = users_queryset.filter(is_active=is_active_bool)                                   
-            if is_staffValue is not None:                
-                is_staff_bool = True if is_staffValue.lower() == 'true' else False
-                users_queryset = users_queryset.filter(is_staff=is_staff_bool)
-            if is_superuserValue is not None:                
-                is_staff_bool = True if is_superuserValue.lower() == 'true' else False
-                users_queryset = users_queryset.filter(is_superuser=is_staff_bool)            
-            # Add filtering by datetime if provided
-            if start_datetime is not None or end_datetime is not None:                                
-                users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_datetime, end_datetime,'date_joined')                                        
-            serializer = UserSerializer(users_queryset, many=True)
-            return Response(serializer.data)
+            cache_key = f"user_list"
+            userCache = cache.get(cache_key)
+            if cache is None:
+                is_activeValue = request.query_params.get('is_active', None)
+                is_staffValue = request.query_params.get('is_staff', None)
+                is_superuserValue = request.query_params.get('is_superuser', None)
+                start_datetime_str = request.query_params.get('start_date', None)
+                end_datetime_str = request.query_params.get('end_date', None)
+                start_datetime = datetime.strptime(start_datetime_str, '%Y-%m-%d %H:%M:%S') if start_datetime_str else None
+                end_datetime = datetime.strptime(end_datetime_str, '%Y-%m-%d %H:%M:%S') if end_datetime_str else timezone.now()
+                
+                
+                # Start with an initial queryset that includes all users
+                users_queryset = User.objects.all()
+                
+                # Exclude Anonymous user
+                users_queryset = users_queryset.exclude(id=1)
+                
+                # Apply filters based on query parameters
+                if is_activeValue is not None:                              
+                    is_active_bool = True if is_activeValue.lower() == 'true' else False
+                    users_queryset = users_queryset.filter(is_active=is_active_bool)                                   
+                if is_staffValue is not None:                
+                    is_staff_bool = True if is_staffValue.lower() == 'true' else False
+                    users_queryset = users_queryset.filter(is_staff=is_staff_bool)
+                if is_superuserValue is not None:                
+                    is_staff_bool = True if is_superuserValue.lower() == 'true' else False
+                    users_queryset = users_queryset.filter(is_superuser=is_staff_bool)            
+                # Add filtering by datetime if provided
+                if start_datetime is not None or end_datetime is not None:                                
+                    users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_datetime, end_datetime,'date_joined')                                        
+                userCache = UserSerializer(users_queryset, many=True).data
+                cache.set(cache_key, list(userCache), timeout=60*15)
+
+            return Response(userCache)
         except Exception as e:
             raise ValidationError({'detail':'The data provided is not valid.'})
+       
+
     
     def createUserWithRoles(self,request):
         '''
@@ -361,6 +372,8 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
             )
             
             serializer = UserSerializerWithToken(user)
+            cache_key = f"user_list"
+            cache.delete(cache_key)
             return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
         except DjangoValidationError as e:
             raise ValidationError({'detail': e.messages})
@@ -384,7 +397,9 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         '''Being a superuser delete users from the database'''        
         try:              
             user = User.objects.get(id=pk)             
-            user.delete()                                  
+            user.delete()    
+            cache_key = f"user_list"
+            cache.delete(cache_key)                              
             return Response({'message':'User deleted successfully'}, status=status.HTTP_204_NO_CONTENT)        
         except User.DoesNotExist:
             raise NotFound({'detail': 'User does not exist.'})
@@ -414,6 +429,8 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         
         if serializer.is_valid():
             serializer.save()
+            cache_key = f"user_list"
+            cache.delete(cache_key)
             return Response({'detail': f'User {serializer.data["email"]} updated successfully'})
         else:
             raise ValidationError({'detail':f'Error updating user {user.email}\n{serializer.errors}'})
@@ -434,6 +451,8 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         
         if serializer.is_valid():
             serializer.save()
+            cache_key = f"user_list"
+            cache.delete(cache_key)
             return Response({'detail': f'{serializer.data["email"]} updated successfully to {serializer.data["is_active"]}'}, status=status.HTTP_202_ACCEPTED)
         else:
             raise ValidationError({'detail': f'Error updating user {user.email}\n{serializer.errors}'})
