@@ -1,4 +1,5 @@
 from datetime import datetime,timedelta
+from django.dispatch import receiver
 from rest_framework import serializers
 from rest_framework import status,viewsets
 from rest_framework.decorators import api_view, permission_classes
@@ -21,7 +22,7 @@ from backend.serializers import AuthUserLogsSerializer,UserUpdateSerializer
 from backend.permissions import HasEnoughPerms,HasMorePermsThanUser
 from backend.models import BlacklistedToken
 from django.core.cache import cache
-from django.conf import settings
+from django.db.models.signals import post_save, post_delete
 '''
 Este archivo es para las vistas de usuarios, admins y superadmins
 '''
@@ -42,7 +43,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         cache_key = f"user_token_{userObject.id}"
         cached_token = cache.get(cache_key)        
         if cached_token:
-            return {'access': cached_token, 'refresh': None}
+            return cached_token
         
         try:                                              
             attrs['username'] = emailToLower 
@@ -64,6 +65,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+@receiver(post_save, sender=User)
+@receiver(post_delete, sender=User)
+def clear_user_cache(sender, instance, **kwargs):
+    cache.delete_pattern("user_list_*")
 
 #Function to register a user and create a token
 #Funcion para registrar un usuario y crear un token.
@@ -98,6 +103,7 @@ def registerUser(request):
             password=make_password(password)            
         )
         user_serializer = UserSerializerWithToken(user, many=False)
+
         return Response({'message':'Account registrated successfully!'},status=status.HTTP_202_ACCEPTED)
     except ValidationError as e:
         #message = {'detail': 'La información proporcionada no es válida, revisa el formato de tu correo'}
@@ -284,46 +290,74 @@ class AuthUserLogsDetailView(viewsets.ModelViewSet):
             raise ValidationError({'detail':'The data provided is not valid.'})
 
 
+
+
+
 class SuperAdminManagementListView(viewsets.ModelViewSet):    
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated,HasMorePermsThanUser]
 
-    def getAllUsers(self,request):
-        '''Get all users with optional parameters'''
+    def filter_users(self, request):
+        """Filter users based on request parameters."""
+        is_active_value = request.query_params.get('is_active', None)
+        is_staff_value = request.query_params.get('is_staff', None)
+        is_superuser_value = request.query_params.get('is_superuser', None)
+        start_datetime_str = request.query_params.get('start_date', None)
+        end_datetime_str = request.query_params.get('end_date', None)
+        
+        start_datetime = datetime.strptime(start_datetime_str, '%Y-%m-%d %H:%M:%S') if start_datetime_str else None
+        end_datetime = datetime.strptime(end_datetime_str, '%Y-%m-%d %H:%M:%S') if end_datetime_str else timezone.now()
+
+        # Start with an initial queryset that includes all users except the Anonymous user
+        users_queryset = User.objects.exclude(id=1)
+        
+        # Apply filters based on query parameters
+        if is_active_value is not None:
+            is_active_bool = is_active_value.lower() == 'true'
+            users_queryset = users_queryset.filter(is_active=is_active_bool)
+        if is_staff_value is not None:
+            is_staff_bool = is_staff_value.lower() == 'true'
+            users_queryset = users_queryset.filter(is_staff=is_staff_bool)
+        if is_superuser_value is not None:
+            is_superuser_bool = is_superuser_value.lower() == 'true'
+            users_queryset = users_queryset.filter(is_superuser=is_superuser_bool)
+        if start_datetime or end_datetime:
+            users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_datetime, end_datetime, 'date_joined')
+        
+        return users_queryset
+
+    def get_user_cache_key(self, request):
+        """Generate a cache key based on query parameters."""
+        params = request.query_params.dict()
+        return f"user_list_{'_'.join(f'{k}_{v}' for k, v in sorted(params.items()))}"
+    
+    def getAllUsers(self, request):
+        """Get all users with optional parameters."""
         try:
-            is_activeValue = request.query_params.get('is_active', None)
-            is_staffValue = request.query_params.get('is_staff', None)
-            is_superuserValue = request.query_params.get('is_superuser', None)
+            cache_key = self.get_user_cache_key(request)
+            user_cache = cache.get(cache_key)
+            is_active_value = request.query_params.get('is_active', None)
+            is_staff_value = request.query_params.get('is_staff', None)
+            is_superuser_value = request.query_params.get('is_superuser', None)
             start_datetime_str = request.query_params.get('start_date', None)
             end_datetime_str = request.query_params.get('end_date', None)
-            start_datetime = datetime.strptime(start_datetime_str, '%Y-%m-%d %H:%M:%S') if start_datetime_str else None
-            end_datetime = datetime.strptime(end_datetime_str, '%Y-%m-%d %H:%M:%S') if end_datetime_str else timezone.now()
             
-            
-            # Start with an initial queryset that includes all users
-            users_queryset = User.objects.all()
-            
-            # Exclude Anonymous user
-            users_queryset = users_queryset.exclude(id=1)
-            
-            # Apply filters based on query parameters
-            if is_activeValue is not None:                              
-                is_active_bool = True if is_activeValue.lower() == 'true' else False
-                users_queryset = users_queryset.filter(is_active=is_active_bool)                                   
-            if is_staffValue is not None:                
-                is_staff_bool = True if is_staffValue.lower() == 'true' else False
-                users_queryset = users_queryset.filter(is_staff=is_staff_bool)
-            if is_superuserValue is not None:                
-                is_staff_bool = True if is_superuserValue.lower() == 'true' else False
-                users_queryset = users_queryset.filter(is_superuser=is_staff_bool)            
-            # Add filtering by datetime if provided
-            if start_datetime is not None or end_datetime is not None:                                
-                users_queryset = filter_by_datetime_with_custom_field(users_queryset, start_datetime, end_datetime,'date_joined')                                        
-            serializer = UserSerializer(users_queryset, many=True)
-            return Response(serializer.data)
+            # If there's a cache and no filters are applied, use the cache
+            if user_cache and not any([is_active_value, is_staff_value, is_superuser_value, start_datetime_str, end_datetime_str]):
+                return Response(user_cache)
+
+            # Otherwise, query the database
+            users_queryset = self.filter_users(request)
+            user_cache = UserSerializer(users_queryset, many=True).data
+
+            # Update the cache with the new data
+            cache.set(cache_key, user_cache, timeout=60*15)
+
+            return Response(user_cache)
         except Exception as e:
-            raise ValidationError({'detail':'The data provided is not valid.'})
+            raise ValidationError({'detail': 'The data provided is not valid.'})
+       
     
     def createUserWithRoles(self,request):
         '''
@@ -360,7 +394,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
                 password=make_password(password)
             )
             
-            serializer = UserSerializerWithToken(user)
+            serializer = UserSerializerWithToken(user)            
             return Response(serializer.data,status=status.HTTP_202_ACCEPTED)
         except DjangoValidationError as e:
             raise ValidationError({'detail': e.messages})
@@ -384,7 +418,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         '''Being a superuser delete users from the database'''        
         try:              
             user = User.objects.get(id=pk)             
-            user.delete()                                  
+            user.delete()                                            
             return Response({'message':'User deleted successfully'}, status=status.HTTP_204_NO_CONTENT)        
         except User.DoesNotExist:
             raise NotFound({'detail': 'User does not exist.'})
@@ -413,7 +447,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         serializer = UserUpdateSerializer(user, data=updated_data)
         
         if serializer.is_valid():
-            serializer.save()
+            serializer.save()            
             return Response({'detail': f'User {serializer.data["email"]} updated successfully'})
         else:
             raise ValidationError({'detail':f'Error updating user {user.email}\n{serializer.errors}'})
@@ -433,7 +467,7 @@ class SuperAdminManagementDetailView(viewsets.ModelViewSet):
         serializer = UserSerializer(user, data=updated_data)
         
         if serializer.is_valid():
-            serializer.save()
+            serializer.save()            
             return Response({'detail': f'{serializer.data["email"]} updated successfully to {serializer.data["is_active"]}'}, status=status.HTTP_202_ACCEPTED)
         else:
             raise ValidationError({'detail': f'Error updating user {user.email}\n{serializer.errors}'})
