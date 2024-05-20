@@ -99,7 +99,7 @@ def registerUser(request):
         )
         user_serializer = UserSerializerWithToken(user, many=False)
 
-        cache_key = f"user_list"
+        cache_key = f"user_list_*"
         cache.delete(cache_key)
         return Response({'message':'Account registrated successfully!'},status=status.HTTP_202_ACCEPTED)
     except ValidationError as e:
