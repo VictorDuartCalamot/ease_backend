@@ -16,8 +16,7 @@ from django.dispatch import receiver
 # Signal to invalidate cache when a chat session is saved or deleted
 @receiver(post_save, sender=ChatSession)
 @receiver(post_delete, sender=ChatSession)
-def clear_cache(sender, instance, **kwargs):
-    print(instance)
+def clear_cache(sender, instance, **kwargs):    
     user_id = instance.admin.id
     cache_key = f"user_{user_id}_chats"
     cache.delete(cache_key)

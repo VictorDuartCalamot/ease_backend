@@ -15,24 +15,27 @@ from backend.utils import filter_by_date_time
 from backend.permissions import IsOwnerOrReadOnly,HasMorePermsThanUser
 from backend.serializers import ExpenseSerializer, IncomeSerializer, CategorySerializer,SubCategorySerializer,IncomeUpdateSerializer,ExpenseUpdateSerializer,SubCategoryUpdateSerializer,CategoryUpdateSerializer
 from backend.models import Expense, Income, Category, SubCategory
-
+from django.core.cache import cache
+from django.db.models.signals import post_save, post_delete
 '''
 Este archivo es para las vistas de gastos e ingresos.
 '''
 #Expenses
+@receiver(post_save, sender=Expense)
+@receiver(post_delete, sender=Expense)
+def clear_expense_cache(sender, instance, **kwargs):
+    cache.delete_pattern(f"expense_{instance.user.id}_list_*") 
 class ExpenseListView(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated] 
     
-    def get(self, request):     
-        '''
-            Get to retrieve data filtered by dates 
-        '''   
+    def filter_expense(self, request):
+        """Filter expenses based on request parameters."""
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
-        end_time_str = request.query_params.get('end_time')           
+        end_time_str = request.query_params.get('end_time')        
         # Convert date strings to datetime objects, handling potential errors
         try:
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date() if start_date_str else None
@@ -40,14 +43,33 @@ class ExpenseListView(viewsets.ModelViewSet):
             start_time = datetime.strptime(start_time_str, '%H:%M:%S').time() if start_time_str else None
             end_time = datetime.strptime(end_time_str, '%H:%M:%S').time() if end_time_str else None
         except ValueError:
-            raise ValidationError({'detail': 'Invalid date/time format'})
-                
-        expenses_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
-                     
-        # Serialize the expenses
-        serializer = ExpenseSerializer(expenses_queryset, many=True)              
-        # Return a JSON response containing the serialized expenses
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            raise ValidationError({'detail': 'Invalid date format'})
+        
+        expense_queryset = filter_by_date_time(Expense.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)        
+        return expense_queryset
+        
+    def get_expense_cache_key(self, request):
+        """Generate a cache key based on query parameters."""
+        params = request.query_params.dict()
+        return f"expense_{request.user.id}_list_{'_'.join(f'{k}_{v}' for k, v in sorted(params.items()))}"
+    
+    def get(self, request, *args, **kwargs):
+        """Override the list method to include caching logic."""
+        try:
+            cache_key = self.get_expense_cache_key(request)
+            cache_expense = cache.get(cache_key)
+            
+            if cache_expense:
+                return Response(cache_expense, status=status.HTTP_200_OK)
+            
+            expense_queryset = self.filter_expense(request)
+            serialized_data = IncomeSerializer(expense_queryset, many=True).data
+            
+            cache.set(cache_key, serialized_data, timeout=60*15)  # Cache for 15 minutes
+
+            return Response(serialized_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            raise ValidationError({'detail': 'An error occurred while retrieving the data.'})
             
     def create(self, request, *args, **kwargs):  
         '''
@@ -118,7 +140,7 @@ class ExpenseDetailView(viewsets.ModelViewSet):
         '''        
         try:
             expense = Expense.objects.get(pk=pk)             
-            expense.delete()            
+            expense.delete()           
             return Response({'message': 'Expense deleted successfully!'},status=status.HTTP_204_NO_CONTENT)
         except Expense.DoesNotExist:            
             raise NotFound({'detail':f'Expense {pk} not found.'})
@@ -143,16 +165,17 @@ class ExpenseDetailView(viewsets.ModelViewSet):
             # Return error response if serializer data is invalid
             raise ValidationError(serializer.errors)
 #Income
+@receiver(post_save, sender=Income)
+@receiver(post_delete, sender=Income)
+def clear_income_cache(sender, instance, **kwargs):
+    cache.delete_pattern(f"income_{instance.user.id}_list_*") 
 class IncomeListView(viewsets.ModelViewSet):
     queryset = Income.objects.all()
     serializer_class = IncomeSerializer
     permission_classes = [IsAuthenticated] 
     
-    def get(self, request):     
-        '''
-            Get to retrieve data filtered by dates 
-        '''           
-        # Get query parameters for date range
+    def filter_income(self, request):
+        """Filter income based on request parameters."""
         start_date_str = request.query_params.get('start_date')
         end_date_str = request.query_params.get('end_date')
         start_time_str = request.query_params.get('start_time')
@@ -166,13 +189,32 @@ class IncomeListView(viewsets.ModelViewSet):
         except ValueError:
             raise ValidationError({'detail': 'Invalid date format'})
         
-        income = filter_by_date_time(Income.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)
-        # Apply combined date and time filtering        
-        serializer = IncomeSerializer(income, many=True)        
-        # Return a JSON response containing the serialized Income
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        income_queryset = filter_by_date_time(Income.objects.filter(user=request.user.id), start_date, end_date, start_time, end_time)        
+        return income_queryset
         
+    def get_income_cache_key(self, request):
+        """Generate a cache key based on query parameters."""
+        params = request.query_params.dict()
+        return f"income_{request.user.id}_list_{'_'.join(f'{k}_{v}' for k, v in sorted(params.items()))}"
     
+    def get(self, request, *args, **kwargs):
+        """Override the list method to include caching logic."""
+        try:
+            cache_key = self.get_income_cache_key(request)
+            cache_income = cache.get(cache_key)
+            
+            if cache_income:
+                return Response(cache_income, status=status.HTTP_200_OK)
+            
+            income_queryset = self.filter_income(request)
+            serialized_data = IncomeSerializer(income_queryset, many=True).data
+            
+            cache.set(cache_key, serialized_data, timeout=60*15)  # Cache for 15 minutes
+
+            return Response(serialized_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            raise ValidationError({'detail': 'An error occurred while retrieving the data.'})
+
     def create(self, request, *args, **kwargs):  
         '''
             Post request to create new income object
@@ -194,7 +236,7 @@ class IncomeListView(viewsets.ModelViewSet):
                 # Save the expense object to the database
                 instance = serializer.save()
                 # Ensure the transaction is committed
-                transaction.on_commit(lambda: self.after_create(instance))
+                transaction.on_commit(lambda: self.after_create(instance))                
                 return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Print out the errors for debugging
@@ -270,34 +312,49 @@ class IncomeDetailView(viewsets.ModelViewSet):
         else:
             # Return error response if serializer data is invalid
             raise ValidationError(serializer.errors)
-
-
+        
+@receiver(post_save, sender=Category)
+@receiver(post_delete, sender=Category)
+def clear_category_cache(sender, instance, **kwargs):
+    cache.delete_pattern("category_list_*") 
 class CategoryListView(viewsets.ModelViewSet):    
     ''''''
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticated]  
 
-    '''Get,Create'''
-    def get(self,request):
-        '''
-           Get all categories
-        '''      
+    def filter_categories(self, request):
+        """Filter categories based on request parameters."""
+        type = request.query_params.get('type', None)
+        category_queryset = Category.objects.all()
+        
+        if type is not None:
+            category_queryset = category_queryset.filter(type=type)        
+        return category_queryset
+        
+    def get_category_cache_key(self, request):
+        """Generate a cache key based on query parameters."""
+        params = request.query_params.dict()
+        return f"category_list_{'_'.join(f'{k}_{v}' for k, v in sorted(params.items()))}"
+    
+    def get(self, request, *args, **kwargs):
+        """Override the list method to include caching logic."""
         try:
-            category_type = request.query_params.get('type', None)            
-            if category_type:
-                if(category_type not in ['income','expense']):
-                    raise ValidationError('Invalid type for category. Only "income" and "expense" are allowed.')
-                else:
-                    category = Category.objects.filter(type=category_type)
-            else:
-                category = Category.objects.all()
-            serializer = CategorySerializer(category, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Category.DoesNotExist:
-        # If the income object does not exist for the specified user, return a 404 Not Found response
-            raise NotFound({'detail': 'Category objects not found.'})
+            cache_key = self.get_category_cache_key(request)
+            cache_category = cache.get(cache_key)
+            
+            if cache_category:
+                return Response(cache_category, status=status.HTTP_200_OK)
+            
+            category_queryset = self.filter_categories(request)
+            serialized_data = CategorySerializer(category_queryset, many=True).data
+            
+            cache.set(cache_key, serialized_data, timeout=60*15)  # Cache for 15 minutes
 
+            return Response(serialized_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            raise ValidationError({'detail': 'An error occurred while retrieving the data.'})
+    
     def create(self,request):   
         '''
         Create new category
@@ -307,12 +364,11 @@ class CategoryListView(viewsets.ModelViewSet):
         serializer = CategorySerializer(data=request.data) 
         #Check if the serializer is valid
         if serializer.is_valid():            
-            serializer.save()  # Save the income object to the database
+            serializer.save()  # Save the income object to the database 
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             raise ValidationError(serializer.errors)
-
-        
+      
 class CategoryDetailView(viewsets.ModelViewSet):
     ''''''
     queryset = Category.objects.all()
@@ -344,7 +400,7 @@ class CategoryDetailView(viewsets.ModelViewSet):
                 raise ValidationError({'detail': 'Cannot delete subcategory because there are related objects with the specified category'})
             
             category = Category.objects.get(pk=pk)            
-            category.delete()
+            category.delete() 
             return Response({'message':'Category deleted successfully'},status=status.HTTP_204_NO_CONTENT)
         except Category.DoesNotExist:
             raise NotFound({'detail':'Category not found'})
@@ -365,42 +421,64 @@ class CategoryDetailView(viewsets.ModelViewSet):
         if serializer.is_valid():
             # Save the updated income object
             serializer.save()
+            cache_key = f"category_list"
+            cache.delete(cache_key) 
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
             raise ValidationError({'detail': f'Error occurred trying to update the category: {serializer.errors}'})
-class SubCategoryListView(viewsets.ModelViewSet):
-    ''''''
+        
+@receiver(post_save, sender=SubCategory)
+@receiver(post_delete, sender=SubCategory)
+def clear_subcategory_cache(sender, instance, **kwargs):
+    cache.delete_pattern("subcategory_list_*")     
+class SubCategoryListView(viewsets.ModelViewSet):    
     queryset = SubCategory.objects.all()
     serializer_class = SubCategorySerializer
     permission_classes = [IsAuthenticated] 
-    '''Get,Create'''    
-    def get(self,request):
-        '''
-           Get all categories
-        '''      
+
+    def filter_subcategories(self, request):
+        """Filter subcategories based on request parameters."""
+        category_id = request.query_params.get('category_id', None)
+        subcategory_queryset = SubCategory.objects.all()
+        
+        if category_id is not None:
+            subcategory_queryset = subcategory_queryset.filter(category=category_id)        
+        return subcategory_queryset
+        
+    def get_subcategory_cache_key(self, request):
+        """Generate a cache key based on query parameters."""
+        params = request.query_params.dict()
+        return f"subcategory_list_{'_'.join(f'{k}_{v}' for k, v in sorted(params.items()))}"
+    
+    def get(self, request, *args, **kwargs):
+        """Override the list method to include caching logic."""
         try:
-            category_id = request.query_params.get('category_id',None)
-        # Retrieve the income object based on the primary key (pk) and user
-            subCategory_queryset = SubCategory.objects.all()
-            if category_id is not None:
-                subCategory_queryset = subCategory_queryset.filter(category=category_id)
-            serializer = SubCategorySerializer(subCategory_queryset, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Category.DoesNotExist:
-        # If the income object does not exist for the specified user, return a 404 Not Found response
-            raise NotFound({'detail': 'Category objects not found.'})
+            cache_key = self.get_subcategory_cache_key(request)
+            cache_subcategory = cache.get(cache_key)
+            
+            if cache_subcategory:
+                return Response(cache_subcategory, status=status.HTTP_200_OK)
+            
+            subcategory_queryset = self.filter_subcategories(request)
+            serialized_data = SubCategorySerializer(subcategory_queryset, many=True).data
+            
+            cache.set(cache_key, serialized_data, timeout=60*15)  # Cache for 15 minutes
+
+            return Response(serialized_data, status=status.HTTP_200_OK)
+        except Exception as e:
+            raise ValidationError({'detail': 'An error occurred while retrieving the data.'})
 
     def create(self,request):   
         '''
-        Create new category
+        Create new subcategory
         '''       
         if request.user.is_staff == False and request.user.is_superuser == False:
             raise ValidationError({'detail': 'User has not enough permission'})
         serializer = SubCategorySerializer(data=request.data)         
         #Check if the serializer is valid        
         if serializer.is_valid():                     
-            serializer.save()  # Save the income object to the database
+            serializer.save()  # Save the income object to the database            
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             raise ValidationError(serializer.errors)
@@ -436,7 +514,7 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
                 raise ValidationError({'detail': 'Cannot delete subcategory because there are related objects with the specified subcategory'})
 
             subCategory = SubCategory.objects.get(pk=pk)
-            subCategory.delete()                      
+            subCategory.delete()                                
             return Response(status=status.HTTP_204_NO_CONTENT)
         except SubCategory.DoesNotExist:
             raise NotFound({'detail': 'Subcategory not found'})
@@ -456,7 +534,7 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
         # Validate the serializer data
         if serializer.is_valid():
             # Save the updated income object
-            serializer.save()
+            serializer.save()            
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             # Return error response if serializer data is invalid
