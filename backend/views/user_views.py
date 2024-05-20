@@ -298,7 +298,7 @@ class SuperAdminManagementListView(viewsets.ModelViewSet):
         try:
             cache_key = f"user_list"
             userCache = cache.get(cache_key)
-            if cache is None:
+            if userCache is None:
                 is_activeValue = request.query_params.get('is_active', None)
                 is_staffValue = request.query_params.get('is_staff', None)
                 is_superuserValue = request.query_params.get('is_superuser', None)
