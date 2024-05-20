@@ -64,7 +64,7 @@ class ChatSessionDetailViewSet(viewsets.ModelViewSet):
 
             if chat_sessions is None:
                 chat_sessions_filter = ChatSession.objects.filter(Q(admin=user))
-                if not chat_sessions.exists():
+                if not chat_sessions_filter.exists():
                     raise NotFound({'detail': 'No chat sessions found for the user.'})
                 chat_sessions = ChatSessionSerializer(chat_sessions_filter, many=True).data
                 cache.set(cache_key, list(chat_sessions), timeout=60*15)  # Cache for 15 minutes
