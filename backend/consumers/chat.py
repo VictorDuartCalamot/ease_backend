@@ -47,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send previous messages to the user (if any)
         
         try:
-            messages = await self.get_chat_messages(self.chat_uuid,self.scope['user'],False)
+            messages = await self.get_chat_messages(updateCache=True)
             
             if messages:                
                 await self.send(text_data=json.dumps(messages))                
@@ -58,10 +58,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(
             self.chat_group_name,
             self.channel_name
-        ) 
-        cache_key = self.get_cache_key(self.chat_uuid,self.scope['user'])
-        cache.delete(cache_key)
-        
+        )                 
         
 
     async def receive(self, text_data):
@@ -98,14 +95,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def is_user_in_chat_session(self, user, chat_uuid):
         session = ChatSession.objects.get(id=chat_uuid)
         return session.admin == user or session.customer == user
-    '''
-    @database_sync_to_async
-    def get_chat_messages(self, chat_uuid):
-        messages = ChatMessage.objects.filter(chat_session=chat_uuid).order_by('timestamp')
-        # Serialize chat messages
-        serialized_messages = ChatMessageSerializer(messages, many=True).data        
-        return serialized_messages
-    '''
+    
     @database_sync_to_async
     def get_chat_messages(self, chat_uuid,update_cache=True):
         cache_key = self.get_cache_key()
