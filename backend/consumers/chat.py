@@ -45,29 +45,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return
 
         # Send previous messages to the user (if any)
-        '''
+        
         try:
             messages = await self.get_chat_messages(self.chat_uuid,self.scope['user'],False)
             
             if messages:                
                 await self.send(text_data=json.dumps(messages))                
         except Exception as e:
-            print(f"Error while retrieving messages: {e}")'''
+            print(f"Error while retrieving messages: {e}")
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.chat_group_name,
             self.channel_name
-        )
-        '''
+        ) 
         cache_key = self.get_cache_key(self.chat_uuid,self.scope['user'])
         cache.delete(cache_key)
         
-        # Re-cache the latest messages after user disconnects
-        try:
-            await self.get_chat_messages(self.chat_uuid,self.scope['user'],True)
-        except Exception as e:
-            print(f"Error while re-caching messages: {e}")'''
+        
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -112,7 +107,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return serialized_messages
     '''
     @database_sync_to_async
-    def get_chat_messages(self, chat_uuid,update_cache):
+    def get_chat_messages(self, chat_uuid,update_cache=True):
         cache_key = self.get_cache_key()
         cached_messages = cache.get(cache_key)
         print(cached_messages)
