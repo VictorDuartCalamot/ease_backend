@@ -5,6 +5,7 @@ from django.db import OperationalError
 from backend.models import ChatSession, ChatMessage
 from backend.serializers import ChatMessageSerializer
 import datetime
+from django.core.cache import cache
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -45,12 +46,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send previous messages to the user (if any)
         try:
-            messages = await self.get_chat_messages(self.chat_uuid)
+            messages = await self.get_chat_messages(self.chat_uuid,self.scope['user'],update_cache=False)
             
-            if messages:
-                serialized_messages = ChatMessageSerializer(messages, many=True).data
-                await self.send(text_data=json.dumps(serialized_messages))
-                print(serialized_messages)
+            if messages:                
+                await self.send(text_data=json.dumps(messages))                
         except Exception as e:
             print(f"Error while retrieving messages: {e}")
 
@@ -59,6 +58,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.chat_group_name,
             self.channel_name
         )
+        
+        cache_key = self.get_cache_key(self.chat_uuid,self.scope['user'])
+        cache.delete(cache_key)
+        
+        # Re-cache the latest messages after user disconnects
+        try:
+            await self.get_chat_messages(self.chat_uuid,self.scope['user'],update_cache=True)
+        except Exception as e:
+            print(f"Error while re-caching messages: {e}")
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -94,15 +102,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def is_user_in_chat_session(self, user, chat_uuid):
         session = ChatSession.objects.get(id=chat_uuid)
         return session.admin == user or session.customer == user
-
+    '''
     @database_sync_to_async
     def get_chat_messages(self, chat_uuid):
         messages = ChatMessage.objects.filter(chat_session=chat_uuid).order_by('timestamp')
         # Serialize chat messages
         serialized_messages = ChatMessageSerializer(messages, many=True).data        
         return serialized_messages
+    '''
+    def get_chat_messages(self, chat_uuid,user_id,update_cache):
+        cache_key = self.get_cache_key(chat_uuid,user_id)
+        cached_messages = cache.get(cache_key)
+        if cached_messages is not None and not update_cache:
+            return cached_messages
+
+        messages = ChatMessage.objects.filter(chat_session=chat_uuid).order_by('timestamp')
+        serialized_messages = ChatMessageSerializer(messages, many=True).data
+        if update_cache:
+            cache.set(cache_key, serialized_messages, timeout=60*15)  # Cache for 15 minutes
+        return serialized_messages
+
 
     @database_sync_to_async
     def save_message(self, user, chat_uuid, message):
         chasSessionObject = ChatSession.objects.get(id=chat_uuid)
         ChatMessage.objects.create(user=user, chat_session=chasSessionObject, message=message)
+        
+    def get_cache_key(self,chat_uuid,user_id):
+        '''Returns the cache key'''
+        return f"chat_{chat_uuid}_{user_id}_messages"
