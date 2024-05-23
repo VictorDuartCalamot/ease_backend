@@ -47,7 +47,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send previous messages to the user (if any)
         
         try:
-            messages = await self.get_chat_messages(updateCache=True)
+            messages = await self.get_chat_messages(update_cache=True)
             
             if messages:                
                 await self.send(text_data=json.dumps(messages))                
