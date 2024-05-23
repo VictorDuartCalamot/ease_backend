@@ -59,8 +59,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
             return data
         except AuthenticationFailed as e:            
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,self.user.id)                        
-            blockUser(self.user.id)
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.id)                        
+            blockUser(userObject.id)
             raise AuthenticationFailed({'detail':f'Credentials are incorrect: {e}'})                     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
