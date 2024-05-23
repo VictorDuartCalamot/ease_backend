@@ -135,4 +135,4 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
     def get_cache_key(self,chat_uuid,user_id):
         '''Returns the cache key'''
-        return f"chat_{chat_uuid}_{user_id}_messages"
+        return f"chat_{chat_uuid}_messages"
