@@ -37,7 +37,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
         if not check_password(attrs.get('password',''), userObject.password):
-            raise ValidationError('Current password is incorrect.')
+            raise ValidationError({'detail':'Credentials are incorrect'})
         if not userObject.is_active:
             raise PermissionDenied({'detail':'The account is blocked. Contact your administrator for further information.'})
         
