@@ -45,20 +45,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return
 
         # Send previous messages to the user (if any)
+        '''
         try:
             messages = await self.get_chat_messages(self.chat_uuid,self.scope['user'],False)
             
             if messages:                
                 await self.send(text_data=json.dumps(messages))                
         except Exception as e:
-            print(f"Error while retrieving messages: {e}")
+            print(f"Error while retrieving messages: {e}")'''
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.chat_group_name,
             self.channel_name
         )
-        
+        '''
         cache_key = self.get_cache_key(self.chat_uuid,self.scope['user'])
         cache.delete(cache_key)
         
@@ -66,7 +67,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         try:
             await self.get_chat_messages(self.chat_uuid,self.scope['user'],True)
         except Exception as e:
-            print(f"Error while re-caching messages: {e}")
+            print(f"Error while re-caching messages: {e}")'''
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -111,8 +112,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return serialized_messages
     '''
     @database_sync_to_async
-    def get_chat_messages(self, chat_uuid,user_id,update_cache):
-        cache_key = self.get_cache_key(chat_uuid,user_id)
+    def get_chat_messages(self, chat_uuid,update_cache):
+        cache_key = self.get_cache_key()
         cached_messages = cache.get(cache_key)
         print(cached_messages)
         if cached_messages is not None and not update_cache:
@@ -123,8 +124,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         serialized_messages = ChatMessageSerializer(messages, many=True).data
         if update_cache:
             cache.set(cache_key, serialized_messages, timeout=60*15)  # Cache for 15 minutes
-            print('Setting cache')
-        print('Setting cache',update_cache)
+            print('Setting cache')        
         return serialized_messages
 
 
@@ -132,7 +132,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def save_message(self, user, chat_uuid, message):
         chasSessionObject = ChatSession.objects.get(id=chat_uuid)
         ChatMessage.objects.create(user=user, chat_session=chasSessionObject, message=message)
+        self.update_chat_cache()
         
-    def get_cache_key(self,chat_uuid,user_id):
+    @database_sync_to_async
+    def update_chat_cache(self):
+        messages = ChatMessage.objects.filter(chat_session=self.chat_uuid).order_by('timestamp')
+        serialized_messages = ChatMessageSerializer(messages, many=True).data
+        cache_key = self.get_cache_key()
+        cache.set(cache_key, serialized_messages, timeout=60*15)
+        
+    def get_cache_key(self):
         '''Returns the cache key'''
-        return f"chat_{chat_uuid}_messages"
+        return f"chat_{self.chat_uuid}_messages"
