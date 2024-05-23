@@ -40,10 +40,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             raise PermissionDenied({'detail':'The account is blocked. Contact your administrator for further information.'})
         
         #Create cache_key and get cache if there is any
-        cache_key = f"user_token_{userObject.id}"
-        cached_token = cache.get(cache_key)        
-        if cached_token:
-            return cached_token
+        #cache_key = f"user_token_{userObject.id}"
+        #cached_token = cache.get(cache_key)        
+        #if cached_token:
+        #    return cached_token
         
         try:                                              
             attrs['username'] = emailToLower 
@@ -53,7 +53,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
                 data[k] = v             
 
             #Set the token in the Cache with the cache_key from before
-            cache.set(cache_key, data, timeout=60*15)
+            #cache.set(cache_key, data, timeout=60*15)
             AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),True,self.user.id)
             update_last_login(sender=User,user=self.user)
 
