@@ -46,7 +46,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Send previous messages to the user (if any)
         try:
-            messages = await self.get_chat_messages(self.chat_uuid,self.scope['user'],update_cache=False)
+            messages = await self.get_chat_messages(self.chat_uuid,self.scope['user'].id,False)
             
             if messages:                
                 await self.send(text_data=json.dumps(messages))                
@@ -59,12 +59,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
         
-        cache_key = self.get_cache_key(self.chat_uuid,self.scope['user'])
+        cache_key = self.get_cache_key(self.chat_uuid,self.scope['user'].id)
         cache.delete(cache_key)
         
         # Re-cache the latest messages after user disconnects
         try:
-            await self.get_chat_messages(self.chat_uuid,self.scope['user'],update_cache=True)
+            await self.get_chat_messages(self.chat_uuid,self.scope['user'].id,True)
         except Exception as e:
             print(f"Error while re-caching messages: {e}")
 
@@ -73,7 +73,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json['message']
 
         # Save message to database
-        await self.save_message(self.scope['user'], self.chat_uuid, message)
+        await self.save_message(self.scope['user'].id, self.chat_uuid, message)
 
         # Send message to chat group
         await self.channel_layer.group_send(
@@ -113,13 +113,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def get_chat_messages(self, chat_uuid,user_id,update_cache):
         cache_key = self.get_cache_key(chat_uuid,user_id)
         cached_messages = cache.get(cache_key)
+        print(cached_messages)
         if cached_messages is not None and not update_cache:
-            return cached_messages
+            print('Gettin cache')
+            return cached_messages            
 
         messages = ChatMessage.objects.filter(chat_session=chat_uuid).order_by('timestamp')
         serialized_messages = ChatMessageSerializer(messages, many=True).data
         if update_cache:
             cache.set(cache_key, serialized_messages, timeout=60*15)  # Cache for 15 minutes
+            print('Setting cache')
+        print('Setting cache',update_cache)
         return serialized_messages
 
 
