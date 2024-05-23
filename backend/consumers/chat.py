@@ -110,6 +110,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         serialized_messages = ChatMessageSerializer(messages, many=True).data        
         return serialized_messages
     '''
+    @database_sync_to_async
     def get_chat_messages(self, chat_uuid,user_id,update_cache):
         cache_key = self.get_cache_key(chat_uuid,user_id)
         cached_messages = cache.get(cache_key)
