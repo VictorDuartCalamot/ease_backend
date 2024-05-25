@@ -439,11 +439,11 @@ class SubCategoryListView(viewsets.ModelViewSet):
 
     def filter_subcategories(self, request):
         """Filter subcategories based on request parameters."""
-        category_id = request.query_params.get('category_id', None)
+        category_id = request.query_params.get('category_id', None)        
         subcategory_queryset = SubCategory.objects.all()
         
         if category_id is not None:
-            subcategory_queryset = subcategory_queryset.filter(category=category_id)        
+            subcategory_queryset = subcategory_queryset.filter(category=category_id)         
         return subcategory_queryset
         
     def get_subcategory_cache_key(self, request):

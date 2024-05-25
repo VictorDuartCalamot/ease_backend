@@ -36,6 +36,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self,attrs):        
         emailToLower = attrs.get('username', '').strip().lower()                 
         userObject = getUserObjectByEmail(emailToLower)
+        if not check_password(attrs.get('password',''), userObject.password):
+            raise ValidationError({'detail':'Credentials are incorrect'})
         if not userObject.is_active:
             raise PermissionDenied({'detail':'The account is blocked. Contact your administrator for further information.'})
         
@@ -59,8 +61,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
             return data
         except AuthenticationFailed as e:            
-            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.get('id'))                        
-            blockUser(userObject.get('id'))
+            AuthUserLogsListView.createLogWithLogin(self.context['request'].data.get('os'),False,userObject.id)                        
+            blockUser(userObject.id)
             raise AuthenticationFailed({'detail':f'Credentials are incorrect: {e}'})                     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
