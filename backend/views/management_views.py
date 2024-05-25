@@ -63,7 +63,7 @@ class ExpenseListView(viewsets.ModelViewSet):
                 return Response(cache_expense, status=status.HTTP_200_OK)
             
             expense_queryset = self.filter_expense(request)
-            serialized_data = IncomeSerializer(expense_queryset, many=True).data
+            serialized_data = ExpenseSerializer(expense_queryset, many=True).data
             
             cache.set(cache_key, serialized_data, timeout=60*15)  # Cache for 15 minutes
 
