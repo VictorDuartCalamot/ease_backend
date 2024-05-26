@@ -510,7 +510,7 @@ class SubCategoryDetailView(viewsets.ModelViewSet):
             raise AuthenticationFailed({'detail': 'User has not enough permission'})
         try:
 
-            if Expense.objects.filter(subcategory=pk).exists() or Income.objects.filter(subcategory=pk).exists():
+            if Expense.objects.filter(subcategory=pk).exists():
                 raise ValidationError({'detail': 'Cannot delete subcategory because there are related objects with the specified subcategory'})
 
             subCategory = SubCategory.objects.get(pk=pk)
